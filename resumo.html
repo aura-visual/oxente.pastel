@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumo | OXENTE PASTEL</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a href="bebidas.html" class="icon-btn">← Voltar</a>
+
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo">
+        <div class="brand-text">
+          <strong>Resumo</strong>
+          <span>Mini relatório do pedido</span>
+        </div>
+      </div>
+
+      <a href="#" class="icon-btn">
+        Pedido <span class="badge" data-cart-count>0</span>
+      </a>
+    </div>
+  </div>
+
+  <main class="app">
+    <section class="content">
+      <div class="progress">
+        <div class="step">Início</div>
+        <div class="step">Pedido</div>
+        <div class="step">Complementos</div>
+        <div class="step">Bebidas</div>
+        <div class="step active">Resumo</div>
+      </div>
+
+      <h1 class="title">Resumo do pedido</h1>
+      <p class="subtitle">Aqui aparece um mini relatório antes das próximas etapas.</p>
+
+      <div id="resumoPedido"></div>
+    </section>
+
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total geral</small>
+          <strong data-total>R$ 0,00</strong>
+        </div>
+        <button class="btn">Próxima etapa</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
