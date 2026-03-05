@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Pastéis • Oxente</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="icon-btn" href="index.html">← Voltar</a>
+
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo">
+        <div class="title">
+          <strong>PASTÉIS</strong>
+          <span>Escolha e adicione ao carrinho</span>
+        </div>
+      </div>
+
+      <a class="icon-btn" href="carrinho.html">🛒 <span class="badge" data-cart-badge style="display:none;">0</span></a>
+    </div>
+  </div>
+
+  <div class="safe">
+    <div class="h1">Monte seu pastel</div>
+    <div class="sub">Conforme cardápio: Oxente / Arrochado / Cabra Macho</div>
+
+    <div class="list">
+
+      <div class="item">
+        <div class="item-top">
+          <div>
+            <h3>OXENTE</h3>
+            <p>Escolha 1 opção de sabor.</p>
+          </div>
+          <div class="price">R$ 13,99</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="addItem('pastel-oxente','Pastel Oxente',13.99)">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-top">
+          <div>
+            <h3>ARROCHADO</h3>
+            <p>Escolha 1 opção de sabor, 2 opções de recheios e 1 opção de mix.</p>
+          </div>
+          <div class="price">R$ 17,99</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="addItem('pastel-arrochado','Pastel Arrochado',17.99)">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-top">
+          <div>
+            <h3>CABRA MACHO</h3>
+            <p>Escolha 1 opção de sabor, 3 opções de recheios e 1 opção de mix.</p>
+          </div>
+          <div class="price">R$ 19,99</div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="addItem('pastel-cabramacho','Pastel Cabra Macho',19.99)">Adicionar</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footerbar">
+    <div class="footerbar-inner">
+      <div class="totalbox">
+        <small>Total atual</small>
+        <strong data-cart-total>R$ 0,00</strong>
+      </div>
+      <a class="btn" href="carrinho.html" style="width:auto; padding:14px 16px;">Ver carrinho</a>
+    </div>
+  </div>
+
+</body>
+</html>
