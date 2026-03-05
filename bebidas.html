@@ -1,91 +1,202 @@
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Bebidas • Oxente</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bebidas | OXENTE PASTEL</title>
+  <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
 <body>
-
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="icon-btn" href="index.html">← Voltar</a>
+      <a href="complementos.html" class="icon-btn">← Voltar</a>
 
       <div class="brand">
         <img src="logo.oxente.jpg" alt="Logo">
-        <div class="title">
-          <strong>BEBIDAS</strong>
-          <span>Geladas e vitaminas</span>
+        <div class="brand-text">
+          <strong>Bebidas</strong>
+          <span>Escolha com + e -</span>
         </div>
       </div>
 
-      <a class="icon-btn" href="carrinho.html">🛒 <span class="badge" data-cart-badge style="display:none;">0</span></a>
+      <a href="resumo.html" class="icon-btn">
+        Pedido <span class="badge" data-cart-count>0</span>
+      </a>
     </div>
   </div>
 
-  <div class="safe">
-    <div class="h1">Bebidas</div>
-    <div class="sub">Valores conforme o cardápio</div>
-
-    <div class="list">
-      <div class="item">
-        <div class="item-top"><div><h3>Água Mineral 500ml</h3></div><div class="price">R$ 2,50</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-agua','Água Mineral 500ml',2.50)">Adicionar</button></div>
+  <main class="app">
+    <section class="content">
+      <div class="progress">
+        <div class="step">Início</div>
+        <div class="step">Pedido</div>
+        <div class="step">Complementos</div>
+        <div class="step active">Bebidas</div>
+        <div class="step">Resumo</div>
       </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Água Mineral c/ gás 500ml</h3></div><div class="price">R$ 3,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-aguagas','Água c/ gás 500ml',3.00)">Adicionar</button></div>
-      </div>
+      <h1 class="title">Bebidas</h1>
+      <p class="subtitle">Etapa com foco em adicionar mais unidades com rapidez.</p>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Refrigerante Lata</h3></div><div class="price">R$ 6,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-lata','Refrigerante Lata',6.00)">Adicionar</button></div>
-      </div>
+      <div class="list">
+        <div class="item" data-item-id="beb-agua">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Água Mineral 500ml</div>
+            </div>
+            <div class="price">R$ 2,50</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-agua', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-agua','Água Mineral 500ml',2.50)">+</button>
+            </div>
+          </div>
+        </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Guaraná 1L</h3></div><div class="price">R$ 9,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-guarana1l','Guaraná 1L',9.00)">Adicionar</button></div>
-      </div>
+        <div class="item" data-item-id="beb-agua-gas">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Água c/ gás 500ml</div>
+            </div>
+            <div class="price">R$ 3,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-agua-gas', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-agua-gas','Água c/ gás 500ml',3.00)">+</button>
+            </div>
+          </div>
+        </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Coca-Cola 1L</h3></div><div class="price">R$ 9,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-coca1l','Coca-Cola 1L',9.00)">Adicionar</button></div>
-      </div>
+        <div class="item" data-item-id="beb-refrigerante-lata">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Refrigerante Lata</div>
+            </div>
+            <div class="price">R$ 6,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-refrigerante-lata', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-refrigerante-lata','Refrigerante Lata',6.00)">+</button>
+            </div>
+          </div>
+        </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>São Geraldo 1L</h3></div><div class="price">R$ 9,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-saogeraldo1l','São Geraldo 1L',9.00)">Adicionar</button></div>
-      </div>
+        <div class="item" data-item-id="beb-guarana">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Guaraná 1L</div>
+            </div>
+            <div class="price">R$ 9,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-guarana', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-guarana','Guaraná 1L',9.00)">+</button>
+            </div>
+          </div>
+        </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Sucos Diversos 500ml</h3></div><div class="price">R$ 8,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-suco500','Suco 500ml',8.00)">Adicionar</button></div>
-      </div>
+        <div class="item" data-item-id="beb-coca">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Coca-Cola 1L</div>
+            </div>
+            <div class="price">R$ 9,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-coca', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-coca','Coca-Cola 1L',9.00)">+</button>
+            </div>
+          </div>
+        </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Vitaminas 500ml</h3></div><div class="price">R$ 12,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-vitamina500','Vitamina 500ml',12.00)">Adicionar</button></div>
-      </div>
+        <div class="item" data-item-id="beb-sao-geraldo">
+          <div class="item-top">
+            <div>
+              <div class="item-title">São Geraldo 1L</div>
+            </div>
+            <div class="price">R$ 9,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-sao-geraldo', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-sao-geraldo','São Geraldo 1L',9.00)">+</button>
+            </div>
+          </div>
+        </div>
 
-      <div class="item">
-        <div class="item-top"><div><h3>Smoothie 500ml</h3></div><div class="price">R$ 14,00</div></div>
-        <div class="actions"><button class="btn" onclick="addItem('beb-smoothie500','Smoothie 500ml',14.00)">Adicionar</button></div>
+        <div class="item" data-item-id="beb-suco">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Sucos Diversos 500ml</div>
+            </div>
+            <div class="price">R$ 8,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-suco', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-suco','Suco 500ml',8.00)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" data-item-id="beb-vitamina">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Vitaminas 500ml</div>
+            </div>
+            <div class="price">R$ 12,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-vitamina', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-vitamina','Vitamina 500ml',12.00)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" data-item-id="beb-smoothie">
+          <div class="item-top">
+            <div>
+              <div class="item-title">Smoothie 500ml</div>
+            </div>
+            <div class="price">R$ 14,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty">
+              <button class="qty-btn" onclick="changeQty('beb-smoothie', -1)">−</button>
+              <div class="qty-value">0</div>
+              <button class="qty-btn" onclick="addItem('beb-smoothie','Smoothie 500ml',14.00)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total do pedido</small>
+          <strong data-total>R$ 0,00</strong>
+        </div>
+        <a href="resumo.html" style="flex:1;">
+          <button class="btn">Continuar</button>
+        </a>
       </div>
     </div>
-  </div>
-
-  <div class="footerbar">
-    <div class="footerbar-inner">
-      <div class="totalbox">
-        <small>Total atual</small>
-        <strong data-cart-total>R$ 0,00</strong>
-      </div>
-      <a class="btn" href="carrinho.html" style="width:auto; padding:14px 16px;">Ver carrinho</a>
-    </div>
-  </div>
-
+  </main>
 </body>
 </html>
