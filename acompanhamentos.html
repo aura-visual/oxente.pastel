@@ -1,124 +1,80 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acompanhamentos | OXENTE PASTEL</title>
-  <link rel="icon" type="image/jpeg" href="logo.oxente.jpg">
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Acompanhamentos</title>
+
+<link rel="icon" href="logo.oxente.jpg">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+
 </head>
-<body data-page="acompanhamentos">
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="icon-btn" onclick="this.href=prevPageFor('acompanhamentos')">← Voltar</a>
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>Acompanhamentos</strong>
-          <span>Escolha seus adicionais</span>
-        </div>
-      </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-    <div class="progress-shell">
-      <div class="progress-fill" data-progress-fill></div>
-    </div>
-  </div>
 
-  <main class="app">
-    <section class="content">
-      <h1 class="hero-title">Acompanhamentos</h1>
-      <p class="hero-subtitle">Escolha acompanhamentos com + e -.</p>
+<body onload="progress(50)">
 
-      <div class="list">
-        <div class="item" data-item-id="comp-fritas-simples">
-          <div class="item-top">
-            <div>
-              <div class="item-title">Fritas Simples</div>
-              <div class="item-desc">150g de batatinha crocante.</div>
-            </div>
-            <div class="price">R$ 10,99</div>
-          </div>
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="decreaseItem('comp-fritas-simples')">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addOrIncrease('comp-fritas-simples','Fritas Simples',10.99); renderQuantityPages();">+</button>
-            </div>
-          </div>
-        </div>
+<div class="topbar">
+<div class="topbar-inner">
 
-        <div class="item" data-item-id="comp-fritas-cheddar">
-          <div class="item-top">
-            <div>
-              <div class="item-title">Fritas Cheddar</div>
-              <div class="item-desc">250g de batata com cheddar e bacon.</div>
-            </div>
-            <div class="price">R$ 18,99</div>
-          </div>
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="decreaseItem('comp-fritas-cheddar')">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addOrIncrease('comp-fritas-cheddar','Fritas Cheddar',18.99); renderQuantityPages();">+</button>
-            </div>
-          </div>
-        </div>
+<div class="brand">
+<img src="logo.oxente.jpg">
+<div class="brand-text">
+<strong>Acompanhamentos</strong>
+<span>Escolha extras</span>
+</div>
+</div>
 
-        <div class="item" data-item-id="comp-fritas-cream-cheese">
-          <div class="item-top">
-            <div>
-              <div class="item-title">Fritas Cream Cheese</div>
-              <div class="item-desc">250g de batata com cream cheese e bacon.</div>
-            </div>
-            <div class="price">R$ 18,99</div>
-          </div>
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="decreaseItem('comp-fritas-cream-cheese')">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addOrIncrease('comp-fritas-cream-cheese','Fritas Cream Cheese',18.99); renderQuantityPages();">+</button>
-            </div>
-          </div>
-        </div>
+<div>Pedido <span class="cart-count">0</span></div>
 
-        <div class="item" data-item-id="comp-fritas-carne-sol">
-          <div class="item-top">
-            <div>
-              <div class="item-title">Fritas com carne de sol</div>
-              <div class="item-desc">250g de batata com carne de sol e bacon.</div>
-            </div>
-            <div class="price">R$ 18,99</div>
-          </div>
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="decreaseItem('comp-fritas-carne-sol')">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addOrIncrease('comp-fritas-carne-sol','Fritas com carne de sol',18.99); renderQuantityPages(); renderFritasSubOption();">+</button>
-            </div>
-          </div>
+</div>
 
-          <div class="dynamic-suboption" id="fritasCarneSolSuboption" style="display:none;">
-            <div class="dynamic-suboption-title">Escolha o adicional:</div>
-            <div class="inline-choice">
-              <button type="button" data-fritas-extra="Cheddar" onclick="setFritasCarneSolTipo('Cheddar')">Cheddar</button>
-              <button type="button" data-fritas-extra="Cream Cheese" onclick="setFritasCarneSolTipo('Cream Cheese')">Cream Cheese</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
 
-    <div class="footer-action">
-      <div class="footer-inner">
-        <div class="total-box">
-          <small>Total atual</small>
-          <strong data-total>R$ 0,00</strong>
-        </div>
-        <a href="bebidas.html" class="btn">Continuar</a>
-      </div>
-    </div>
-  </main>
+</div>
+
+<div class="container">
+
+<div class="list-item">
+<div class="list-title">Fritas simples</div>
+<div class="price">R$ 10,99</div>
+
+<div class="qty">
+<button onclick="removeItem('Fritas simples')">-</button>
+<button onclick="addItem('Fritas simples',10.99)">+</button>
+</div>
+</div>
+
+<div class="list-item">
+
+<div class="list-title">Fritas com carne de sol</div>
+<div class="price">R$ 18,99</div>
+
+<div class="qty">
+<button onclick="removeItem('Fritas carne de sol')">-</button>
+<button onclick="addItem('Fritas carne de sol',18.99)">+</button>
+</div>
+
+<div class="notice">
+Escolha adicional: Cheddar ou Cream Cheese
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+<div class="footer-inner">
+<div class="total">
+Total <span class="cart-total">R$ 0</span>
+</div>
+
+<a href="bebidas.html" class="btn">Continuar</a>
+
+</div>
+</div>
+
 </body>
 </html>
