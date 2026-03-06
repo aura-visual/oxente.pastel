@@ -1,60 +1,84 @@
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Pagamento • Oxente</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento | OXENTE PASTEL</title>
+  <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
+  <style>
+    .pay-grid{
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+    .pay-option{
+      width:100%;
+      min-height:56px;
+      border-radius:18px;
+      border:1px solid rgba(255,210,0,.14);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+    .pay-option.active{
+      background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
+      border-color:rgba(255,210,0,.34);
+      color:var(--yellow-soft);
+    }
+  </style>
 </head>
 <body>
-
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="icon-btn" href="entrega.html">← Voltar</a>
-
+      <a href="entrega.html" class="icon-btn">← Voltar</a>
       <div class="brand">
         <img src="logo.oxente.jpg" alt="Logo">
-        <div class="title">
-          <strong>PAGAMENTO</strong>
-          <span>Confira e finalize</span>
+        <div class="brand-text">
+          <strong>Pagamento</strong>
+          <span>Finalização</span>
         </div>
       </div>
-
-      <a class="icon-btn" href="carrinho.html">🛒 <span class="badge" data-cart-badge style="display:none;">0</span></a>
+      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
     </div>
   </div>
 
-  <div class="safe">
-    <div class="h1">Pagamento</div>
-    <div class="sub">Veja o relatório do pedido e escolha a forma de pagamento.</div>
+  <main class="app">
+    <section class="content">
+      <div class="progress">
+        <div class="step">Início</div>
+        <div class="step">Pedido</div>
+        <div class="step">Montagem</div>
+        <div class="step">Extras</div>
+        <div class="step active">Pagamento</div>
+      </div>
 
-    <div id="paySummary"></div>
+      <h1 class="hero-title">Pagamento</h1>
+      <p class="hero-subtitle">Confira o pedido e selecione a forma de pagamento.</p>
 
-    <div class="h1" style="margin-top:16px;">Forma de pagamento</div>
+      <div id="paymentSummary"></div>
 
-    <div class="paygrid">
-      <button type="button" class="paybtn" data-pay="pix" onclick="setPayment('pix')">
-        PIX <span>Selecionar</span>
-      </button>
+      <div class="pay-grid">
+        <button class="pay-option" data-pay="Pix" onclick="setPaymentMethod('Pix')">Pix</button>
+        <button class="pay-option" data-pay="Cartão" onclick="setPaymentMethod('Cartão')">Cartão (débito/crédito)</button>
+        <button class="pay-option" data-pay="Dinheiro" onclick="setPaymentMethod('Dinheiro')">Dinheiro</button>
+      </div>
 
-      <button type="button" class="paybtn" data-pay="cartao" onclick="setPayment('cartao')">
-        Cartão (débito/crédito) <span>Selecionar</span>
-      </button>
+      <div class="alert" id="paymentAlert"></div>
+    </section>
 
-      <button type="button" class="paybtn" data-pay="dinheiro" onclick="setPayment('dinheiro')">
-        Dinheiro <span>Selecionar</span>
-      </button>
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total final</small>
+          <strong data-total>R$ 0,00</strong>
+        </div>
+        <button class="btn" onclick="finishOrderWhatsApp()">Finalizar</button>
+      </div>
     </div>
-
-    <div class="hr"></div>
-
-    <button class="btn" onclick="finalizarWhatsApp()">Finalizar e enviar no WhatsApp</button>
-    <div class="smallnote">Ao finalizar, seu pedido será enviado para <strong>+55 88 99865-0795</strong> no formato ideal para impressão (80mm).</div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", renderPaymentSummary);
-  </script>
+  </main>
 </body>
 </html>
