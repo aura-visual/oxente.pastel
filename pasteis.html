@@ -11,18 +11,14 @@
   <div class="topbar">
     <div class="topbar-inner">
       <a href="index.html" class="icon-btn">← Voltar</a>
-
       <div class="brand">
         <img src="logo.oxente.jpg" alt="Logo">
         <div class="brand-text">
           <strong>Monte seu pastel</strong>
-          <span>Escolha a base</span>
+          <span>Escolha o tipo</span>
         </div>
       </div>
-
-      <a href="#" class="icon-btn">
-        Pedido <span class="badge" data-cart-count>0</span>
-      </a>
+      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
     </div>
   </div>
 
@@ -32,15 +28,15 @@
         <div class="step">Início</div>
         <div class="step active">Pedido</div>
         <div class="step">Montagem</div>
-        <div class="step">Especiais</div>
-        <div class="step">Próx.</div>
+        <div class="step">Extras</div>
+        <div class="step">Resumo</div>
       </div>
 
       <h1 class="hero-title">Escolha seu pastel</h1>
-      <p class="hero-subtitle">Depois dessa etapa, você vai para a personalização.</p>
+      <p class="hero-subtitle">Aqui é seleção única. Depois você vai para a montagem.</p>
 
       <div class="list">
-        <div class="item">
+        <div class="select-card" data-pastel-type="oxente" onclick="selectPastelType('oxente')">
           <div class="item-top">
             <div>
               <div class="item-title">OXENTE</div>
@@ -48,41 +44,39 @@
             </div>
             <div class="price">R$ 13,99</div>
           </div>
-          <div class="item-bottom">
-            <div class="item-desc">Fluxo: 1 sabor</div>
-            <button class="btn" style="max-width:180px;" onclick="setTipoPastel('oxente'); window.location.href='montagem-pastel.html';">Escolher</button>
-          </div>
         </div>
 
-        <div class="item">
+        <div class="select-card" data-pastel-type="arrochado" onclick="selectPastelType('arrochado')">
           <div class="item-top">
             <div>
               <div class="item-title">ARROCHADO</div>
-              <div class="item-desc">Escolha 1 sabor, 2 recheios e 1 mix.</div>
+              <div class="item-desc">1 sabor + 2 recheios + 1 mix.</div>
             </div>
             <div class="price">R$ 17,99</div>
           </div>
-          <div class="item-bottom">
-            <div class="item-desc">Fluxo: 1 sabor + 2 recheios + 1 mix</div>
-            <button class="btn" style="max-width:180px;" onclick="setTipoPastel('arrochado'); window.location.href='montagem-pastel.html';">Escolher</button>
-          </div>
         </div>
 
-        <div class="item">
+        <div class="select-card" data-pastel-type="cabra_macho" onclick="selectPastelType('cabra_macho')">
           <div class="item-top">
             <div>
               <div class="item-title">CABRA MACHO</div>
-              <div class="item-desc">Escolha 1 sabor, 3 recheios e 1 mix.</div>
+              <div class="item-desc">1 sabor + 3 recheios + 1 mix.</div>
             </div>
             <div class="price">R$ 19,99</div>
-          </div>
-          <div class="item-bottom">
-            <div class="item-desc">Fluxo: 1 sabor + 3 recheios + 1 mix</div>
-            <button class="btn" style="max-width:180px;" onclick="setTipoPastel('cabra_macho'); window.location.href='montagem-pastel.html';">Escolher</button>
           </div>
         </div>
       </div>
     </section>
+
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Próxima etapa</small>
+          <strong>Montagem</strong>
+        </div>
+        <a href="#" id="btnContinuarPastel" class="btn btn-disabled">Continuar</a>
+      </div>
+    </div>
   </main>
 </body>
 </html>
