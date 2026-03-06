@@ -1,537 +1,393 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
-
-:root{
-  --bg:#070707;
-  --bg-soft:#111111;
-  --card:#171717;
-  --line:rgba(255,210,0,0.14);
-  --yellow:#f7c600;
-  --yellow-soft:#ffda57;
-  --text:#ffffff;
-  --muted:#b5b5b5;
-  --danger:#ff7b7b;
-  --ok:#7dffb1;
-  --shadow:0 18px 40px rgba(0,0,0,.34);
-  --radius-xl:26px;
-  --radius-lg:20px;
-  --radius-md:16px;
-  --maxw:520px;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-  min-height:100%;
-}
-
-body{
-  font-family:'Montserrat',sans-serif;
-  color:var(--text);
-  background:
-    linear-gradient(rgba(7,7,7,.93), rgba(7,7,7,.97)),
-    url("logo.oxente.jpg");
-  background-repeat:repeat;
-  background-size:180px;
-  background-attachment:fixed;
-  overflow-x:hidden;
-}
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 10% 10%, rgba(255,210,0,.07), transparent 25%),
-    radial-gradient(circle at 85% 20%, rgba(255,210,0,.05), transparent 22%),
-    radial-gradient(circle at 50% 85%, rgba(255,210,0,.04), transparent 28%);
-  z-index:0;
-}
-
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-button{
-  font-family:'Montserrat',sans-serif;
-}
-
-.app{
-  position:relative;
-  z-index:1;
-  max-width:var(--maxw);
-  margin:0 auto;
-  min-height:100vh;
-  padding-bottom:110px;
-}
-
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:40;
-  backdrop-filter:blur(14px);
-  background:rgba(7,7,7,.8);
-  border-bottom:1px solid var(--line);
-}
-
-.topbar-inner{
-  max-width:var(--maxw);
-  margin:0 auto;
-  padding:14px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-}
-
-.brand img{
-  width:46px;
-  height:46px;
-  border-radius:14px;
-  object-fit:cover;
-  border:1px solid rgba(255,210,0,.18);
-  box-shadow:var(--shadow);
-}
-
-.brand-text strong{
-  display:block;
-  font-size:14px;
-  font-weight:800;
-  letter-spacing:.3px;
-}
-
-.brand-text span{
-  display:block;
-  margin-top:2px;
-  font-size:11px;
-  color:var(--muted);
-}
-
-.icon-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  min-height:44px;
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid rgba(255,210,0,.16);
-  background:rgba(255,255,255,.03);
-  color:var(--text);
-  font-size:13px;
-  font-weight:700;
-  box-shadow:var(--shadow);
-  transition:.18s ease;
-}
-
-.icon-btn:active,
-.card:active,
-.btn:active,
-.qty-btn:active,
-.option-chip:active{
-  transform:scale(.98);
-}
-
-.badge{
-  min-width:22px;
-  height:22px;
-  padding:0 7px;
-  border-radius:999px;
-  background:var(--yellow);
-  color:#000;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  font-weight:800;
-}
-
-.content{
-  padding:18px 16px 0;
-}
-
-.hero-title{
-  font-size:26px;
-  line-height:1.08;
-  font-weight:900;
-  letter-spacing:-.4px;
-  margin-bottom:10px;
-}
-
-.hero-subtitle{
-  font-size:13px;
-  line-height:1.5;
-  color:var(--muted);
-  margin-bottom:18px;
-}
-
-.progress{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-  margin-bottom:20px;
-}
-
-.step{
-  min-height:54px;
-  border-radius:16px;
-  border:1px solid rgba(255,210,0,.1);
-  background:rgba(255,255,255,.025);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:8px 6px;
-  font-size:10px;
-  font-weight:800;
-  line-height:1.2;
-  color:#8e8e8e;
-}
-
-.step.active{
-  background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
-  border-color:rgba(255,210,0,.28);
-  color:var(--yellow-soft);
-  box-shadow:0 10px 24px rgba(255,210,0,.08);
-}
-
-.grid{
-  display:grid;
-  gap:16px;
-}
-
-.card{
-  background:linear-gradient(180deg, rgba(255,210,0,.06), rgba(255,255,255,.015));
-  border:1px solid rgba(255,210,0,.12);
-  border-radius:var(--radius-xl);
-  overflow:hidden;
-  box-shadow:var(--shadow);
-}
-
-.card-image{
-  width:100%;
-  height:190px;
-  display:block;
-  object-fit:cover;
-}
-
-.card-body{
-  padding:16px;
-}
-
-.card-title{
-  font-size:22px;
-  font-weight:900;
-  margin-bottom:8px;
-}
-
-.card-desc{
-  font-size:13px;
-  line-height:1.5;
-  color:var(--muted);
-}
-
-.card-action{
-  margin-top:16px;
-}
-
-.btn{
-  width:100%;
-  min-height:50px;
-  border:none;
-  border-radius:18px;
-  background:var(--yellow);
-  color:#000;
-  font-size:14px;
-  font-weight:900;
-  padding:14px 16px;
-  box-shadow:0 12px 28px rgba(255,210,0,.16);
-  cursor:pointer;
-  text-align:center;
-}
-
-.btn-outline{
-  background:transparent;
-  color:var(--yellow-soft);
-  border:1px solid rgba(255,210,0,.24);
-  box-shadow:none;
-}
-
-.btn-disabled{
-  opacity:.45;
-  pointer-events:none;
-}
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-
-.item{
-  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
-  border:1px solid rgba(255,210,0,.11);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:var(--shadow);
-}
-
-.item-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-}
-
-.item-title{
-  font-size:16px;
-  font-weight:800;
-  margin-bottom:6px;
-}
-
-.item-desc{
-  font-size:12px;
-  line-height:1.5;
-  color:var(--muted);
-}
-
-.price{
-  white-space:nowrap;
-  color:var(--yellow-soft);
-  font-weight:800;
-  font-size:14px;
-}
-
-.item-bottom{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:16px;
-}
-
-.qty{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.qty-btn{
-  width:42px;
-  height:42px;
-  border:none;
-  border-radius:14px;
-  background:rgba(255,210,0,.14);
-  color:var(--yellow-soft);
-  font-size:22px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.qty-value{
-  min-width:28px;
-  text-align:center;
-  font-size:15px;
-  font-weight:800;
-}
-
-.footer-action{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:50;
-  padding:10px 14px 16px;
-  background:linear-gradient(180deg, rgba(7,7,7,0), rgba(7,7,7,.92) 35%, rgba(7,7,7,.98));
-}
-
-.footer-inner{
-  max-width:var(--maxw);
-  margin:0 auto;
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.total-box{
-  flex:1;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,210,0,.12);
-  border-radius:18px;
-  padding:12px 14px;
-}
-
-.total-box small{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-  margin-bottom:4px;
-}
-
-.total-box strong{
-  font-size:17px;
-  font-weight:900;
-}
-
-.section-box{
-  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
-  border:1px solid rgba(255,210,0,.11);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:var(--shadow);
-  margin-bottom:16px;
-}
-
-.section-title{
-  font-size:15px;
-  font-weight:900;
-  margin-bottom:6px;
-}
-
-.section-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.4;
-  margin-bottom:14px;
-}
-
-.option-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.option-chip{
-  min-height:58px;
-  border:none;
-  border-radius:16px;
-  background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,210,0,.14);
-  color:var(--text);
-  padding:12px;
-  text-align:left;
-  cursor:pointer;
-  transition:.18s ease;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:3px;
-}
-
-.option-chip small{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.option-chip.active{
-  background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
-  border-color:rgba(255,210,0,.36);
-  color:var(--yellow-soft);
-}
-
-.option-chip.disabled{
-  opacity:.25;
-  filter:grayscale(.25);
-  pointer-events:none;
-}
-
-.select-card{
-  border:1px solid rgba(255,210,0,.12);
-  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
-  border-radius:22px;
-  padding:16px;
-  box-shadow:var(--shadow);
-  cursor:pointer;
-  transition:.18s ease;
-}
-
-.select-card.active{
-  border-color:rgba(255,210,0,.36);
-  background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
-}
-
-.limit-info{
-  margin-top:12px;
-  font-size:11px;
-  color:var(--muted);
-}
-
-.alert{
-  margin-top:10px;
-  color:var(--danger);
-  font-size:12px;
-  font-weight:700;
-}
-
-.ok-text{
-  color:var(--ok);
-}
-
-.summary-box{
-  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
-  border:1px solid rgba(255,210,0,.11);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:var(--shadow);
-}
-
-.summary-line{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:9px 0;
-  border-bottom:1px dashed rgba(255,210,0,.12);
-  font-size:13px;
-}
-
-.summary-line:last-child{
-  border-bottom:none;
-}
-
-.summary-total{
-  display:flex;
-  justify-content:space-between;
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px solid rgba(255,210,0,.14);
-  font-size:16px;
-  font-weight:900;
-}
-
-.empty-text{
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.5;
-}
-
-@media (max-width:390px){
-  .step{
-    font-size:9px;
-    min-height:50px;
+const STORAGE_KEY = "oxente_fluxo_v3";
+const TEMP_MONTAGEM_KEY = "oxente_temp_montagem_v3";
+
+const LIMITES = {
+  oxente: { sabor: 1, recheio: 0, mix: 0 },
+  arrochado: { sabor: 1, recheio: 2, mix: 1 },
+  cabra_macho: { sabor: 1, recheio: 3, mix: 1 }
+};
+
+const BASE_PASTEIS = {
+  oxente: { nome: "Pastel Oxente", preco: 13.99 },
+  arrochado: { nome: "Pastel Arrochado", preco: 17.99 },
+  cabra_macho: { nome: "Pastel Cabra Macho", preco: 19.99 }
+};
+
+const OPCOES = {
+  sabor: [
+    { id: "frango", nome: "Frango", extra: 0 },
+    { id: "calabresa", nome: "Calabresa", extra: 0 },
+    { id: "queijo", nome: "Queijo", extra: 0 },
+    { id: "carne", nome: "Carne", extra: 0 },
+    { id: "carne_de_sol", nome: "Carne de Sol", extra: 2 }
+  ],
+  recheio: [
+    { id: "cebola", nome: "Cebola" },
+    { id: "bacon", nome: "Bacon" },
+    { id: "tomate", nome: "Tomate" },
+    { id: "presunto", nome: "Presunto" },
+    { id: "milho", nome: "Milho" },
+    { id: "queijo_coalho", nome: "Queijo coalho" },
+    { id: "mussarela", nome: "Mussarela" },
+    { id: "oregano", nome: "Orégano" },
+    { id: "azeitona", nome: "Azeitona" }
+  ],
+  mix: [
+    { id: "catupiry", nome: "Catupiry" },
+    { id: "cheddar", nome: "Cheddar" },
+    { id: "requeijao", nome: "Requeijão" },
+    { id: "cream_cheese", nome: "Cream Cheese" }
+  ]
+};
+
+function money(v){
+  return "R$ " + Number(v).toFixed(2).replace(".", ",");
+}
+
+function initialState(){
+  return {
+    items: [],
+    flow: ""
+  };
+}
+
+function getState(){
+  return JSON.parse(localStorage.getItem(STORAGE_KEY) || JSON.stringify(initialState()));
+}
+
+function saveState(state){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  updateUI();
+}
+
+function clearAll(){
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(TEMP_MONTAGEM_KEY);
+  updateUI();
+}
+
+function setFlow(flow){
+  const state = getState();
+  state.flow = flow;
+  saveState(state);
+}
+
+function getFlow(){
+  return getState().flow || "";
+}
+
+function nextPageAfterCurrent(current){
+  const flow = getFlow();
+  if(flow === "combos"){
+    if(current === "combos") return "complementos.html";
+    if(current === "complementos") return "bebidas.html";
+    if(current === "bebidas") return "resumo.html";
   }
-
-  .hero-title{
-    font-size:23px;
+  if(flow === "montagem"){
+    if(current === "pasteis") return "montagem-pastel.html";
+    if(current === "montagem-pastel") return "complementos.html";
+    if(current === "complementos") return "bebidas.html";
+    if(current === "bebidas") return "resumo.html";
   }
-
-  .card-title{
-    font-size:20px;
+  if(flow === "nordeste"){
+    if(current === "viva-nordeste") return "complementos.html";
+    if(current === "complementos") return "bebidas.html";
+    if(current === "bebidas") return "resumo.html";
   }
+  return "resumo.html";
+}
 
-  .option-grid{
-    grid-template-columns:1fr;
+function prevPageFor(page){
+  const flow = getFlow();
+  if(flow === "combos"){
+    if(page === "complementos") return "combos.html";
+    if(page === "bebidas") return "complementos.html";
+    if(page === "resumo") return "bebidas.html";
+  }
+  if(flow === "montagem"){
+    if(page === "montagem-pastel") return "pasteis.html";
+    if(page === "complementos") return "montagem-pastel.html";
+    if(page === "bebidas") return "complementos.html";
+    if(page === "resumo") return "bebidas.html";
+  }
+  if(flow === "nordeste"){
+    if(page === "complementos") return "viva-nordeste.html";
+    if(page === "bebidas") return "complementos.html";
+    if(page === "resumo") return "bebidas.html";
+  }
+  return "index.html";
+}
+
+function addOrIncrease(id, nome, preco){
+  const state = getState();
+  const found = state.items.find(i => i.id === id);
+  if(found){
+    found.qtd += 1;
+  } else {
+    state.items.push({ id, nome, preco: Number(preco), qtd: 1 });
+  }
+  saveState(state);
+}
+
+function decreaseItem(id){
+  const state = getState();
+  const found = state.items.find(i => i.id === id);
+  if(!found) return;
+  found.qtd -= 1;
+  if(found.qtd <= 0){
+    state.items = state.items.filter(i => i.id !== id);
+  }
+  saveState(state);
+  renderQuantityPages();
+  renderResumo();
+}
+
+function getItemQty(id){
+  const state = getState();
+  const found = state.items.find(i => i.id === id);
+  return found ? found.qtd : 0;
+}
+
+function totalItems(){
+  return getState().items.reduce((acc, item) => acc + item.qtd, 0);
+}
+
+function totalValue(){
+  return getState().items.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
+}
+
+function updateUI(){
+  document.querySelectorAll("[data-cart-count]").forEach(el => {
+    el.textContent = totalItems();
+  });
+
+  document.querySelectorAll("[data-total]").forEach(el => {
+    el.textContent = money(totalValue());
+  });
+}
+
+function renderQuantityPages(){
+  document.querySelectorAll("[data-item-id]").forEach(card => {
+    const id = card.dataset.itemId;
+    const value = card.querySelector(".qty-value");
+    if(value){
+      value.textContent = getItemQty(id);
+    }
+  });
+}
+
+function getTempMontagem(){
+  return JSON.parse(localStorage.getItem(TEMP_MONTAGEM_KEY) || '{"tipo":"","sabor":[],"recheio":[],"mix":[]}');
+}
+
+function saveTempMontagem(data){
+  localStorage.setItem(TEMP_MONTAGEM_KEY, JSON.stringify(data));
+}
+
+function resetTempMontagem(){
+  localStorage.setItem(TEMP_MONTAGEM_KEY, JSON.stringify({
+    tipo: "",
+    sabor: [],
+    recheio: [],
+    mix: []
+  }));
+}
+
+function selectPastelType(tipo){
+  const data = {
+    tipo,
+    sabor: [],
+    recheio: [],
+    mix: []
+  };
+  saveTempMontagem(data);
+
+  document.querySelectorAll(".select-card").forEach(card => {
+    card.classList.remove("active");
+  });
+
+  const selected = document.querySelector(`[data-pastel-type="${tipo}"]`);
+  if(selected) selected.classList.add("active");
+
+  const btn = document.getElementById("btnContinuarPastel");
+  if(btn){
+    btn.classList.remove("btn-disabled");
+    btn.href = "montagem-pastel.html";
   }
 }
+
+function getOptionName(group, id){
+  const opt = OPCOES[group].find(o => o.id === id);
+  return opt ? opt.nome : id;
+}
+
+function getMontagemExtra(data){
+  let extra = 0;
+  data.sabor.forEach(id => {
+    const opt = OPCOES.sabor.find(o => o.id === id);
+    if(opt && opt.extra) extra += opt.extra;
+  });
+  return extra;
+}
+
+function toggleMontagem(group, id){
+  const data = getTempMontagem();
+  if(!data.tipo) return;
+
+  const limite = LIMITES[data.tipo][group];
+  let arr = data[group] || [];
+
+  if(limite === 0) return;
+
+  if(arr.includes(id)){
+    data[group] = arr.filter(item => item !== id);
+    saveTempMontagem(data);
+    renderMontagemPage();
+    return;
+  }
+
+  if(arr.length >= limite){
+    return;
+  }
+
+  data[group].push(id);
+  saveTempMontagem(data);
+  renderMontagemPage();
+}
+
+function montagemValida(){
+  const data = getTempMontagem();
+  if(!data.tipo) return false;
+  const lim = LIMITES[data.tipo];
+
+  return (
+    data.sabor.length === lim.sabor &&
+    data.recheio.length === lim.recheio &&
+    data.mix.length === lim.mix
+  );
+}
+
+function addMountedPastelAndContinue(){
+  const data = getTempMontagem();
+  const alert = document.getElementById("montagemAlert");
+
+  if(alert) alert.textContent = "";
+
+  if(!montagemValida()){
+    if(alert) alert.textContent = "Complete todas as escolhas obrigatórias.";
+    return;
+  }
+
+  const base = BASE_PASTEIS[data.tipo];
+  const extra = getMontagemExtra(data);
+  const price = base.preco + extra;
+
+  const detalhes = [];
+  if(data.sabor.length) detalhes.push("Sabor: " + data.sabor.map(id => getOptionName("sabor", id)).join(", "));
+  if(data.recheio.length) detalhes.push("Recheio: " + data.recheio.map(id => getOptionName("recheio", id)).join(", "));
+  if(data.mix.length) detalhes.push("Mix: " + data.mix.map(id => getOptionName("mix", id)).join(", "));
+
+  const nome = `${base.nome} (${detalhes.join(" | ")})`;
+
+  addOrIncrease("montado_" + Date.now(), nome, price);
+  window.location.href = "complementos.html";
+}
+
+function renderMontagemPage(){
+  const data = getTempMontagem();
+  const resumo = document.getElementById("montagemResumo");
+  const title = document.getElementById("tipoPastelNome");
+  if(!resumo || !title) return;
+
+  if(!data.tipo){
+    title.textContent = "Selecione um tipo";
+    resumo.innerHTML = `<p class="empty-text">Escolha primeiro o tipo de pastel.</p>`;
+    return;
+  }
+
+  const base = BASE_PASTEIS[data.tipo];
+  const lim = LIMITES[data.tipo];
+  const extra = getMontagemExtra(data);
+  const total = base.preco + extra;
+
+  title.textContent = `${base.nome} • ${money(total)}`;
+
+  resumo.innerHTML = `
+    <div class="section-title">${base.nome}</div>
+    <div class="section-subtitle">
+      Sabor: ${data.sabor.length ? data.sabor.map(id => getOptionName("sabor", id)).join(", ") : "Nenhum"}<br>
+      Recheio: ${lim.recheio === 0 ? "Não se aplica" : (data.recheio.length ? data.recheio.map(id => getOptionName("recheio", id)).join(", ") : "Nenhum")}<br>
+      Mix: ${lim.mix === 0 ? "Não se aplica" : (data.mix.length ? data.mix.map(id => getOptionName("mix", id)).join(", ") : "Nenhum")}<br>
+      Valor atual: <span class="ok-text">${money(total)}</span>
+    </div>
+  `;
+
+  ["sabor","recheio","mix"].forEach(group => {
+    const wrap = document.getElementById(group + "Options");
+    const info = document.getElementById(group + "Info");
+    if(!wrap) return;
+
+    const limite = lim[group];
+    const selected = data[group];
+
+    if(info){
+      info.textContent = limite === 0
+        ? "Não disponível para este tipo."
+        : `Escolha ${limite} opção(ões). Selecionados: ${selected.length}/${limite}`;
+    }
+
+    wrap.querySelectorAll(".option-chip").forEach(btn => {
+      const id = btn.dataset.optionId;
+      btn.classList.remove("active","disabled");
+
+      if(limite === 0){
+        btn.classList.add("disabled");
+        return;
+      }
+
+      if(selected.includes(id)){
+        btn.classList.add("active");
+      } else if(selected.length >= limite){
+        btn.classList.add("disabled");
+      }
+    });
+  });
+}
+
+function renderResumo(){
+  const box = document.getElementById("summaryItems");
+  if(!box) return;
+
+  const items = getState().items;
+  if(!items.length){
+    box.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido ainda está vazio.</div></div>`;
+    return;
+  }
+
+  let html = `<div class="summary-box">`;
+  items.forEach(item => {
+    html += `
+      <div class="summary-line">
+        <span>${item.qtd}x ${item.nome}</span>
+        <strong>${money(item.qtd * item.preco)}</strong>
+      </div>
+    `;
+  });
+
+  html += `
+      <div class="summary-total">
+        <span>Total</span>
+        <span>${money(totalValue())}</span>
+      </div>
+    </div>
+  `;
+
+  box.innerHTML = html;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateUI();
+  renderQuantityPages();
+  renderMontagemPage();
+  renderResumo();
+});
