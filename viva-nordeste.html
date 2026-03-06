@@ -1,72 +1,201 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Viva o Nordeste</title>
-
-<link rel="icon" href="logo.oxente.jpg">
-<link rel="stylesheet" href="style.css">
-<script src="app.js" defer></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Viva o Nordeste</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="viva-nordeste">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Viva o Nordeste</strong>
+          <span>Especiais da casa</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('viva-nordeste')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body onload="progress(30)">
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Viva o Nordeste</h1>
+      <p class="hero-subtitle">Escolha as opções prontas da casa usando os controles de quantidade.</p>
 
-<div class="topbar">
-<div class="topbar-inner">
+      <div class="list">
+        <div class="item-card" data-key="lampiao">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">LAMPIÃO</div>
+              <div class="item-desc">Burger de 150g e molho cheddar.</div>
+            </div>
+            <div class="item-price">R$ 22,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="lampiao">
+              <button class="qty-btn" onclick="decQty('lampiao')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('lampiao','Lampião',22.99)">+</button>
+            </div>
+          </div>
+        </div>
 
-<div class="brand">
-<img src="logo.oxente.jpg">
-<div class="brand-text">
-<strong>Viva o Nordeste</strong>
-<span>Sabores especiais</span>
-</div>
-</div>
+        <div class="item-card" data-key="maria-bonita">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">MARIA BONITA</div>
+              <div class="item-desc">Burger de 150g e queijo mussarela.</div>
+            </div>
+            <div class="item-price">R$ 22,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="maria-bonita">
+              <button class="qty-btn" onclick="decQty('maria-bonita')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('maria-bonita','Maria Bonita',22.99)">+</button>
+            </div>
+          </div>
+        </div>
 
-<div>Pedido <span class="cart-count">0</span></div>
+        <div class="item-card" data-key="chico-anizio">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">CHICO ANÍZIO</div>
+              <div class="item-desc">Pastel de 26cm com purê de batata, carne de sol e queijo mussarela.</div>
+            </div>
+            <div class="item-price">R$ 20,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="chico-anizio">
+              <button class="qty-btn" onclick="decQty('chico-anizio')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('chico-anizio','Chico Anízio',20.99)">+</button>
+            </div>
+          </div>
+        </div>
 
-</div>
+        <div class="item-card" data-key="luiz-gonzaga">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">LUIZ GONZAGA</div>
+              <div class="item-desc">Filé de camarão ao molho cremoso com cream cheese.</div>
+            </div>
+            <div class="item-price">R$ 25,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="luiz-gonzaga">
+              <button class="qty-btn" onclick="decQty('luiz-gonzaga')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('luiz-gonzaga','Luiz Gonzaga',25.99)">+</button>
+            </div>
+          </div>
+        </div>
 
-<div class="progress-bar">
-<div class="progress-fill"></div>
-</div>
+        <div class="item-card" data-key="patativa-assare">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">PATATIVA DO ASSARÉ</div>
+              <div class="item-desc">Filé mignon em tiras ao molho especial cremoso de 4 queijos.</div>
+            </div>
+            <div class="item-price">R$ 25,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="patativa-assare">
+              <button class="qty-btn" onclick="decQty('patativa-assare')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('patativa-assare','Patativa do Assaré',25.99)">+</button>
+            </div>
+          </div>
+        </div>
 
-</div>
+        <div class="item-card" data-key="tom-cavalcante">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">TOM CAVALCANTE</div>
+              <div class="item-desc">Purê de mandioquinha com carne de sol desfiada e banana caramelizada.</div>
+            </div>
+            <div class="item-price">R$ 22,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="tom-cavalcante">
+              <button class="qty-btn" onclick="decQty('tom-cavalcante')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('tom-cavalcante','Tom Cavalcante',22.99)">+</button>
+            </div>
+          </div>
+        </div>
 
-<div class="container">
+        <div class="item-card" data-key="pastel-nordeste">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">PASTEL NORDESTE</div>
+              <div class="item-desc">Costelinha suína ao molho barbecue com queijo mussarela e requeijão.</div>
+            </div>
+            <div class="item-price">R$ 25,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="pastel-nordeste">
+              <button class="qty-btn" onclick="decQty('pastel-nordeste')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('pastel-nordeste','Pastel Nordeste',25.99)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div class="list-item">
-<div class="list-title">Lampião</div>
-<div class="price">R$ 22,99</div>
-<div class="qty">
-<button onclick="removeItem('Lampião')">-</button>
-<button onclick="addItem('Lampião',22.99)">+</button>
-</div>
-</div>
+      <div class="section-title">Para se deliciar</div>
 
-<div class="list-item">
-<div class="list-title">Maria Bonita</div>
-<div class="price">R$ 22,99</div>
-<div class="qty">
-<button onclick="removeItem('Maria Bonita')">-</button>
-<button onclick="addItem('Maria Bonita',22.99)">+</button>
-</div>
-</div>
+      <div class="list">
+        <div class="item-card" data-key="mini-pastel-doce">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">MINI PASTEL DOCE</div>
+              <div class="item-desc">Sabores: chocolate, doce de leite, romeu e julieta, doce de leite com paçoquita.</div>
+            </div>
+            <div class="item-price">R$ 9,99</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="mini-pastel-doce">
+              <button class="qty-btn" onclick="decQty('mini-pastel-doce')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('mini-pastel-doce','Mini Pastel Doce',9.99)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total atual</small>
+          <strong class="cart-total">R$ 0,00</strong>
+        </div>
+        <a href="acompanhamentos.html" class="primary-btn">Continuar</a>
+      </div>
+    </div>
+  </main>
 
-<div class="footer">
-<div class="footer-inner">
-<div class="total">
-Total <span class="cart-total">R$ 0</span>
-</div>
-
-<a href="acompanhamentos.html" class="btn">Continuar</a>
-
-</div>
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
