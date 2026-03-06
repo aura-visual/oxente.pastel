@@ -1,5 +1,7 @@
-const STORAGE_KEY = "oxente_fluxo_v3";
-const TEMP_MONTAGEM_KEY = "oxente_temp_montagem_v3";
+const STORAGE_KEY = "oxente_fluxo_v4";
+const TEMP_MONTAGEM_KEY = "oxente_temp_montagem_v4";
+const CLIENT_KEY = "oxente_cliente_v1";
+const PAYMENT_KEY = "oxente_pagamento_v1";
 
 const LIMITES = {
   oxente: { sabor: 1, recheio: 0, mix: 0 },
@@ -60,12 +62,6 @@ function saveState(state){
   updateUI();
 }
 
-function clearAll(){
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(TEMP_MONTAGEM_KEY);
-  updateUI();
-}
-
 function setFlow(flow){
   const state = getState();
   state.flow = flow;
@@ -76,56 +72,88 @@ function getFlow(){
   return getState().flow || "";
 }
 
+function goToFlow(flow, page){
+  setFlow(flow);
+  window.location.href = page;
+}
+
+function clearAll(){
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(TEMP_MONTAGEM_KEY);
+  localStorage.removeItem(CLIENT_KEY);
+  localStorage.removeItem(PAYMENT_KEY);
+  updateUI();
+}
+
 function nextPageAfterCurrent(current){
   const flow = getFlow();
+
   if(flow === "combos"){
     if(current === "combos") return "complementos.html";
     if(current === "complementos") return "bebidas.html";
     if(current === "bebidas") return "resumo.html";
+    if(current === "resumo") return "entrega.html";
+    if(current === "entrega") return "pagamento.html";
   }
+
   if(flow === "montagem"){
     if(current === "pasteis") return "montagem-pastel.html";
     if(current === "montagem-pastel") return "complementos.html";
     if(current === "complementos") return "bebidas.html";
     if(current === "bebidas") return "resumo.html";
+    if(current === "resumo") return "entrega.html";
+    if(current === "entrega") return "pagamento.html";
   }
+
   if(flow === "nordeste"){
     if(current === "viva-nordeste") return "complementos.html";
     if(current === "complementos") return "bebidas.html";
     if(current === "bebidas") return "resumo.html";
+    if(current === "resumo") return "entrega.html";
+    if(current === "entrega") return "pagamento.html";
   }
-  return "resumo.html";
+
+  return "pagamento.html";
 }
 
 function prevPageFor(page){
   const flow = getFlow();
+
+  if(page === "pagamento") return "entrega.html";
+  if(page === "entrega") return "resumo.html";
+
   if(flow === "combos"){
     if(page === "complementos") return "combos.html";
     if(page === "bebidas") return "complementos.html";
     if(page === "resumo") return "bebidas.html";
   }
+
   if(flow === "montagem"){
     if(page === "montagem-pastel") return "pasteis.html";
     if(page === "complementos") return "montagem-pastel.html";
     if(page === "bebidas") return "complementos.html";
     if(page === "resumo") return "bebidas.html";
   }
+
   if(flow === "nordeste"){
     if(page === "complementos") return "viva-nordeste.html";
     if(page === "bebidas") return "complementos.html";
     if(page === "resumo") return "bebidas.html";
   }
+
   return "index.html";
 }
 
 function addOrIncrease(id, nome, preco){
   const state = getState();
   const found = state.items.find(i => i.id === id);
+
   if(found){
     found.qtd += 1;
   } else {
     state.items.push({ id, nome, preco: Number(preco), qtd: 1 });
   }
+
   saveState(state);
 }
 
@@ -133,10 +161,13 @@ function decreaseItem(id){
   const state = getState();
   const found = state.items.find(i => i.id === id);
   if(!found) return;
+
   found.qtd -= 1;
+
   if(found.qtd <= 0){
     state.items = state.items.filter(i => i.id !== id);
   }
+
   saveState(state);
   renderQuantityPages();
   renderResumo();
@@ -184,15 +215,6 @@ function saveTempMontagem(data){
   localStorage.setItem(TEMP_MONTAGEM_KEY, JSON.stringify(data));
 }
 
-function resetTempMontagem(){
-  localStorage.setItem(TEMP_MONTAGEM_KEY, JSON.stringify({
-    tipo: "",
-    sabor: [],
-    recheio: [],
-    mix: []
-  }));
-}
-
 function selectPastelType(tipo){
   const data = {
     tipo,
@@ -200,6 +222,7 @@ function selectPastelType(tipo){
     recheio: [],
     mix: []
   };
+
   saveTempMontagem(data);
 
   document.querySelectorAll(".select-card").forEach(card => {
@@ -235,7 +258,7 @@ function toggleMontagem(group, id){
   if(!data.tipo) return;
 
   const limite = LIMITES[data.tipo][group];
-  let arr = data[group] || [];
+  const arr = data[group] || [];
 
   if(limite === 0) return;
 
@@ -258,6 +281,7 @@ function toggleMontagem(group, id){
 function montagemValida(){
   const data = getTempMontagem();
   if(!data.tipo) return false;
+
   const lim = LIMITES[data.tipo];
 
   return (
@@ -300,7 +324,7 @@ function renderMontagemPage(){
   if(!resumo || !title) return;
 
   if(!data.tipo){
-    title.textContent = "Selecione um tipo";
+    title.textContent = "Selecione o tipo";
     resumo.innerHTML = `<p class="empty-text">Escolha primeiro o tipo de pastel.</p>`;
     return;
   }
@@ -359,12 +383,14 @@ function renderResumo(){
   if(!box) return;
 
   const items = getState().items;
+
   if(!items.length){
     box.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido ainda está vazio.</div></div>`;
     return;
   }
 
   let html = `<div class="summary-box">`;
+
   items.forEach(item => {
     html += `
       <div class="summary-line">
@@ -385,9 +411,144 @@ function renderResumo(){
   box.innerHTML = html;
 }
 
+function saveCustomerData(){
+  const nome = document.getElementById("nome")?.value.trim() || "";
+  const endereco = document.getElementById("endereco")?.value.trim() || "";
+  const referencia = document.getElementById("referencia")?.value.trim() || "";
+
+  if(!nome || !endereco){
+    const alert = document.getElementById("entregaAlert");
+    if(alert) alert.textContent = "Preencha nome e endereço.";
+    return false;
+  }
+
+  localStorage.setItem(CLIENT_KEY, JSON.stringify({
+    nome,
+    endereco,
+    referencia
+  }));
+
+  return true;
+}
+
+function loadCustomerData(){
+  const data = JSON.parse(localStorage.getItem(CLIENT_KEY) || "{}");
+
+  const nome = document.getElementById("nome");
+  const endereco = document.getElementById("endereco");
+  const referencia = document.getElementById("referencia");
+
+  if(nome) nome.value = data.nome || "";
+  if(endereco) endereco.value = data.endereco || "";
+  if(referencia) referencia.value = data.referencia || "";
+}
+
+function continueToPayment(){
+  const ok = saveCustomerData();
+  if(ok){
+    window.location.href = "pagamento.html";
+  }
+}
+
+function setPaymentMethod(method){
+  localStorage.setItem(PAYMENT_KEY, JSON.stringify({ method }));
+
+  document.querySelectorAll(".pay-option").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  const selected = document.querySelector(`[data-pay="${method}"]`);
+  if(selected) selected.classList.add("active");
+}
+
+function loadPaymentMethod(){
+  const data = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "{}");
+  if(!data.method) return;
+
+  const selected = document.querySelector(`[data-pay="${data.method}"]`);
+  if(selected) selected.classList.add("active");
+}
+
+function renderPaymentSummary(){
+  const box = document.getElementById("paymentSummary");
+  if(!box) return;
+
+  const items = getState().items;
+
+  if(!items.length){
+    box.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido está vazio.</div></div>`;
+    return;
+  }
+
+  let html = `<div class="summary-box">`;
+
+  items.forEach(item => {
+    html += `
+      <div class="summary-line">
+        <span>${item.qtd}x ${item.nome}</span>
+        <strong>${money(item.qtd * item.preco)}</strong>
+      </div>
+    `;
+  });
+
+  html += `
+      <div class="summary-total">
+        <span>Total</span>
+        <span>${money(totalValue())}</span>
+      </div>
+    </div>
+  `;
+
+  box.innerHTML = html;
+}
+
+function finishOrderWhatsApp(){
+  const items = getState().items;
+  const customer = JSON.parse(localStorage.getItem(CLIENT_KEY) || "{}");
+  const pay = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "{}");
+  const alert = document.getElementById("paymentAlert");
+
+  if(alert) alert.textContent = "";
+
+  if(!customer.nome || !customer.endereco){
+    if(alert) alert.textContent = "Dados de entrega não encontrados.";
+    return;
+  }
+
+  if(!pay.method){
+    if(alert) alert.textContent = "Selecione a forma de pagamento.";
+    return;
+  }
+
+  let msg = "OXENTE PASTEL\n";
+  msg += "------------------------------\n";
+  msg += "RELATÓRIO DO PEDIDO\n";
+
+  items.forEach(item => {
+    msg += `${item.qtd}x ${item.nome} - ${money(item.qtd * item.preco)}\n`;
+  });
+
+  msg += "------------------------------\n";
+  msg += `TOTAL: ${money(totalValue())}\n`;
+  msg += "------------------------------\n";
+  msg += `Nome: ${customer.nome}\n`;
+  msg += `Endereço: ${customer.endereco}\n`;
+  msg += `Ref: ${customer.referencia || "-"}\n`;
+  msg += `Pagamento: ${pay.method}\n`;
+  msg += "------------------------------\n";
+  msg += "Agradecemos pela preferência!";
+
+  const phone = "5588998650795";
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  window.location.href = url;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   updateUI();
   renderQuantityPages();
   renderMontagemPage();
   renderResumo();
+  loadCustomerData();
+  loadPaymentMethod();
+  renderPaymentSummary();
 });
