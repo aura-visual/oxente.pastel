@@ -1,63 +1,88 @@
 const CART="oxente_cart";
 
-function getCart(){
+function cart(){
 return JSON.parse(localStorage.getItem(CART)||"[]")
 }
 
-function saveCart(c){
+function save(c){
 localStorage.setItem(CART,JSON.stringify(c))
-updateCart()
+renderCart()
 }
 
-function addItem(name,price){
-let c=getCart()
+function add(name,price){
+
+let c=cart()
+
 let f=c.find(i=>i.name==name)
+
 if(f)f.q++
 else c.push({name,price,q:1})
-saveCart(c)
+
+save(c)
+
 }
 
-function removeItem(name){
-let c=getCart()
+function remove(name){
+
+let c=cart()
+
 let f=c.find(i=>i.name==name)
+
 if(!f)return
+
 f.q--
-if(f.q<=0)c=c.filter(i=>i.name!=name)
-saveCart(c)
+
+if(f.q<=0)
+c=c.filter(i=>i.name!=name)
+
+save(c)
+
 }
 
-function updateCart(){
-let c=getCart()
+function renderCart(){
+
+let c=cart()
+
+let el=document.getElementById("cartItems")
+
+if(!el)return
+
+let html=""
+
 let total=0
-let count=0
+
 c.forEach(i=>{
+
 total+=i.price*i.q
-count+=i.q
+
+html+=`
+
+<div class="item">
+<div>${i.name}</div>
+
+<div class="qty">
+<button onclick="remove('${i.name}')">-</button>
+${i.q}
+<button onclick="add('${i.name}',${i.price})">+</button>
+</div>
+
+</div>
+
+`
+
 })
-document.querySelectorAll(".cart-count").forEach(e=>e.innerText=count)
-document.querySelectorAll(".cart-total").forEach(e=>e.innerText="R$ "+total.toFixed(2))
+
+html+=`<b>Total R$ ${total.toFixed(2)}</b>`
+
+el.innerHTML=html
+
 }
 
-function progress(p){
-document.querySelectorAll(".progress-fill").forEach(e=>{
-e.style.width=p+"%"
-})
+function openCart(){
+document.getElementById("cart").style.display="block"
+renderCart()
 }
 
-function confirmMontagem(msg,cb){
-let m=document.getElementById("modal")
-document.getElementById("modalText").innerText=msg
-m.style.display="flex"
-window.confirmCb=cb
+function closeCart(){
+document.getElementById("cart").style.display="none"
 }
-
-function modalContinue(){
-document.getElementById("modal").style.display="none"
-if(window.confirmCb)window.confirmCb()
-}
-
-function modalBack(){
-document.getElementById("modal").style.display="none"
-}
-
-document.addEventListener("DOMContentLoaded",updateCart)
