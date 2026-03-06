@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Montagem do Pastel | OXENTE PASTEL</title>
+  <title>Montagem | OXENTE PASTEL</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
@@ -11,18 +11,14 @@
   <div class="topbar">
     <div class="topbar-inner">
       <a href="pasteis.html" class="icon-btn">← Voltar</a>
-
       <div class="brand">
         <img src="logo.oxente.jpg" alt="Logo">
         <div class="brand-text">
           <strong>Montagem</strong>
-          <span id="tipoPastelNome">Selecione seu pastel</span>
+          <span id="tipoPastelNome">Selecione o tipo</span>
         </div>
       </div>
-
-      <a href="#" class="icon-btn">
-        Pedido <span class="badge" data-cart-count>0</span>
-      </a>
+      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
     </div>
   </div>
 
@@ -32,24 +28,24 @@
         <div class="step">Início</div>
         <div class="step">Pedido</div>
         <div class="step active">Montagem</div>
-        <div class="step">Especiais</div>
-        <div class="step">Próx.</div>
+        <div class="step">Extras</div>
+        <div class="step">Resumo</div>
       </div>
 
       <h1 class="hero-title">Monte seu pastel</h1>
-      <p class="hero-subtitle">As opções restantes ficam ofuscadas quando atingir o limite de seleção.</p>
+      <p class="hero-subtitle">Ao atingir o limite, as demais opções ficam ofuscadas.</p>
 
-      <div class="montagem-summary" id="montagemResumo"></div>
+      <div class="section-box" id="montagemResumo"></div>
 
       <div class="section-box">
         <div class="section-title">SABOR</div>
-        <div class="section-subtitle">Carne de Sol possui acréscimo de R$ 2,00.</div>
+        <div class="section-subtitle">Carne de Sol tem acréscimo de R$ 2,00.</div>
         <div class="option-grid" id="saborOptions">
-          <button class="option-chip" data-option-id="frango" onclick="toggleOpcao('sabor','frango')">Frango</button>
-          <button class="option-chip" data-option-id="calabresa" onclick="toggleOpcao('sabor','calabresa')">Calabresa</button>
-          <button class="option-chip" data-option-id="queijo" onclick="toggleOpcao('sabor','queijo')">Queijo</button>
-          <button class="option-chip" data-option-id="carne" onclick="toggleOpcao('sabor','carne')">Carne</button>
-          <button class="option-chip" data-option-id="carne_de_sol" onclick="toggleOpcao('sabor','carne_de_sol')">
+          <button class="option-chip" data-option-id="frango" onclick="toggleMontagem('sabor','frango')">Frango</button>
+          <button class="option-chip" data-option-id="calabresa" onclick="toggleMontagem('sabor','calabresa')">Calabresa</button>
+          <button class="option-chip" data-option-id="queijo" onclick="toggleMontagem('sabor','queijo')">Queijo</button>
+          <button class="option-chip" data-option-id="carne" onclick="toggleMontagem('sabor','carne')">Carne</button>
+          <button class="option-chip" data-option-id="carne_de_sol" onclick="toggleMontagem('sabor','carne_de_sol')">
             Carne de Sol
             <small>+ R$ 2,00</small>
           </button>
@@ -59,29 +55,29 @@
 
       <div class="section-box">
         <div class="section-title">RECHEIO</div>
-        <div class="section-subtitle">Selecione conforme o limite do tipo escolhido.</div>
+        <div class="section-subtitle">Selecione conforme o tipo escolhido.</div>
         <div class="option-grid" id="recheioOptions">
-          <button class="option-chip" data-option-id="cebola" onclick="toggleOpcao('recheio','cebola')">Cebola</button>
-          <button class="option-chip" data-option-id="bacon" onclick="toggleOpcao('recheio','bacon')">Bacon</button>
-          <button class="option-chip" data-option-id="tomate" onclick="toggleOpcao('recheio','tomate')">Tomate</button>
-          <button class="option-chip" data-option-id="presunto" onclick="toggleOpcao('recheio','presunto')">Presunto</button>
-          <button class="option-chip" data-option-id="milho" onclick="toggleOpcao('recheio','milho')">Milho</button>
-          <button class="option-chip" data-option-id="queijo_coalho" onclick="toggleOpcao('recheio','queijo_coalho')">Queijo coalho</button>
-          <button class="option-chip" data-option-id="mussarela" onclick="toggleOpcao('recheio','mussarela')">Mussarela</button>
-          <button class="option-chip" data-option-id="oregano" onclick="toggleOpcao('recheio','oregano')">Orégano</button>
-          <button class="option-chip" data-option-id="azeitona" onclick="toggleOpcao('recheio','azeitona')">Azeitona</button>
+          <button class="option-chip" data-option-id="cebola" onclick="toggleMontagem('recheio','cebola')">Cebola</button>
+          <button class="option-chip" data-option-id="bacon" onclick="toggleMontagem('recheio','bacon')">Bacon</button>
+          <button class="option-chip" data-option-id="tomate" onclick="toggleMontagem('recheio','tomate')">Tomate</button>
+          <button class="option-chip" data-option-id="presunto" onclick="toggleMontagem('recheio','presunto')">Presunto</button>
+          <button class="option-chip" data-option-id="milho" onclick="toggleMontagem('recheio','milho')">Milho</button>
+          <button class="option-chip" data-option-id="queijo_coalho" onclick="toggleMontagem('recheio','queijo_coalho')">Queijo coalho</button>
+          <button class="option-chip" data-option-id="mussarela" onclick="toggleMontagem('recheio','mussarela')">Mussarela</button>
+          <button class="option-chip" data-option-id="oregano" onclick="toggleMontagem('recheio','oregano')">Orégano</button>
+          <button class="option-chip" data-option-id="azeitona" onclick="toggleMontagem('recheio','azeitona')">Azeitona</button>
         </div>
         <div class="limit-info" id="recheioInfo"></div>
       </div>
 
       <div class="section-box">
         <div class="section-title">MIX</div>
-        <div class="section-subtitle">Finalize a montagem com 1 mix quando aplicável.</div>
+        <div class="section-subtitle">Selecione quando aplicável.</div>
         <div class="option-grid" id="mixOptions">
-          <button class="option-chip" data-option-id="catupiry" onclick="toggleOpcao('mix','catupiry')">Catupiry</button>
-          <button class="option-chip" data-option-id="cheddar" onclick="toggleOpcao('mix','cheddar')">Cheddar</button>
-          <button class="option-chip" data-option-id="requeijao" onclick="toggleOpcao('mix','requeijao')">Requeijão</button>
-          <button class="option-chip" data-option-id="cream_cheese" onclick="toggleOpcao('mix','cream_cheese')">Cream Cheese</button>
+          <button class="option-chip" data-option-id="catupiry" onclick="toggleMontagem('mix','catupiry')">Catupiry</button>
+          <button class="option-chip" data-option-id="cheddar" onclick="toggleMontagem('mix','cheddar')">Cheddar</button>
+          <button class="option-chip" data-option-id="requeijao" onclick="toggleMontagem('mix','requeijao')">Requeijão</button>
+          <button class="option-chip" data-option-id="cream_cheese" onclick="toggleMontagem('mix','cream_cheese')">Cream Cheese</button>
         </div>
         <div class="limit-info" id="mixInfo"></div>
       </div>
@@ -95,7 +91,7 @@
           <small>Pedido atual</small>
           <strong data-total>R$ 0,00</strong>
         </div>
-        <button class="btn" onclick="adicionarPastelMontado()">Adicionar e continuar</button>
+        <button class="btn" onclick="addMountedPastelAndContinue()">Adicionar e continuar</button>
       </div>
     </div>
   </main>
