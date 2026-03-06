@@ -1,83 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OXENTE PASTEL</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>OXENTE PASTEL</title>
+
+<link rel="icon" href="logo.oxente.jpg">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+
 </head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>OXENTE PASTEL</strong>
-          <span>Cardápio digital</span>
-        </div>
-      </div>
 
-      <div class="icon-btn">
-        Pedido <span class="badge" data-cart-count>0</span>
-      </div>
-    </div>
-  </div>
+<body onload="progress(10)">
 
-  <main class="app">
-    <section class="content">
-      <div class="progress">
-        <div class="step active">Início</div>
-        <div class="step">Pedido</div>
-        <div class="step">Montagem</div>
-        <div class="step">Extras</div>
-        <div class="step">Resumo</div>
-      </div>
+<div class="topbar">
+<div class="topbar-inner">
 
-      <h1 class="hero-title">Escolha como deseja pedir</h1>
-      <p class="hero-subtitle"></p>
+<div class="brand">
+<img src="logo.oxente.jpg">
+<div class="brand-text">
+<strong>OXENTE PASTEL</strong>
+<span>O sabor arretado do Nordeste</span>
+</div>
+</div>
 
-      <div class="grid">
-        <div class="card">
-          <a href="combos.html" onclick="setFlow('combos')">
-            <img src="combo.png" alt="Pra Encher o Buxo" class="card-image">
-          </a>
-          <div class="card-body">
-            <div class="card-title">Pra Encher o Buxo</div>
-            <div class="card-desc">Combos rápidos e prontos.</div>
-            <div class="card-action">
-              <a href="combos.html" class="btn" onclick="setFlow('combos')">Quero combo</a>
-            </div>
-          </div>
-        </div>
+<div>Pedido <span class="cart-count">0</span></div>
 
-        <div class="card">
-          <a href="pasteis.html" onclick="setFlow('montagem')">
-            <img src="pastel.png" alt="Monte seu pastel" class="card-image">
-          </a>
-          <div class="card-body">
-            <div class="card-title">Monte seu pastel</div>
-            <div class="card-desc">Escolha o tipo e personalize.</div>
-            <div class="card-action">
-              <a href="pasteis.html" class="btn" onclick="setFlow('montagem')">Montar agora</a>
-            </div>
-          </div>
-        </div>
+</div>
 
-        <div class="card">
-          <a href="viva-nordeste.html" onclick="setFlow('nordeste')">
-            <img src="nordeste.png" alt="Viva o Nordeste" class="card-image">
-          </a>
-          <div class="card-body">
-            <div class="card-title">Viva o Nordeste</div>
-            <div class="card-desc">Opções prontas da casa.</div>
-            <div class="card-action">
-              <a href="viva-nordeste.html" class="btn" onclick="setFlow('nordeste')">Ver especiais</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="title">Escolha como pedir</div>
+<div class="subtitle">Fluxo simples e rápido.</div>
+
+<div class="card">
+<img src="combo.jpg">
+<div class="card-body">
+<div class="card-title">Pra encher o buxo</div>
+<div class="card-desc">Combos completos.</div>
+<a href="combos.html" class="btn">Ver combos</a>
+</div>
+</div>
+
+<div class="card">
+<img src="pastel.jpg">
+<div class="card-body">
+<div class="card-title">Monte seu pastel</div>
+<div class="card-desc">Escolha tudo do seu jeito.</div>
+<a href="pasteis.html" class="btn">Montar pastel</a>
+</div>
+</div>
+
+<div class="card">
+<img src="nordeste.jpg">
+<div class="card-body">
+<div class="card-title">Viva o Nordeste</div>
+<div class="card-desc">Opções prontas da casa.</div>
+<a href="viva-nordeste.html" class="btn">Ver especiais</a>
+</div>
+</div>
+
+</div>
+
 </body>
 </html>
