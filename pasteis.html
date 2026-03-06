@@ -1,79 +1,61 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pastéis | OXENTE PASTEL</title>
-  <link rel="icon" type="image/jpeg" href="logo.oxente.jpg">
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Monte seu pastel</title>
+
+<link rel="icon" href="logo.oxente.jpg">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+
 </head>
-<body data-page="pasteis">
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="index.html" class="icon-btn">← Voltar</a>
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>Monte seu pastel</strong>
-          <span>Escolha o tipo</span>
-        </div>
-      </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-    <div class="progress-shell">
-      <div class="progress-fill" data-progress-fill></div>
-    </div>
-  </div>
 
-  <main class="app">
-    <section class="content">
-      <h1 class="hero-title">Monte seu pastel</h1>
-      <p class="hero-subtitle">Escolha o tipo e siga para a montagem personalizada.</p>
-      <p class="monte-observacao">Se seu pedido tiver mais de uma unidade, por gentileza monte um pastel por vez.</p>
+<body onload="progress(30)">
 
-      <div class="list">
-        <div class="select-card" data-pastel-type="oxente" onclick="selectPastelType('oxente')">
-          <div class="item-top">
-            <div>
-              <div class="item-title">OXENTE</div>
-              <div class="item-desc">Escolha até 1 sabor.</div>
-            </div>
-            <div class="price">R$ 13,99</div>
-          </div>
-        </div>
+<div class="topbar">
+<div class="topbar-inner">
 
-        <div class="select-card" data-pastel-type="arrochado" onclick="selectPastelType('arrochado')">
-          <div class="item-top">
-            <div>
-              <div class="item-title">ARROCHADO</div>
-              <div class="item-desc">Escolha até 1 sabor, 2 recheios e 1 mix.</div>
-            </div>
-            <div class="price">R$ 17,99</div>
-          </div>
-        </div>
+<div class="brand">
+<img src="logo.oxente.jpg">
+<div class="brand-text">
+<strong>Monte seu pastel</strong>
+<span>Escolha o tipo</span>
+</div>
+</div>
 
-        <div class="select-card" data-pastel-type="cabra_macho" onclick="selectPastelType('cabra_macho')">
-          <div class="item-top">
-            <div>
-              <div class="item-title">CABRA MACHO</div>
-              <div class="item-desc">Escolha até 1 sabor, 3 recheios e 1 mix.</div>
-            </div>
-            <div class="price">R$ 19,99</div>
-          </div>
-        </div>
-      </div>
-    </section>
+<div>Pedido <span class="cart-count">0</span></div>
 
-    <div class="footer-action">
-      <div class="footer-inner">
-        <div class="total-box">
-          <small>Próxima etapa</small>
-          <strong>Montagem</strong>
-        </div>
-        <a href="#" id="btnContinuarPastel" class="btn btn-disabled">Continuar</a>
-      </div>
-    </div>
-  </main>
+</div>
+
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="title">Monte seu pastel</div>
+
+<div class="notice">
+Se seu pedido tiver mais de uma unidade, por gentileza monte um pastel por vez.
+</div>
+
+<div class="list-item">
+<a href="montagem-pastel.html" class="btn">OXENTE</a>
+</div>
+
+<div class="list-item">
+<a href="montagem-pastel.html" class="btn">ARROCHADO</a>
+</div>
+
+<div class="list-item">
+<a href="montagem-pastel.html" class="btn">CABRA MACHO</a>
+</div>
+
+</div>
+
 </body>
 </html>
