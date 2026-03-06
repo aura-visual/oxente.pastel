@@ -1,84 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pagamento | OXENTE PASTEL</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
-  <style>
-    .pay-grid{
-      display:grid;
-      gap:12px;
-      margin-top:16px;
-    }
-    .pay-option{
-      width:100%;
-      min-height:56px;
-      border-radius:18px;
-      border:1px solid rgba(255,210,0,.14);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      font-size:14px;
-      font-weight:800;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-    .pay-option.active{
-      background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
-      border-color:rgba(255,210,0,.34);
-      color:var(--yellow-soft);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Pagamento</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="entrega.html" class="icon-btn">← Voltar</a>
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>Pagamento</strong>
-          <span>Finalização</span>
-        </div>
-      </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-  </div>
 
-  <main class="app">
-    <section class="content">
-      <div class="progress">
-        <div class="step">Início</div>
-        <div class="step">Pedido</div>
-        <div class="step">Montagem</div>
-        <div class="step">Extras</div>
-        <div class="step active">Pagamento</div>
-      </div>
+<body onload="progress(100)">
 
-      <h1 class="hero-title">Pagamento</h1>
-      <p class="hero-subtitle">Confira o pedido e selecione a forma de pagamento.</p>
+<div class="container">
 
-      <div id="paymentSummary"></div>
+<div class="title">Forma de pagamento</div>
 
-      <div class="pay-grid">
-        <button class="pay-option" data-pay="Pix" onclick="setPaymentMethod('Pix')">Pix</button>
-        <button class="pay-option" data-pay="Cartão" onclick="setPaymentMethod('Cartão')">Cartão (débito/crédito)</button>
-        <button class="pay-option" data-pay="Dinheiro" onclick="setPaymentMethod('Dinheiro')">Dinheiro</button>
-      </div>
+<div class="list-item">PIX</div>
+<div class="list-item">Cartão</div>
+<div class="list-item">Dinheiro</div>
 
-      <div class="alert" id="paymentAlert"></div>
-    </section>
+<a class="btn" href="https://wa.me/5588998650795">
+Finalizar pedido
+</a>
 
-    <div class="footer-action">
-      <div class="footer-inner">
-        <div class="total-box">
-          <small>Total final</small>
-          <strong data-total>R$ 0,00</strong>
-        </div>
-        <button class="btn" onclick="finishOrderWhatsApp()">Finalizar</button>
-      </div>
-    </div>
-  </main>
+</div>
+
 </body>
 </html>
