@@ -11,16 +11,16 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo Oxente Pastel">
+        <img src="logo.oxente.jpg" alt="Logo">
         <div class="brand-text">
           <strong>OXENTE PASTEL</strong>
-          <span>Cardápio digital premium</span>
+          <span>Cardápio digital</span>
         </div>
       </div>
 
-      <a href="#" class="icon-btn">
+      <div class="icon-btn">
         Pedido <span class="badge" data-cart-count>0</span>
-      </a>
+      </div>
     </div>
   </div>
 
@@ -30,57 +30,49 @@
         <div class="step active">Início</div>
         <div class="step">Pedido</div>
         <div class="step">Montagem</div>
-        <div class="step">Especiais</div>
-        <div class="step">Próx.</div>
+        <div class="step">Extras</div>
+        <div class="step">Resumo</div>
       </div>
 
       <h1 class="hero-title">Escolha como deseja pedir</h1>
-      <p class="hero-subtitle">
-        Visual mais premium, rápido e intuitivo para o cliente montar o pedido pelo celular.
-      </p>
+      <p class="hero-subtitle">Fluxo mais limpo, premium e funcional.</p>
 
       <div class="grid">
         <div class="card">
-          <a href="combos.html" class="card-image-link">
+          <a href="combos.html" onclick="setFlow('combos')">
             <img src="combo.jpg" alt="Pra Encher o Buxo" class="card-image">
           </a>
           <div class="card-body">
             <div class="card-title">Pra Encher o Buxo</div>
-            <div class="card-desc">
-              Combos prontos para quem quer pedir rápido.
-            </div>
+            <div class="card-desc">Combos rápidos e prontos.</div>
             <div class="card-action">
-              <a href="combos.html" class="btn">Quero combo</a>
+              <a href="combos.html" class="btn" onclick="setFlow('combos')">Quero combo</a>
             </div>
           </div>
         </div>
 
         <div class="card">
-          <a href="pasteis.html" class="card-image-link">
+          <a href="pasteis.html" onclick="setFlow('montagem')">
             <img src="pastel.jpg" alt="Monte seu pastel" class="card-image">
           </a>
           <div class="card-body">
             <div class="card-title">Monte seu pastel</div>
-            <div class="card-desc">
-              Escolha Oxente, Arrochado ou Cabra Macho e personalize.
-            </div>
+            <div class="card-desc">Escolha o tipo e personalize.</div>
             <div class="card-action">
-              <a href="pasteis.html" class="btn">Montar agora</a>
+              <a href="pasteis.html" class="btn" onclick="setFlow('montagem')">Montar agora</a>
             </div>
           </div>
         </div>
 
         <div class="card">
-          <a href="viva-nordeste.html" class="card-image-link">
+          <a href="viva-nordeste.html" onclick="setFlow('nordeste')">
             <img src="nordeste.jpg" alt="Viva o Nordeste" class="card-image">
           </a>
           <div class="card-body">
             <div class="card-title">Viva o Nordeste</div>
-            <div class="card-desc">
-              Opções já prontas com os sabores especiais da casa.
-            </div>
+            <div class="card-desc">Opções prontas da casa.</div>
             <div class="card-action">
-              <a href="viva-nordeste.html" class="btn">Ver especiais</a>
+              <a href="viva-nordeste.html" class="btn" onclick="setFlow('nordeste')">Ver especiais</a>
             </div>
           </div>
         </div>
