@@ -1,61 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Monte seu pastel</title>
-
-<link rel="icon" href="logo.oxente.jpg">
-<link rel="stylesheet" href="style.css">
-<script src="app.js" defer></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Monte seu pastel</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="pasteis">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Monte seu pastel</strong>
+          <span>Escolha o tipo</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('pasteis')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body onload="progress(30)">
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Monte seu pastel</h1>
+      <p class="hero-subtitle">Escolha a base do pastel para seguir para a montagem.</p>
+      <p class="soft-note">Se seu pedido tiver mais de uma unidade, por gentileza monte um pastel por vez.</p>
 
-<div class="topbar">
-<div class="topbar-inner">
+      <div class="select-list">
+        <div class="select-card" data-pastel-type="oxente" onclick="setPastelType('oxente')">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">OXENTE</div>
+              <div class="item-desc">Você pode escolher até 1 sabor.</div>
+            </div>
+            <div class="item-price">R$ 13,99</div>
+          </div>
+        </div>
 
-<div class="brand">
-<img src="logo.oxente.jpg">
-<div class="brand-text">
-<strong>Monte seu pastel</strong>
-<span>Escolha o tipo</span>
-</div>
-</div>
+        <div class="select-card" data-pastel-type="arrochado" onclick="setPastelType('arrochado')">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">ARROCHADO</div>
+              <div class="item-desc">Você pode escolher até 1 sabor, 2 recheios e 1 mix.</div>
+            </div>
+            <div class="item-price">R$ 17,99</div>
+          </div>
+        </div>
 
-<div>Pedido <span class="cart-count">0</span></div>
+        <div class="select-card" data-pastel-type="cabra_macho" onclick="setPastelType('cabra_macho')">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">CABRA MACHO</div>
+              <div class="item-desc">Você pode escolher até 1 sabor, 3 recheios e 1 mix.</div>
+            </div>
+            <div class="item-price">R$ 19,99</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Próxima etapa</small>
+          <strong>Montagem</strong>
+        </div>
+        <button id="btnContinuarPastel" class="primary-btn btn-disabled" onclick="window.location.href='montagem-pastel.html'">Continuar</button>
+      </div>
+    </div>
+  </main>
 
-<div class="progress-bar">
-<div class="progress-fill"></div>
-</div>
-
-</div>
-
-<div class="container">
-
-<div class="title">Monte seu pastel</div>
-
-<div class="notice">
-Se seu pedido tiver mais de uma unidade, por gentileza monte um pastel por vez.
-</div>
-
-<div class="list-item">
-<a href="montagem-pastel.html" class="btn">OXENTE</a>
-</div>
-
-<div class="list-item">
-<a href="montagem-pastel.html" class="btn">ARROCHADO</a>
-</div>
-
-<div class="list-item">
-<a href="montagem-pastel.html" class="btn">CABRA MACHO</a>
-</div>
-
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
