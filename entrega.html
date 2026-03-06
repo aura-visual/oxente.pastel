@@ -1,29 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Entrega</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Entrega</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="entrega">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Entrega</strong>
+          <span>Dados do cliente</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('entrega')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body onload="progress(92)">
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Dados para entrega</h1>
+      <p class="hero-subtitle">Preencha os dados antes de seguir para o pagamento.</p>
 
-<div class="container">
+      <div class="form-card">
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input id="nome" type="text" placeholder="Seu nome">
+        </div>
 
-<div class="title">Dados de entrega</div>
+        <div class="field">
+          <label for="endereco">Endereço</label>
+          <input id="endereco" type="text" placeholder="Rua, número, bairro...">
+        </div>
 
-<input placeholder="Nome" style="width:100%;padding:12px;margin-bottom:10px">
+        <div class="field">
+          <label for="referencia">Ref. (se for o caso)</label>
+          <input id="referencia" type="text" placeholder="Ponto de referência">
+        </div>
 
-<input placeholder="Endereço" style="width:100%;padding:12px;margin-bottom:10px">
+        <div class="alert" id="deliveryAlert"></div>
+      </div>
+    </section>
 
-<input placeholder="Referência" style="width:100%;padding:12px">
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Próxima etapa</small>
+          <strong>Pagamento</strong>
+        </div>
+        <button class="primary-btn" onclick="saveDeliveryAndContinue()">Continuar</button>
+      </div>
+    </div>
+  </main>
 
-<a href="pagamento.html" class="btn">Continuar</a>
-
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
