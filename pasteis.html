@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pastéis | OXENTE PASTEL</title>
+  <link rel="icon" type="image/jpeg" href="logo.oxente.jpg">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
-<body>
+<body data-page="pasteis">
   <div class="topbar">
     <div class="topbar-inner">
       <a href="index.html" class="icon-btn">← Voltar</a>
@@ -20,27 +21,23 @@
       </div>
       <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
     </div>
+    <div class="progress-shell">
+      <div class="progress-fill" data-progress-fill></div>
+    </div>
   </div>
 
   <main class="app">
     <section class="content">
-      <div class="progress">
-        <div class="step">Início</div>
-        <div class="step active">Pedido</div>
-        <div class="step">Montagem</div>
-        <div class="step">Extras</div>
-        <div class="step">Resumo</div>
-      </div>
-
-      <h1 class="hero-title">Escolha seu pastel</h1>
-      <p class="hero-subtitle">Aqui é seleção única. Depois você vai para a montagem.</p>
+      <h1 class="hero-title">Monte seu pastel</h1>
+      <p class="hero-subtitle">Escolha o tipo e siga para a montagem personalizada.</p>
+      <p class="monte-observacao">Se seu pedido tiver mais de uma unidade, por gentileza monte um pastel por vez.</p>
 
       <div class="list">
         <div class="select-card" data-pastel-type="oxente" onclick="selectPastelType('oxente')">
           <div class="item-top">
             <div>
               <div class="item-title">OXENTE</div>
-              <div class="item-desc">Escolha 1 sabor.</div>
+              <div class="item-desc">Escolha até 1 sabor.</div>
             </div>
             <div class="price">R$ 13,99</div>
           </div>
@@ -50,7 +47,7 @@
           <div class="item-top">
             <div>
               <div class="item-title">ARROCHADO</div>
-              <div class="item-desc">1 sabor + 2 recheios + 1 mix.</div>
+              <div class="item-desc">Escolha até 1 sabor, 2 recheios e 1 mix.</div>
             </div>
             <div class="price">R$ 17,99</div>
           </div>
@@ -60,7 +57,7 @@
           <div class="item-top">
             <div>
               <div class="item-title">CABRA MACHO</div>
-              <div class="item-desc">1 sabor + 3 recheios + 1 mix.</div>
+              <div class="item-desc">Escolha até 1 sabor, 3 recheios e 1 mix.</div>
             </div>
             <div class="price">R$ 19,99</div>
           </div>
