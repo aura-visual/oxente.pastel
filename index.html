@@ -9,14 +9,13 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="logo.oxente.jpg" type="image/jpeg">
 
-  <!-- defer faz o JS carregar sem quebrar antes do HTML existir -->
   <script src="app.js" defer></script>
 </head>
-<body>
+<body data-page="index">
 
   <div class="topbar">
     <div class="brand">
-      <img src="logo.oxente.jpg" alt="Logo Oxente Pastel">
+      <img src="logo.oxente.jpg" alt="Logo OXENTE PASTEL">
       <div>
         <b>OXENTE PASTEL</b><br>
         <small>O sabor arretado do Nordeste</small>
@@ -24,21 +23,21 @@
     </div>
 
     <button type="button" class="cart-btn" onclick="openCart()">
-      Pedido 🍔
+      Pedido 🍔 <span class="cart-count">0</span>
     </button>
   </div>
 
   <div class="progress">
-    <div class="progress-fill" style="width: 10%;"></div>
+    <div class="progress-fill" data-progress-fill style="width: 8%;"></div>
   </div>
 
   <div class="container">
 
     <div class="card">
-      <img src="combo.png" alt="Combos Oxente Pastel">
+      <img src="combo.png" alt="Combos">
       <div class="card-body">
         <h3>Pra encher o buxo</h3>
-        <a href="combos.html" class="btn">Ver combos</a>
+        <a href="combos.html" class="btn" onclick="setFlow('combos')">Ver combos</a>
       </div>
     </div>
 
@@ -46,7 +45,7 @@
       <img src="pastel.png" alt="Monte seu pastel">
       <div class="card-body">
         <h3>Monte seu pastel</h3>
-        <a href="pasteis.html" class="btn">Montar</a>
+        <a href="pasteis.html" class="btn" onclick="setFlow('montagem')">Montar</a>
       </div>
     </div>
 
@@ -54,17 +53,19 @@
       <img src="nordeste.png" alt="Viva o Nordeste">
       <div class="card-body">
         <h3>Viva o Nordeste</h3>
-        <a href="viva-nordeste.html" class="btn">Ver especiais</a>
+        <a href="viva-nordeste.html" class="btn" onclick="setFlow('nordeste')">Ver especiais</a>
       </div>
     </div>
 
   </div>
 
-  <div id="cart" class="cart-modal" style="display: none;">
+  <div id="cartOverlay" class="cart-overlay" onclick="closeCart()"></div>
+
+  <div id="cartDrawer" class="cart-drawer">
     <h3>Seu pedido</h3>
     <div id="cartItems"></div>
 
-    <button type="button" onclick="closeCart()" class="btn">
+    <button type="button" class="btn" onclick="closeCart()">
       Fechar
     </button>
   </div>
