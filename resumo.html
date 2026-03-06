@@ -1,52 +1,28 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resumo | OXENTE PASTEL</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Resumo</title>
+
+<link rel="icon" href="logo.oxente.jpg">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+
 </head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="icon-btn" onclick="this.href=prevPageFor('resumo')">← Voltar</a>
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>Resumo</strong>
-          <span>Conferência final</span>
-        </div>
-      </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-  </div>
 
-  <main class="app">
-    <section class="content">
-      <div class="progress">
-        <div class="step">Início</div>
-        <div class="step">Pedido</div>
-        <div class="step">Montagem</div>
-        <div class="step">Extras</div>
-        <div class="step active">Resumo</div>
-      </div>
+<body onload="progress(85)">
 
-      <h1 class="hero-title">Resumo do pedido</h1>
-      <p class="hero-subtitle">Confira tudo antes de seguir para entrega.</p>
+<div class="container">
 
-      <div id="summaryItems"></div>
-    </section>
+<div class="title">Resumo do pedido</div>
 
-    <div class="footer-action">
-      <div class="footer-inner">
-        <div class="total-box">
-          <small>Total geral</small>
-          <strong data-total>R$ 0,00</strong>
-        </div>
-        <a href="entrega.html" class="btn">Continuar</a>
-      </div>
-    </div>
-  </main>
+<div id="pedidoResumo"></div>
+
+<a href="entrega.html" class="btn">Continuar</a>
+
+</div>
+
 </body>
 </html>
