@@ -1,112 +1,73 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OXENTE PASTEL</title>
 
-<link rel="stylesheet" href="style.css">
-<script src="app.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo.oxente.jpg" type="image/jpeg">
 
-<link rel="icon" href="logo.oxente.jpg">
-
-<title>OXENTE PASTEL</title>
-
+  <!-- defer faz o JS carregar sem quebrar antes do HTML existir -->
+  <script src="app.js" defer></script>
 </head>
-
 <body>
 
-<div class="topbar">
+  <div class="topbar">
+    <div class="brand">
+      <img src="logo.oxente.jpg" alt="Logo Oxente Pastel">
+      <div>
+        <b>OXENTE PASTEL</b><br>
+        <small>O sabor arretado do Nordeste</small>
+      </div>
+    </div>
 
-<div class="brand">
+    <button type="button" class="cart-btn" onclick="openCart()">
+      Pedido 🍔
+    </button>
+  </div>
 
-<img src="logo.oxente.jpg">
+  <div class="progress">
+    <div class="progress-fill" style="width: 10%;"></div>
+  </div>
 
-<div>
+  <div class="container">
 
-<b>OXENTE PASTEL</b><br>
-<small>O sabor arretado do Nordeste</small>
+    <div class="card">
+      <img src="combo.png" alt="Combos Oxente Pastel">
+      <div class="card-body">
+        <h3>Pra encher o buxo</h3>
+        <a href="combos.html" class="btn">Ver combos</a>
+      </div>
+    </div>
 
-</div>
+    <div class="card">
+      <img src="pastel.png" alt="Monte seu pastel">
+      <div class="card-body">
+        <h3>Monte seu pastel</h3>
+        <a href="pasteis.html" class="btn">Montar</a>
+      </div>
+    </div>
 
-</div>
+    <div class="card">
+      <img src="nordeste.png" alt="Viva o Nordeste">
+      <div class="card-body">
+        <h3>Viva o Nordeste</h3>
+        <a href="viva-nordeste.html" class="btn">Ver especiais</a>
+      </div>
+    </div>
 
-<div class="cart-btn" onclick="openCart()">
-Pedido 🍔
-</div>
+  </div>
 
-</div>
+  <div id="cart" class="cart-modal" style="display: none;">
+    <h3>Seu pedido</h3>
+    <div id="cartItems"></div>
 
-<div class="progress">
-<div class="progress-fill" style="width:10%"></div>
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<img src="combo.png">
-
-<div class="card-body">
-
-<h3>Pra encher o buxo</h3>
-
-<a href="combos.html" class="btn">
-Ver combos
-</a>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<img src="pastel.png">
-
-<div class="card-body">
-
-<h3>Monte seu pastel</h3>
-
-<a href="pasteis.html" class="btn">
-Montar
-</a>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<img src="nordeste.png">
-
-<div class="card-body">
-
-<h3>Viva o Nordeste</h3>
-
-<a href="viva-nordeste.html" class="btn">
-Ver especiais
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="cart" class="cart-modal">
-
-<h3>Seu pedido</h3>
-
-<div id="cartItems"></div>
-
-<button onclick="closeCart()" class="btn">
-Fechar
-</button>
-
-</div>
+    <button type="button" onclick="closeCart()" class="btn">
+      Fechar
+    </button>
+  </div>
 
 </body>
-
 </html>
-
