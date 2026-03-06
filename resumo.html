@@ -1,28 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Resumo</title>
-
-<link rel="icon" href="logo.oxente.jpg">
-<link rel="stylesheet" href="style.css">
-<script src="app.js" defer></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Resumo do pedido</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="resumo">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Resumo</strong>
+          <span>Conferência final do pedido</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('resumo')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body onload="progress(85)">
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Resumo do pedido</h1>
+      <p class="hero-subtitle">Veja os itens, confirme o total e siga para a entrega.</p>
+      <div id="summaryItems"></div>
+    </section>
 
-<div class="container">
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total geral</small>
+          <strong class="cart-total">R$ 0,00</strong>
+        </div>
+        <a href="entrega.html" class="primary-btn">Continuar</a>
+      </div>
+    </div>
+  </main>
 
-<div class="title">Resumo do pedido</div>
-
-<div id="pedidoResumo"></div>
-
-<a href="entrega.html" class="btn">Continuar</a>
-
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <button class="primary-btn" onclick="toggleCart(false)">Fechar carrinho</button>
+    </div>
+  </aside>
 </body>
 </html>
