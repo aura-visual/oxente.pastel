@@ -1,88 +1,693 @@
-const CART="oxente_cart";
+const STORE_KEY = "oxente_site_v1";
+const TEMP_MONTAGEM_KEY = "oxente_temp_montagem_v1";
 
-function cart(){
-return JSON.parse(localStorage.getItem(CART)||"[]")
+const LIMITES = {
+  oxente: { sabor: 1, recheio: 0, mix: 0 },
+  arrochado: { sabor: 1, recheio: 2, mix: 1 },
+  cabra_macho: { sabor: 1, recheio: 3, mix: 1 }
+};
+
+const BASE_PASTEIS = {
+  oxente: { nome: "Pastel Oxente", preco: 13.99 },
+  arrochado: { nome: "Pastel Arrochado", preco: 17.99 },
+  cabra_macho: { nome: "Pastel Cabra Macho", preco: 19.99 }
+};
+
+const OPCOES = {
+  sabor: [
+    { id: "frango", nome: "Frango", extra: 0 },
+    { id: "calabresa", nome: "Calabresa", extra: 0 },
+    { id: "queijo", nome: "Queijo", extra: 0 },
+    { id: "carne", nome: "Carne", extra: 0 },
+    { id: "carne_de_sol", nome: "Carne de Sol", extra: 2 }
+  ],
+  recheio: [
+    { id: "cebola", nome: "Cebola" },
+    { id: "bacon", nome: "Bacon" },
+    { id: "tomate", nome: "Tomate" },
+    { id: "presunto", nome: "Presunto" },
+    { id: "milho", nome: "Milho" },
+    { id: "queijo_coalho", nome: "Queijo coalho" },
+    { id: "mussarela", nome: "Mussarela" },
+    { id: "oregano", nome: "Orégano" },
+    { id: "azeitona", nome: "Azeitona" }
+  ],
+  mix: [
+    { id: "catupiry", nome: "Catupiry" },
+    { id: "cheddar", nome: "Cheddar" },
+    { id: "requeijao", nome: "Requeijão" },
+    { id: "cream_cheese", nome: "Cream Cheese" }
+  ]
+};
+
+function money(v){
+  return "R$ " + Number(v).toFixed(2).replace(".", ",");
 }
 
-function save(c){
-localStorage.setItem(CART,JSON.stringify(c))
-renderCart()
+function initialStore(){
+  return {
+    flow: "",
+    items: [],
+    delivery: {
+      nome: "",
+      endereco: "",
+      referencia: ""
+    },
+    payment: "",
+    acompanhamentos: {
+      fritasCarneSolExtra: ""
+    }
+  };
 }
 
-function add(name,price){
-
-let c=cart()
-
-let f=c.find(i=>i.name==name)
-
-if(f)f.q++
-else c.push({name,price,q:1})
-
-save(c)
-
+function getStore(){
+  return JSON.parse(localStorage.getItem(STORE_KEY) || JSON.stringify(initialStore()));
 }
 
-function remove(name){
-
-let c=cart()
-
-let f=c.find(i=>i.name==name)
-
-if(!f)return
-
-f.q--
-
-if(f.q<=0)
-c=c.filter(i=>i.name!=name)
-
-save(c)
-
+function saveStore(store){
+  localStorage.setItem(STORE_KEY, JSON.stringify(store));
+  updateCartBadge();
+  renderQtyControls();
+  renderCartDrawer();
+  renderResumo();
+  renderPaymentSummary();
+  renderFritasExtra();
 }
 
-function renderCart(){
-
-let c=cart()
-
-let el=document.getElementById("cartItems")
-
-if(!el)return
-
-let html=""
-
-let total=0
-
-c.forEach(i=>{
-
-total+=i.price*i.q
-
-html+=`
-
-<div class="item">
-<div>${i.name}</div>
-
-<div class="qty">
-<button onclick="remove('${i.name}')">-</button>
-${i.q}
-<button onclick="add('${i.name}',${i.price})">+</button>
-</div>
-
-</div>
-
-`
-
-})
-
-html+=`<b>Total R$ ${total.toFixed(2)}</b>`
-
-el.innerHTML=html
-
+function setFlow(flow){
+  const store = getStore();
+  store.flow = flow;
+  saveStore(store);
 }
 
-function openCart(){
-document.getElementById("cart").style.display="block"
-renderCart()
+function getFlow(){
+  return getStore().flow || "";
 }
 
-function closeCart(){
-document.getElementById("cart").style.display="none"
+function goToFlow(flow, page){
+  setFlow(flow);
+  window.location.href = page;
 }
+
+function clearAllData(){
+  localStorage.removeItem(STORE_KEY);
+  localStorage.removeItem(TEMP_MONTAGEM_KEY);
+}
+
+function progressMap(page){
+  const map = {
+    index: 8,
+    combos: 22,
+    pasteis: 20,
+    "montagem-pastel": 36,
+    "viva-nordeste": 22,
+    acompanhamentos: 56,
+    bebidas: 74,
+    resumo: 86,
+    entrega: 94,
+    pagamento: 100
+  };
+  return map[page] || 0;
+}
+
+function setProgress(page){
+  const value = progressMap(page);
+  document.querySelectorAll("[data-progress-fill]").forEach(el => {
+    el.style.width = value + "%";
+  });
+}
+
+function updateCartBadge(){
+  const totalItems = getStore().items.reduce((acc, item) => acc + item.qty, 0);
+  document.querySelectorAll(".cart-count").forEach(el => {
+    el.textContent = totalItems;
+  });
+  document.querySelectorAll(".cart-total").forEach(el => {
+    el.textContent = money(getTotalValue());
+  });
+}
+
+function getTotalValue(){
+  return getStore().items.reduce((acc, item) => acc + (item.qty * item.price), 0);
+}
+
+function addQty(key, name, price){
+  const store = getStore();
+  const found = store.items.find(item => item.key === key);
+
+  if(found){
+    found.qty += 1;
+  }else{
+    store.items.push({
+      key,
+      name,
+      price: Number(price),
+      qty: 1
+    });
+  }
+
+  saveStore(store);
+}
+
+function decQty(key){
+  const store = getStore();
+  const found = store.items.find(item => item.key === key);
+  if(!found) return;
+
+  found.qty -= 1;
+
+  if(found.qty <= 0){
+    store.items = store.items.filter(item => item.key !== key);
+  }
+
+  if(key === "comp-fritas-carne-sol" && !store.items.find(item => item.key === "comp-fritas-carne-sol")){
+    store.acompanhamentos.fritasCarneSolExtra = "";
+  }
+
+  saveStore(store);
+}
+
+function removeLine(key){
+  const store = getStore();
+  store.items = store.items.filter(item => item.key !== key);
+
+  if(key === "comp-fritas-carne-sol"){
+    store.acompanhamentos.fritasCarneSolExtra = "";
+  }
+
+  saveStore(store);
+}
+
+function getQty(key){
+  const item = getStore().items.find(i => i.key === key);
+  return item ? item.qty : 0;
+}
+
+function renderQtyControls(){
+  document.querySelectorAll("[data-key]").forEach(box => {
+    const key = box.dataset.key;
+    const value = box.querySelector("[data-qty-value]");
+    if(value){
+      value.textContent = getQty(key);
+    }
+  });
+}
+
+function toggleCart(force){
+  const drawer = document.getElementById("cartDrawer");
+  const overlay = document.getElementById("cartOverlay");
+  if(!drawer || !overlay) return;
+
+  const open = typeof force === "boolean" ? force : !drawer.classList.contains("show");
+  drawer.classList.toggle("show", open);
+  overlay.classList.toggle("show", open);
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
+}
+
+function renderCartDrawer(){
+  const wrap = document.getElementById("cartItems");
+  if(!wrap) return;
+
+  const items = getStore().items;
+
+  if(!items.length){
+    wrap.innerHTML = `
+      <div class="summary-box">
+        <div class="empty-text">Seu pedido está vazio. Adicione itens para continuar.</div>
+      </div>
+    `;
+    return;
+  }
+
+  let html = "";
+
+  items.forEach(item => {
+    html += `
+      <div class="drawer-line">
+        <div class="drawer-line-top">
+          <div>
+            <div class="drawer-line-title">${escapeHtml(item.name)}</div>
+            <div class="drawer-line-price">${money(item.price)}</div>
+          </div>
+          <div class="qty" data-key="${escapeHtml(item.key)}">
+            <button class="qty-btn" onclick="decQty('${escapeHtml(item.key)}')">-</button>
+            <span class="qty-value" data-qty-value>${item.qty}</span>
+            <button class="qty-btn" onclick="addQty('${escapeHtml(item.key)}','${escapeHtml(item.name)}',${item.price})">+</button>
+          </div>
+        </div>
+        <div class="drawer-line-bottom">
+          <button class="remove-btn" onclick="removeLine('${escapeHtml(item.key)}')">remover item</button>
+          <strong>${money(item.qty * item.price)}</strong>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="summary-box" style="margin-top:6px;">
+      <div class="summary-total">
+        <span>Total</span>
+        <span>${money(getTotalValue())}</span>
+      </div>
+    </div>
+  `;
+
+  wrap.innerHTML = html;
+}
+
+function prevPageFor(page){
+  const flow = getFlow();
+
+  if(page === "pagamento") return "entrega.html";
+  if(page === "entrega") return "resumo.html";
+  if(page === "resumo") return "bebidas.html";
+  if(page === "bebidas") return "acompanhamentos.html";
+
+  if(page === "acompanhamentos"){
+    if(flow === "combos") return "combos.html";
+    if(flow === "montagem") return "montagem-pastel.html";
+    if(flow === "nordeste") return "viva-nordeste.html";
+  }
+
+  if(page === "montagem-pastel") return "pasteis.html";
+
+  return "index.html";
+}
+
+function goPrev(page){
+  window.location.href = prevPageFor(page);
+}
+
+function getTempMontagem(){
+  return JSON.parse(localStorage.getItem(TEMP_MONTAGEM_KEY) || '{"tipo":"","sabor":[],"recheio":[],"mix":[]}');
+}
+
+function saveTempMontagem(data){
+  localStorage.setItem(TEMP_MONTAGEM_KEY, JSON.stringify(data));
+}
+
+function setPastelType(tipo){
+  saveTempMontagem({
+    tipo,
+    sabor: [],
+    recheio: [],
+    mix: []
+  });
+
+  document.querySelectorAll(".select-card").forEach(card => card.classList.remove("active"));
+  const selected = document.querySelector(`[data-pastel-type="${tipo}"]`);
+  if(selected) selected.classList.add("active");
+
+  const btn = document.getElementById("btnContinuarPastel");
+  if(btn){
+    btn.classList.remove("btn-disabled");
+    btn.removeAttribute("disabled");
+  }
+}
+
+function getOptionName(group, id){
+  const found = OPCOES[group].find(opt => opt.id === id);
+  return found ? found.nome : id;
+}
+
+function getMontagemExtra(montagem){
+  let extra = 0;
+  montagem.sabor.forEach(id => {
+    const found = OPCOES.sabor.find(opt => opt.id === id);
+    if(found && found.extra){
+      extra += found.extra;
+    }
+  });
+  return extra;
+}
+
+function toggleMontagem(group, id){
+  const montagem = getTempMontagem();
+  if(!montagem.tipo) return;
+
+  const max = LIMITES[montagem.tipo][group];
+  if(max === 0) return;
+
+  const arr = montagem[group] || [];
+
+  if(arr.includes(id)){
+    montagem[group] = arr.filter(item => item !== id);
+    saveTempMontagem(montagem);
+    renderMontagemPage();
+    return;
+  }
+
+  if(arr.length >= max){
+    return;
+  }
+
+  montagem[group].push(id);
+  saveTempMontagem(montagem);
+  renderMontagemPage();
+}
+
+function renderMontagemPage(){
+  const montagem = getTempMontagem();
+  const title = document.getElementById("tipoPastelNome");
+  const resumo = document.getElementById("montagemResumo");
+  if(!title || !resumo) return;
+
+  if(!montagem.tipo){
+    title.textContent = "Selecione o tipo";
+    resumo.innerHTML = `<div class="empty-text">Escolha primeiro o tipo do pastel.</div>`;
+    return;
+  }
+
+  const base = BASE_PASTEIS[montagem.tipo];
+  const extra = getMontagemExtra(montagem);
+  const total = base.preco + extra;
+  const limites = LIMITES[montagem.tipo];
+
+  title.textContent = `${base.nome} • ${money(total)}`;
+
+  resumo.innerHTML = `
+    <div class="panel-title">${base.nome}</div>
+    <div class="panel-subtitle">
+      Sabor: ${montagem.sabor.length ? montagem.sabor.map(id => getOptionName("sabor", id)).join(", ") : "nenhum"}<br>
+      Recheio: ${limites.recheio === 0 ? "não se aplica" : (montagem.recheio.length ? montagem.recheio.map(id => getOptionName("recheio", id)).join(", ") : "nenhum")}<br>
+      Mix: ${limites.mix === 0 ? "não se aplica" : (montagem.mix.length ? montagem.mix.map(id => getOptionName("mix", id)).join(", ") : "nenhum")}<br>
+      Valor atual: <span class="ok-text">${money(total)}</span>
+    </div>
+  `;
+
+  ["sabor","recheio","mix"].forEach(group => {
+    const wrap = document.getElementById(group + "Options");
+    const info = document.getElementById(group + "Info");
+    if(!wrap) return;
+
+    const max = limites[group];
+    const selected = montagem[group];
+
+    if(info){
+      info.textContent = max === 0
+        ? "Não disponível para este tipo."
+        : `Você pode escolher de 0 até ${max} opção(ões). Selecionados: ${selected.length}`;
+    }
+
+    wrap.querySelectorAll(".option-chip").forEach(btn => {
+      const id = btn.dataset.optionId;
+      btn.classList.remove("active","disabled");
+
+      if(max === 0){
+        btn.classList.add("disabled");
+        return;
+      }
+
+      if(selected.includes(id)){
+        btn.classList.add("active");
+      }else if(selected.length >= max){
+        btn.classList.add("disabled");
+      }
+    });
+  });
+}
+
+function openMissingModal(messages){
+  const modal = document.getElementById("confirmModal");
+  const text = document.getElementById("confirmModalText");
+  if(!modal || !text) return;
+  text.innerHTML = messages.join("<br><br>");
+  modal.classList.add("show");
+}
+
+function closeMissingModal(){
+  const modal = document.getElementById("confirmModal");
+  if(modal) modal.classList.remove("show");
+}
+
+function addMountedPastelAndContinue(){
+  const montagem = getTempMontagem();
+  const alert = document.getElementById("montagemAlert");
+  if(alert) alert.textContent = "";
+
+  if(!montagem.tipo){
+    if(alert) alert.textContent = "Selecione o tipo do pastel.";
+    return;
+  }
+
+  const lim = LIMITES[montagem.tipo];
+  const missing = [];
+
+  if(lim.sabor > 0 && montagem.sabor.length === 0){
+    missing.push("Tem certeza que não deseja incluir mais algum sabor?");
+  }
+  if(lim.recheio > 0 && montagem.recheio.length === 0){
+    missing.push("Tem certeza que não deseja incluir mais algum recheio?");
+  }
+  if(lim.mix > 0 && montagem.mix.length === 0){
+    missing.push("Tem certeza que não deseja incluir mais algum mix?");
+  }
+
+  if(missing.length){
+    openMissingModal(missing);
+    return;
+  }
+
+  finalizeMountedPastel();
+}
+
+function continueWithoutMoreOptions(){
+  closeMissingModal();
+  finalizeMountedPastel();
+}
+
+function finalizeMountedPastel(){
+  const montagem = getTempMontagem();
+  const base = BASE_PASTEIS[montagem.tipo];
+  const extra = getMontagemExtra(montagem);
+  const price = base.preco + extra;
+
+  const details = [];
+  if(montagem.sabor.length) details.push("Sabor: " + montagem.sabor.map(id => getOptionName("sabor", id)).join(", "));
+  if(montagem.recheio.length) details.push("Recheio: " + montagem.recheio.map(id => getOptionName("recheio", id)).join(", "));
+  if(montagem.mix.length) details.push("Mix: " + montagem.mix.map(id => getOptionName("mix", id)).join(", "));
+
+  const name = details.length
+    ? `${base.nome} (${details.join(" | ")})`
+    : `${base.nome} (sem adicionais)`;
+
+  const key = "montado_" + Date.now();
+  addQty(key, name, price);
+  window.location.href = "acompanhamentos.html";
+}
+
+function setFritasExtra(extra){
+  const store = getStore();
+  store.acompanhamentos.fritasCarneSolExtra = extra;
+  saveStore(store);
+}
+
+function renderFritasExtra(){
+  const wrap = document.getElementById("fritasExtraWrap");
+  if(!wrap) return;
+
+  const qty = getQty("comp-fritas-carne-sol");
+  const extra = getStore().acompanhamentos.fritasCarneSolExtra;
+
+  if(qty >= 1){
+    wrap.style.display = "block";
+    document.querySelectorAll("[data-fritas-extra]").forEach(btn => btn.classList.remove("active"));
+    if(extra){
+      const selected = document.querySelector(`[data-fritas-extra="${extra}"]`);
+      if(selected) selected.classList.add("active");
+    }
+  }else{
+    wrap.style.display = "none";
+    const store = getStore();
+    store.acompanhamentos.fritasCarneSolExtra = "";
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+  }
+}
+
+function renderResumo(){
+  const wrap = document.getElementById("summaryItems");
+  if(!wrap) return;
+
+  const store = getStore();
+  if(!store.items.length){
+    wrap.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido ainda está vazio.</div></div>`;
+    return;
+  }
+
+  let html = `<div class="summary-box">`;
+
+  store.items.forEach(item => {
+    html += `
+      <div class="summary-line">
+        <span>${escapeHtml(item.qty + "x " + item.name)}</span>
+        <strong>${money(item.qty * item.price)}</strong>
+      </div>
+    `;
+  });
+
+  if(store.acompanhamentos.fritasCarneSolExtra){
+    html += `
+      <div class="summary-line">
+        <span>Adicional fritas carne de sol</span>
+        <strong>${escapeHtml(store.acompanhamentos.fritasCarneSolExtra)}</strong>
+      </div>
+    `;
+  }
+
+  html += `
+      <div class="summary-total">
+        <span>Total</span>
+        <span>${money(getTotalValue())}</span>
+      </div>
+    </div>
+  `;
+
+  wrap.innerHTML = html;
+}
+
+function saveDeliveryAndContinue(){
+  const nome = document.getElementById("nome")?.value.trim() || "";
+  const endereco = document.getElementById("endereco")?.value.trim() || "";
+  const referencia = document.getElementById("referencia")?.value.trim() || "";
+  const alert = document.getElementById("deliveryAlert");
+
+  if(alert) alert.textContent = "";
+
+  if(!nome || !endereco){
+    if(alert) alert.textContent = "Preencha nome e endereço.";
+    return;
+  }
+
+  const store = getStore();
+  store.delivery = { nome, endereco, referencia };
+  saveStore(store);
+  window.location.href = "pagamento.html";
+}
+
+function loadDeliveryFields(){
+  const store = getStore();
+  const nome = document.getElementById("nome");
+  const endereco = document.getElementById("endereco");
+  const referencia = document.getElementById("referencia");
+
+  if(nome) nome.value = store.delivery.nome || "";
+  if(endereco) endereco.value = store.delivery.endereco || "";
+  if(referencia) referencia.value = store.delivery.referencia || "";
+}
+
+function setPayment(method){
+  const store = getStore();
+  store.payment = method;
+  saveStore(store);
+
+  document.querySelectorAll(".pay-option").forEach(btn => btn.classList.remove("active"));
+  const selected = document.querySelector(`[data-pay="${method}"]`);
+  if(selected) selected.classList.add("active");
+}
+
+function renderPaymentSummary(){
+  const wrap = document.getElementById("paymentSummary");
+  if(!wrap) return;
+
+  const store = getStore();
+  if(!store.items.length){
+    wrap.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido está vazio.</div></div>`;
+    return;
+  }
+
+  let html = `<div class="summary-box">`;
+
+  store.items.forEach(item => {
+    html += `
+      <div class="summary-line">
+        <span>${escapeHtml(item.qty + "x " + item.name)}</span>
+        <strong>${money(item.qty * item.price)}</strong>
+      </div>
+    `;
+  });
+
+  if(store.acompanhamentos.fritasCarneSolExtra){
+    html += `
+      <div class="summary-line">
+        <span>Adicional fritas carne de sol</span>
+        <strong>${escapeHtml(store.acompanhamentos.fritasCarneSolExtra)}</strong>
+      </div>
+    `;
+  }
+
+  html += `
+      <div class="summary-total">
+        <span>Total</span>
+        <span>${money(getTotalValue())}</span>
+      </div>
+    </div>
+  `;
+
+  wrap.innerHTML = html;
+
+  if(store.payment){
+    const selected = document.querySelector(`[data-pay="${store.payment}"]`);
+    if(selected) selected.classList.add("active");
+  }
+}
+
+function finishOrder(){
+  const store = getStore();
+  const alert = document.getElementById("paymentAlert");
+  if(alert) alert.textContent = "";
+
+  if(!store.delivery.nome || !store.delivery.endereco){
+    if(alert) alert.textContent = "Dados de entrega não encontrados.";
+    return;
+  }
+
+  if(!store.payment){
+    if(alert) alert.textContent = "Selecione a forma de pagamento.";
+    return;
+  }
+
+  let msg = "OXENTE PASTEL%0A";
+  msg += "------------------------------%0A";
+  msg += "RELATÓRIO DO PEDIDO%0A";
+
+  store.items.forEach(item => {
+    msg += encodeURIComponent(`${item.qty}x ${item.name} - ${money(item.qty * item.price)}`) + "%0A";
+  });
+
+  if(store.acompanhamentos.fritasCarneSolExtra){
+    msg += encodeURIComponent(`Adicional fritas carne de sol: ${store.acompanhamentos.fritasCarneSolExtra}`) + "%0A";
+  }
+
+  msg += "------------------------------%0A";
+  msg += encodeURIComponent(`TOTAL: ${money(getTotalValue())}`) + "%0A";
+  msg += "------------------------------%0A";
+  msg += encodeURIComponent(`Nome: ${store.delivery.nome}`) + "%0A";
+  msg += encodeURIComponent(`Endereço: ${store.delivery.endereco}`) + "%0A";
+  msg += encodeURIComponent(`Ref: ${store.delivery.referencia || "-"}`) + "%0A";
+  msg += encodeURIComponent(`Pagamento: ${store.payment}`) + "%0A";
+  msg += "------------------------------%0A";
+  msg += encodeURIComponent("Agradecemos pela preferência!");
+
+  window.location.href = `https://wa.me/5588998650795?text=${msg}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page || "";
+  setProgress(page);
+  updateCartBadge();
+  renderQtyControls();
+  renderCartDrawer();
+  renderMontagemPage();
+  renderResumo();
+  loadDeliveryFields();
+  renderPaymentSummary();
+  renderFritasExtra();
+});
