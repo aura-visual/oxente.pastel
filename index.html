@@ -1,73 +1,111 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="stylesheet" href="style.css">
+<script src="app.js"></script>
+
+<link rel="icon" href="logo.oxente.jpg">
 
 <title>OXENTE PASTEL</title>
 
-<link rel="icon" href="logo.oxente.jpg">
-<link rel="stylesheet" href="style.css">
-<script src="app.js" defer></script>
-
 </head>
 
-<body onload="progress(10)">
+<body>
 
 <div class="topbar">
-<div class="topbar-inner">
 
 <div class="brand">
+
 <img src="logo.oxente.jpg">
-<div class="brand-text">
-<strong>OXENTE PASTEL</strong>
-<span>O sabor arretado do Nordeste</span>
-</div>
-</div>
 
-<div>Pedido <span class="cart-count">0</span></div>
+<div>
+
+<b>OXENTE PASTEL</b><br>
+<small>O sabor arretado do Nordeste</small>
 
 </div>
 
-<div class="progress-bar">
-<div class="progress-fill"></div>
 </div>
 
+<div class="cart-btn" onclick="openCart()">
+Pedido 🍔
+</div>
+
+</div>
+
+<div class="progress">
+<div class="progress-fill" style="width:10%"></div>
 </div>
 
 <div class="container">
 
-<div class="title">Escolha como pedir</div>
-<div class="subtitle">Fluxo simples e rápido.</div>
-
 <div class="card">
-<img src="combo.jpg">
+
+<img src="combo.png">
+
 <div class="card-body">
-<div class="card-title">Pra encher o buxo</div>
-<div class="card-desc">Combos completos.</div>
-<a href="combos.html" class="btn">Ver combos</a>
-</div>
+
+<h3>Pra encher o buxo</h3>
+
+<a href="combos.html" class="btn">
+Ver combos
+</a>
+
 </div>
 
-<div class="card">
-<img src="pastel.jpg">
-<div class="card-body">
-<div class="card-title">Monte seu pastel</div>
-<div class="card-desc">Escolha tudo do seu jeito.</div>
-<a href="pasteis.html" class="btn">Montar pastel</a>
-</div>
 </div>
 
 <div class="card">
-<img src="nordeste.jpg">
+
+<img src="pastel.png">
+
 <div class="card-body">
-<div class="card-title">Viva o Nordeste</div>
-<div class="card-desc">Opções prontas da casa.</div>
-<a href="viva-nordeste.html" class="btn">Ver especiais</a>
+
+<h3>Monte seu pastel</h3>
+
+<a href="pasteis.html" class="btn">
+Montar
+</a>
+
 </div>
+
 </div>
+
+<div class="card">
+
+<img src="nordeste.png">
+
+<div class="card-body">
+
+<h3>Viva o Nordeste</h3>
+
+<a href="viva-nordeste.html" class="btn">
+Ver especiais
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="cart" class="cart-modal">
+
+<h3>Seu pedido</h3>
+
+<div id="cartItems"></div>
+
+<button onclick="closeCart()" class="btn">
+Fechar
+</button>
 
 </div>
 
 </body>
+
 </html>
