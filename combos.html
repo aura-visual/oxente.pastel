@@ -1,79 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Combos</title>
-
-<link rel="icon" href="logo.oxente.jpg">
-<link rel="stylesheet" href="style.css">
-<script src="app.js" defer></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pra encher o buxo</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="combos">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Pra encher o buxo</strong>
+          <span>Escolha seu combo</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('combos')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body onload="progress(25)">
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Pra encher o buxo</h1>
+      <p class="hero-subtitle">Use os controles de quantidade do lado direito para montar o pedido.</p>
 
-<div class="topbar">
-<div class="topbar-inner">
+      <div class="list">
+        <div class="item-card" data-key="combo-arriegua">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">COMBO ARRIÉGUA</div>
+              <div class="item-desc">2 pastéis Cabra Macho com refrigerante de 1 litro.</div>
+            </div>
+            <div class="item-price">R$ 43,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="combo-arriegua">
+              <button class="qty-btn" onclick="decQty('combo-arriegua')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('combo-arriegua','Combo Arriégua',43)">+</button>
+            </div>
+          </div>
+        </div>
 
-<div class="brand">
-<img src="logo.oxente.jpg">
-<div class="brand-text">
-<strong>Pra encher o buxo</strong>
-<span>Escolha seu combo</span>
-</div>
-</div>
+        <div class="item-card" data-key="combo-super-arretado">
+          <div class="item-row">
+            <div class="item-info">
+              <div class="item-title">COMBO SUPER ARRETADO</div>
+              <div class="item-desc">4 pastéis Cabra Macho com refrigerante de 1 litro + 4 pasteizinhos doces grátis.</div>
+            </div>
+            <div class="item-price">R$ 85,00</div>
+          </div>
+          <div class="item-bottom">
+            <div class="qty" data-key="combo-super-arretado">
+              <button class="qty-btn" onclick="decQty('combo-super-arretado')">-</button>
+              <span class="qty-value" data-qty-value>0</span>
+              <button class="qty-btn" onclick="addQty('combo-super-arretado','Combo Super Arretado',85)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div>Pedido <span class="cart-count">0</span></div>
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total atual</small>
+          <strong class="cart-total">R$ 0,00</strong>
+        </div>
+        <a href="acompanhamentos.html" class="primary-btn">Continuar</a>
+      </div>
+    </div>
+  </main>
 
-</div>
-
-<div class="progress-bar">
-<div class="progress-fill"></div>
-</div>
-</div>
-
-<div class="container">
-
-<div class="list-item">
-
-<div class="list-title">COMBO ARRIÉGUA</div>
-<div class="price">R$ 43,00</div>
-
-<div class="qty">
-<button onclick="removeItem('Combo Arriégua')">-</button>
-<span>1</span>
-<button onclick="addItem('Combo Arriégua',43)">+</button>
-</div>
-
-</div>
-
-<div class="list-item">
-
-<div class="list-title">COMBO SUPER ARRETADO</div>
-<div class="price">R$ 85,00</div>
-
-<div class="qty">
-<button onclick="removeItem('Combo Super Arretado')">-</button>
-<span>1</span>
-<button onclick="addItem('Combo Super Arretado',85)">+</button>
-</div>
-
-</div>
-
-</div>
-
-<div class="footer">
-<div class="footer-inner">
-<div class="total">
-Total <span class="cart-total">R$ 0</span>
-</div>
-
-<a href="acompanhamentos.html" class="btn">Continuar</a>
-
-</div>
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
