@@ -1,45 +1,41 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Montagem | OXENTE PASTEL</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Montagem do pastel</title>
+  <link rel="icon" href="logo.oxente.jpg">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
-<body>
-  <div class="topbar">
+<body data-page="montagem-pastel">
+  <header class="topbar">
     <div class="topbar-inner">
-      <a href="pasteis.html" class="icon-btn">← Voltar</a>
       <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
         <div class="brand-text">
           <strong>Montagem</strong>
           <span id="tipoPastelNome">Selecione o tipo</span>
         </div>
       </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-  </div>
-
-  <main class="app">
-    <section class="content">
-      <div class="progress">
-        <div class="step">Início</div>
-        <div class="step">Pedido</div>
-        <div class="step active">Montagem</div>
-        <div class="step">Extras</div>
-        <div class="step">Resumo</div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('montagem-pastel')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
       </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
+  <main class="page">
+    <section class="content">
       <h1 class="hero-title">Monte seu pastel</h1>
-      <p class="hero-subtitle">Ao atingir o limite, as demais opções ficam ofuscadas.</p>
+      <p class="hero-subtitle">Você pode deixar categorias em branco. Se fizer isso, o sistema vai confirmar antes de continuar.</p>
 
-      <div class="section-box" id="montagemResumo"></div>
+      <div class="panel" id="montagemResumo"></div>
 
-      <div class="section-box">
-        <div class="section-title">SABOR</div>
-        <div class="section-subtitle">Carne de Sol tem acréscimo de R$ 2,00.</div>
+      <div class="panel">
+        <div class="panel-title">SABOR</div>
+        <div class="panel-subtitle">Carne de Sol tem acréscimo de R$ 2,00.</div>
         <div class="option-grid" id="saborOptions">
           <button class="option-chip" data-option-id="frango" onclick="toggleMontagem('sabor','frango')">Frango</button>
           <button class="option-chip" data-option-id="calabresa" onclick="toggleMontagem('sabor','calabresa')">Calabresa</button>
@@ -53,9 +49,9 @@
         <div class="limit-info" id="saborInfo"></div>
       </div>
 
-      <div class="section-box">
-        <div class="section-title">RECHEIO</div>
-        <div class="section-subtitle">Selecione conforme o tipo escolhido.</div>
+      <div class="panel">
+        <div class="panel-title">RECHEIO</div>
+        <div class="panel-subtitle">Escolha de 0 até o limite permitido para o tipo selecionado.</div>
         <div class="option-grid" id="recheioOptions">
           <button class="option-chip" data-option-id="cebola" onclick="toggleMontagem('recheio','cebola')">Cebola</button>
           <button class="option-chip" data-option-id="bacon" onclick="toggleMontagem('recheio','bacon')">Bacon</button>
@@ -70,9 +66,9 @@
         <div class="limit-info" id="recheioInfo"></div>
       </div>
 
-      <div class="section-box">
-        <div class="section-title">MIX</div>
-        <div class="section-subtitle">Selecione quando aplicável.</div>
+      <div class="panel">
+        <div class="panel-title">MIX</div>
+        <div class="panel-subtitle">Escolha de 0 até o limite permitido.</div>
         <div class="option-grid" id="mixOptions">
           <button class="option-chip" data-option-id="catupiry" onclick="toggleMontagem('mix','catupiry')">Catupiry</button>
           <button class="option-chip" data-option-id="cheddar" onclick="toggleMontagem('mix','cheddar')">Cheddar</button>
@@ -89,11 +85,35 @@
       <div class="footer-inner">
         <div class="total-box">
           <small>Pedido atual</small>
-          <strong data-total>R$ 0,00</strong>
+          <strong class="cart-total">R$ 0,00</strong>
         </div>
-        <button class="btn" onclick="addMountedPastelAndContinue()">Adicionar e continuar</button>
+        <button class="primary-btn" onclick="addMountedPastelAndContinue()">Continuar</button>
       </div>
     </div>
   </main>
+
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+      <div class="modal-title">Confirmar seleção</div>
+      <div class="modal-text" id="confirmModalText"></div>
+      <div class="modal-actions">
+        <button class="secondary-btn" onclick="closeMissingModal()">Voltar para escolher</button>
+        <button class="primary-btn" onclick="continueWithoutMoreOptions()">Continuar mesmo assim</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
