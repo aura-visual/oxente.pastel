@@ -1,97 +1,90 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bebidas | OXENTE PASTEL</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Bebidas</title>
+
+<link rel="icon" href="logo.oxente.jpg">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+
 </head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="icon-btn" onclick="this.href=prevPageFor('bebidas')">← Voltar</a>
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>Bebidas</strong>
-          <span>Escolha com + e -</span>
-        </div>
-      </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-  </div>
 
-  <main class="app">
-    <section class="content">
-      <div class="progress">
-        <div class="step">Início</div>
-        <div class="step">Pedido</div>
-        <div class="step">Montagem</div>
-        <div class="step active">Extras</div>
-        <div class="step">Resumo</div>
-      </div>
+<body onload="progress(70)">
 
-      <h1 class="hero-title">Bebidas</h1>
-      <p class="hero-subtitle">Última etapa antes do resumo.</p>
+<div class="topbar">
+<div class="topbar-inner">
 
-      <div class="list">
-        <div class="item" data-item-id="beb-agua">
-          <div class="item-top"><div><div class="item-title">Água Mineral 500ml</div></div><div class="price">R$ 2,50</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-agua')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-agua','Água Mineral 500ml',2.50); renderQuantityPages();">+</button></div></div>
-        </div>
+<div class="brand">
+<img src="logo.oxente.jpg">
+<div class="brand-text">
+<strong>Bebidas</strong>
+<span>Escolha sua bebida</span>
+</div>
+</div>
 
-        <div class="item" data-item-id="beb-agua-gas">
-          <div class="item-top"><div><div class="item-title">Água Mineral c/ gás 500ml</div></div><div class="price">R$ 3,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-agua-gas')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-agua-gas','Água Mineral c/ gás 500ml',3.00); renderQuantityPages();">+</button></div></div>
-        </div>
+<div>Pedido <span class="cart-count">0</span></div>
 
-        <div class="item" data-item-id="beb-lata">
-          <div class="item-top"><div><div class="item-title">Refrigerante Lata</div></div><div class="price">R$ 6,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-lata')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-lata','Refrigerante Lata',6.00); renderQuantityPages();">+</button></div></div>
-        </div>
+</div>
 
-        <div class="item" data-item-id="beb-guarana">
-          <div class="item-top"><div><div class="item-title">Guaraná 1L</div></div><div class="price">R$ 9,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-guarana')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-guarana','Guaraná 1L',9.00); renderQuantityPages();">+</button></div></div>
-        </div>
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
 
-        <div class="item" data-item-id="beb-coca">
-          <div class="item-top"><div><div class="item-title">Coca-Cola 1L</div></div><div class="price">R$ 9,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-coca')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-coca','Coca-Cola 1L',9.00); renderQuantityPages();">+</button></div></div>
-        </div>
+</div>
 
-        <div class="item" data-item-id="beb-sao-geraldo">
-          <div class="item-top"><div><div class="item-title">São Geraldo 1L</div></div><div class="price">R$ 9,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-sao-geraldo')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-sao-geraldo','São Geraldo 1L',9.00); renderQuantityPages();">+</button></div></div>
-        </div>
+<div class="container">
 
-        <div class="item" data-item-id="beb-suco">
-          <div class="item-top"><div><div class="item-title">Sucos Diversos 500ml</div></div><div class="price">R$ 8,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-suco')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-suco','Sucos Diversos 500ml',8.00); renderQuantityPages();">+</button></div></div>
-        </div>
+<div class="title">Refrigerante lata</div>
 
-        <div class="item" data-item-id="beb-vitamina">
-          <div class="item-top"><div><div class="item-title">Vitaminas 500ml</div></div><div class="price">R$ 12,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-vitamina')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-vitamina','Vitaminas 500ml',12.00); renderQuantityPages();">+</button></div></div>
-        </div>
+<div class="list-item">
+Coca-cola — R$ 6,00
+<div class="qty">
+<button onclick="removeItem('Coca lata')">-</button>
+<button onclick="addItem('Coca lata',6)">+</button>
+</div>
+</div>
 
-        <div class="item" data-item-id="beb-smoothie">
-          <div class="item-top"><div><div class="item-title">Smoothie 500ml</div></div><div class="price">R$ 14,00</div></div>
-          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('beb-smoothie')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('beb-smoothie','Smoothie 500ml',14.00); renderQuantityPages();">+</button></div></div>
-        </div>
-      </div>
-    </section>
+<div class="list-item">
+Fanta laranja — R$ 6,00
+<div class="qty">
+<button onclick="removeItem('Fanta laranja')">-</button>
+<button onclick="addItem('Fanta laranja',6)">+</button>
+</div>
+</div>
 
-    <div class="footer-action">
-      <div class="footer-inner">
-        <div class="total-box">
-          <small>Total atual</small>
-          <strong data-total>R$ 0,00</strong>
-        </div>
-        <a href="resumo.html" class="btn">Continuar</a>
-      </div>
-    </div>
-  </main>
+<div class="title">Refrigerante 1L</div>
+
+<div class="list-item">
+Guaraná — R$ 9,00
+<div class="qty">
+<button onclick="removeItem('Guarana 1L')">-</button>
+<button onclick="addItem('Guarana 1L',9)">+</button>
+</div>
+</div>
+
+<div class="list-item">
+Cajuína São Geraldo — R$ 9,00
+<div class="qty">
+<button onclick="removeItem('Cajuina')">-</button>
+<button onclick="addItem('Cajuina',9)">+</button>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+<div class="footer-inner">
+<div class="total">
+Total <span class="cart-total">R$ 0</span>
+</div>
+
+<a href="resumo.html" class="btn">Continuar</a>
+
+</div>
+</div>
+
 </body>
 </html>
