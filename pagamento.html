@@ -1,29 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Pagamento</title>
-
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pagamento</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="pagamento">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Pagamento</strong>
+          <span>Finalizar pedido</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('pagamento')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body onload="progress(100)">
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Pagamento</h1>
+      <p class="hero-subtitle">Escolha a forma de pagamento e finalize no WhatsApp.</p>
 
-<div class="container">
+      <div id="paymentSummary"></div>
 
-<div class="title">Forma de pagamento</div>
+      <div class="section-title">Forma de pagamento</div>
+      <div class="pay-grid">
+        <button class="pay-option" data-pay="Pix" onclick="setPayment('Pix')">Pix</button>
+        <button class="pay-option" data-pay="Cartão (débito/crédito)" onclick="setPayment('Cartão (débito/crédito)')">Cartão (débito/crédito)</button>
+        <button class="pay-option" data-pay="Dinheiro" onclick="setPayment('Dinheiro')">Dinheiro</button>
+      </div>
 
-<div class="list-item">PIX</div>
-<div class="list-item">Cartão</div>
-<div class="list-item">Dinheiro</div>
+      <div class="alert" id="paymentAlert"></div>
+    </section>
 
-<a class="btn" href="https://wa.me/5588998650795">
-Finalizar pedido
-</a>
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total final</small>
+          <strong class="cart-total">R$ 0,00</strong>
+        </div>
+        <button class="primary-btn" onclick="finishOrder()">Finalizar</button>
+      </div>
+    </div>
+  </main>
 
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
