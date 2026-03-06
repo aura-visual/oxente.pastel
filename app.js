@@ -1,307 +1,537 @@
-const STORAGE_KEY = "oxente_pedido_v2";
-const MONTAGEM_KEY = "oxente_montagem_v1";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-const LIMITES = {
-  oxente: { sabor: 1, recheio: 0, mix: 0 },
-  arrochado: { sabor: 1, recheio: 2, mix: 1 },
-  cabra_macho: { sabor: 1, recheio: 3, mix: 1 }
-};
-
-const OPCOES_MONTAGEM = {
-  sabor: [
-    { id: "frango", nome: "Frango", extra: 0 },
-    { id: "calabresa", nome: "Calabresa", extra: 0 },
-    { id: "queijo", nome: "Queijo", extra: 0 },
-    { id: "carne", nome: "Carne", extra: 0 },
-    { id: "carne_de_sol", nome: "Carne de Sol", extra: 2 }
-  ],
-  recheio: [
-    { id: "cebola", nome: "Cebola" },
-    { id: "bacon", nome: "Bacon" },
-    { id: "tomate", nome: "Tomate" },
-    { id: "presunto", nome: "Presunto" },
-    { id: "milho", nome: "Milho" },
-    { id: "queijo_coalho", nome: "Queijo coalho" },
-    { id: "mussarela", nome: "Mussarela" },
-    { id: "oregano", nome: "Orégano" },
-    { id: "azeitona", nome: "Azeitona" }
-  ],
-  mix: [
-    { id: "catupiry", nome: "Catupiry" },
-    { id: "cheddar", nome: "Cheddar" },
-    { id: "requeijao", nome: "Requeijão" },
-    { id: "cream_cheese", nome: "Cream Cheese" }
-  ]
-};
-
-function formatMoney(v){
-  return "R$ " + Number(v).toFixed(2).replace(".", ",");
+:root{
+  --bg:#070707;
+  --bg-soft:#111111;
+  --card:#171717;
+  --line:rgba(255,210,0,0.14);
+  --yellow:#f7c600;
+  --yellow-soft:#ffda57;
+  --text:#ffffff;
+  --muted:#b5b5b5;
+  --danger:#ff7b7b;
+  --ok:#7dffb1;
+  --shadow:0 18px 40px rgba(0,0,0,.34);
+  --radius-xl:26px;
+  --radius-lg:20px;
+  --radius-md:16px;
+  --maxw:520px;
 }
 
-function getPedido(){
-  return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"items":[]}');
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
-function savePedido(pedido){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(pedido));
-  updateCartUI();
+html,body{
+  min-height:100%;
 }
 
-function getMontagem(){
-  return JSON.parse(localStorage.getItem(MONTAGEM_KEY) || '{"tipo":"","sabor":[],"recheio":[],"mix":[]}');
+body{
+  font-family:'Montserrat',sans-serif;
+  color:var(--text);
+  background:
+    linear-gradient(rgba(7,7,7,.93), rgba(7,7,7,.97)),
+    url("logo.oxente.jpg");
+  background-repeat:repeat;
+  background-size:180px;
+  background-attachment:fixed;
+  overflow-x:hidden;
 }
 
-function saveMontagem(data){
-  localStorage.setItem(MONTAGEM_KEY, JSON.stringify(data));
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,210,0,.07), transparent 25%),
+    radial-gradient(circle at 85% 20%, rgba(255,210,0,.05), transparent 22%),
+    radial-gradient(circle at 50% 85%, rgba(255,210,0,.04), transparent 28%);
+  z-index:0;
 }
 
-function resetMontagem(){
-  localStorage.setItem(MONTAGEM_KEY, JSON.stringify({ tipo:"", sabor:[], recheio:[], mix:[] }));
+a{
+  text-decoration:none;
+  color:inherit;
 }
 
-function setTipoPastel(tipo){
-  const montagem = { tipo, sabor:[], recheio:[], mix:[] };
-  saveMontagem(montagem);
+button{
+  font-family:'Montserrat',sans-serif;
 }
 
-function addItem(id, nome, preco){
-  const pedido = getPedido();
-  const existente = pedido.items.find(i => i.id === id);
+.app{
+  position:relative;
+  z-index:1;
+  max-width:var(--maxw);
+  margin:0 auto;
+  min-height:100vh;
+  padding-bottom:110px;
+}
 
-  if(existente){
-    existente.qtd += 1;
-  }else{
-    pedido.items.push({ id, nome, preco:Number(preco), qtd:1 });
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:40;
+  backdrop-filter:blur(14px);
+  background:rgba(7,7,7,.8);
+  border-bottom:1px solid var(--line);
+}
+
+.topbar-inner{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.brand img{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  object-fit:cover;
+  border:1px solid rgba(255,210,0,.18);
+  box-shadow:var(--shadow);
+}
+
+.brand-text strong{
+  display:block;
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:.3px;
+}
+
+.brand-text span{
+  display:block;
+  margin-top:2px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.icon-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:44px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,210,0,.16);
+  background:rgba(255,255,255,.03);
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+  box-shadow:var(--shadow);
+  transition:.18s ease;
+}
+
+.icon-btn:active,
+.card:active,
+.btn:active,
+.qty-btn:active,
+.option-chip:active{
+  transform:scale(.98);
+}
+
+.badge{
+  min-width:22px;
+  height:22px;
+  padding:0 7px;
+  border-radius:999px;
+  background:var(--yellow);
+  color:#000;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:800;
+}
+
+.content{
+  padding:18px 16px 0;
+}
+
+.hero-title{
+  font-size:26px;
+  line-height:1.08;
+  font-weight:900;
+  letter-spacing:-.4px;
+  margin-bottom:10px;
+}
+
+.hero-subtitle{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--muted);
+  margin-bottom:18px;
+}
+
+.progress{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:20px;
+}
+
+.step{
+  min-height:54px;
+  border-radius:16px;
+  border:1px solid rgba(255,210,0,.1);
+  background:rgba(255,255,255,.025);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:8px 6px;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.2;
+  color:#8e8e8e;
+}
+
+.step.active{
+  background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
+  border-color:rgba(255,210,0,.28);
+  color:var(--yellow-soft);
+  box-shadow:0 10px 24px rgba(255,210,0,.08);
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.card{
+  background:linear-gradient(180deg, rgba(255,210,0,.06), rgba(255,255,255,.015));
+  border:1px solid rgba(255,210,0,.12);
+  border-radius:var(--radius-xl);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.card-image{
+  width:100%;
+  height:190px;
+  display:block;
+  object-fit:cover;
+}
+
+.card-body{
+  padding:16px;
+}
+
+.card-title{
+  font-size:22px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.card-desc{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--muted);
+}
+
+.card-action{
+  margin-top:16px;
+}
+
+.btn{
+  width:100%;
+  min-height:50px;
+  border:none;
+  border-radius:18px;
+  background:var(--yellow);
+  color:#000;
+  font-size:14px;
+  font-weight:900;
+  padding:14px 16px;
+  box-shadow:0 12px 28px rgba(255,210,0,.16);
+  cursor:pointer;
+  text-align:center;
+}
+
+.btn-outline{
+  background:transparent;
+  color:var(--yellow-soft);
+  border:1px solid rgba(255,210,0,.24);
+  box-shadow:none;
+}
+
+.btn-disabled{
+  opacity:.45;
+  pointer-events:none;
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.item{
+  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
+  border:1px solid rgba(255,210,0,.11);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+
+.item-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.item-title{
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.item-desc{
+  font-size:12px;
+  line-height:1.5;
+  color:var(--muted);
+}
+
+.price{
+  white-space:nowrap;
+  color:var(--yellow-soft);
+  font-weight:800;
+  font-size:14px;
+}
+
+.item-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:16px;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.qty-btn{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,210,0,.14);
+  color:var(--yellow-soft);
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.qty-value{
+  min-width:28px;
+  text-align:center;
+  font-size:15px;
+  font-weight:800;
+}
+
+.footer-action{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:50;
+  padding:10px 14px 16px;
+  background:linear-gradient(180deg, rgba(7,7,7,0), rgba(7,7,7,.92) 35%, rgba(7,7,7,.98));
+}
+
+.footer-inner{
+  max-width:var(--maxw);
+  margin:0 auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.total-box{
+  flex:1;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,210,0,.12);
+  border-radius:18px;
+  padding:12px 14px;
+}
+
+.total-box small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:4px;
+}
+
+.total-box strong{
+  font-size:17px;
+  font-weight:900;
+}
+
+.section-box{
+  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
+  border:1px solid rgba(255,210,0,.11);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+
+.section-title{
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:6px;
+}
+
+.section-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.4;
+  margin-bottom:14px;
+}
+
+.option-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.option-chip{
+  min-height:58px;
+  border:none;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,210,0,.14);
+  color:var(--text);
+  padding:12px;
+  text-align:left;
+  cursor:pointer;
+  transition:.18s ease;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:3px;
+}
+
+.option-chip small{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.option-chip.active{
+  background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
+  border-color:rgba(255,210,0,.36);
+  color:var(--yellow-soft);
+}
+
+.option-chip.disabled{
+  opacity:.25;
+  filter:grayscale(.25);
+  pointer-events:none;
+}
+
+.select-card{
+  border:1px solid rgba(255,210,0,.12);
+  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  transition:.18s ease;
+}
+
+.select-card.active{
+  border-color:rgba(255,210,0,.36);
+  background:linear-gradient(180deg, rgba(255,210,0,.18), rgba(255,210,0,.08));
+}
+
+.limit-info{
+  margin-top:12px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.alert{
+  margin-top:10px;
+  color:var(--danger);
+  font-size:12px;
+  font-weight:700;
+}
+
+.ok-text{
+  color:var(--ok);
+}
+
+.summary-box{
+  background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
+  border:1px solid rgba(255,210,0,.11);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+
+.summary-line{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 0;
+  border-bottom:1px dashed rgba(255,210,0,.12);
+  font-size:13px;
+}
+
+.summary-line:last-child{
+  border-bottom:none;
+}
+
+.summary-total{
+  display:flex;
+  justify-content:space-between;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid rgba(255,210,0,.14);
+  font-size:16px;
+  font-weight:900;
+}
+
+.empty-text{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+@media (max-width:390px){
+  .step{
+    font-size:9px;
+    min-height:50px;
   }
 
-  savePedido(pedido);
-}
-
-function changeQty(id, delta){
-  const pedido = getPedido();
-  const item = pedido.items.find(i => i.id === id);
-  if(!item) return;
-
-  item.qtd += delta;
-
-  if(item.qtd <= 0){
-    pedido.items = pedido.items.filter(i => i.id !== id);
+  .hero-title{
+    font-size:23px;
   }
 
-  savePedido(pedido);
-  renderPageQuantities();
-}
-
-function getQtd(id){
-  const pedido = getPedido();
-  const item = pedido.items.find(i => i.id === id);
-  return item ? item.qtd : 0;
-}
-
-function getTotalItens(){
-  return getPedido().items.reduce((acc, item) => acc + item.qtd, 0);
-}
-
-function getTotalValor(){
-  return getPedido().items.reduce((acc, item) => acc + (item.preco * item.qtd), 0);
-}
-
-function updateCartUI(){
-  document.querySelectorAll("[data-cart-count]").forEach(el => {
-    el.textContent = getTotalItens();
-  });
-
-  document.querySelectorAll("[data-total]").forEach(el => {
-    el.textContent = formatMoney(getTotalValor());
-  });
-}
-
-function renderPageQuantities(){
-  document.querySelectorAll("[data-item-id]").forEach(box => {
-    const id = box.dataset.itemId;
-    const value = box.querySelector(".qty-value");
-    if(value){
-      value.textContent = getQtd(id);
-    }
-  });
-}
-
-function getBasePastelInfo(tipo){
-  if(tipo === "oxente"){
-    return { nome: "Pastel Oxente", preco: 13.99 };
-  }
-  if(tipo === "arrochado"){
-    return { nome: "Pastel Arrochado", preco: 17.99 };
-  }
-  if(tipo === "cabra_macho"){
-    return { nome: "Pastel Cabra Macho", preco: 19.99 };
-  }
-  return { nome: "Pastel", preco: 0 };
-}
-
-function countSelected(arr){
-  return Array.isArray(arr) ? arr.length : 0;
-}
-
-function toggleOpcao(categoria, opcaoId){
-  const montagem = getMontagem();
-  if(!montagem.tipo) return;
-
-  const limites = LIMITES[montagem.tipo];
-  const atual = montagem[categoria] || [];
-
-  if(atual.includes(opcaoId)){
-    montagem[categoria] = atual.filter(id => id !== opcaoId);
-    saveMontagem(montagem);
-    renderMontagem();
-    return;
+  .card-title{
+    font-size:20px;
   }
 
-  if(atual.length >= limites[categoria]){
-    return;
+  .option-grid{
+    grid-template-columns:1fr;
   }
-
-  montagem[categoria].push(opcaoId);
-  saveMontagem(montagem);
-  renderMontagem();
 }
-
-function getOpcaoNome(categoria, id){
-  const item = OPCOES_MONTAGEM[categoria].find(op => op.id === id);
-  return item ? item.nome : id;
-}
-
-function getExtraMontagem(montagem){
-  let extra = 0;
-  montagem.sabor.forEach(id => {
-    const item = OPCOES_MONTAGEM.sabor.find(op => op.id === id);
-    if(item && item.extra){
-      extra += item.extra;
-    }
-  });
-  return extra;
-}
-
-function montagemValida(){
-  const montagem = getMontagem();
-  if(!montagem.tipo) return false;
-
-  const limites = LIMITES[montagem.tipo];
-
-  const saborOk = montagem.sabor.length === limites.sabor;
-  const recheioOk = montagem.recheio.length === limites.recheio;
-  const mixOk = montagem.mix.length === limites.mix;
-
-  return saborOk && recheioOk && mixOk;
-}
-
-function adicionarPastelMontado(){
-  const montagem = getMontagem();
-  if(!montagemValida()){
-    const alertBox = document.getElementById("montagemAlert");
-    if(alertBox){
-      alertBox.textContent = "Complete as escolhas obrigatórias antes de continuar.";
-    }
-    return;
-  }
-
-  const base = getBasePastelInfo(montagem.tipo);
-  const extra = getExtraMontagem(montagem);
-  const precoFinal = base.preco + extra;
-
-  const partes = [];
-  if(montagem.sabor.length){
-    partes.push("Sabor: " + montagem.sabor.map(id => getOpcaoNome("sabor", id)).join(", "));
-  }
-  if(montagem.recheio.length){
-    partes.push("Recheio: " + montagem.recheio.map(id => getOpcaoNome("recheio", id)).join(", "));
-  }
-  if(montagem.mix.length){
-    partes.push("Mix: " + montagem.mix.map(id => getOpcaoNome("mix", id)).join(", "));
-  }
-
-  const nomeFinal = `${base.nome} (${partes.join(" | ")})`;
-
-  addItem(
-    "montado_" + Date.now(),
-    nomeFinal,
-    precoFinal
-  );
-
-  resetMontagem();
-  window.location.href = "viva-nordeste.html";
-}
-
-function renderMontagem(){
-  const montagem = getMontagem();
-  const tipoNomeEl = document.getElementById("tipoPastelNome");
-  const resumoEl = document.getElementById("montagemResumo");
-  const alertEl = document.getElementById("montagemAlert");
-
-  if(alertEl){
-    alertEl.textContent = "";
-  }
-
-  if(!montagem.tipo){
-    if(tipoNomeEl) tipoNomeEl.textContent = "Nenhum tipo selecionado";
-    return;
-  }
-
-  const base = getBasePastelInfo(montagem.tipo);
-  const limites = LIMITES[montagem.tipo];
-  const extra = getExtraMontagem(montagem);
-  const total = base.preco + extra;
-
-  if(tipoNomeEl){
-    tipoNomeEl.textContent = base.nome + " • " + formatMoney(total);
-  }
-
-  if(resumoEl){
-    resumoEl.innerHTML = `
-      <h3>${base.nome}</h3>
-      <p><strong>Sabor:</strong> ${montagem.sabor.length ? montagem.sabor.map(id => getOpcaoNome("sabor", id)).join(", ") : "Nenhum"}</p>
-      <p><strong>Recheio:</strong> ${limites.recheio === 0 ? "Não se aplica" : (montagem.recheio.length ? montagem.recheio.map(id => getOpcaoNome("recheio", id)).join(", ") : "Nenhum")}</p>
-      <p><strong>Mix:</strong> ${limites.mix === 0 ? "Não se aplica" : (montagem.mix.length ? montagem.mix.map(id => getOpcaoNome("mix", id)).join(", ") : "Nenhum")}</p>
-      <p><strong>Valor atual:</strong> ${formatMoney(total)} ${extra > 0 ? "(inclui acréscimo de Carne de Sol)" : ""}</p>
-    `;
-  }
-
-  ["sabor", "recheio", "mix"].forEach(categoria => {
-    const container = document.getElementById(categoria + "Options");
-    const info = document.getElementById(categoria + "Info");
-    if(!container) return;
-
-    const limite = limites[categoria];
-    const selecionados = montagem[categoria];
-
-    if(info){
-      if(limite === 0){
-        info.textContent = "Não disponível para este tipo de pastel.";
-      }else{
-        info.textContent = `Escolha ${limite} opção(ões). Selecionados: ${selecionados.length}/${limite}`;
-      }
-    }
-
-    container.querySelectorAll(".option-chip").forEach(btn => {
-      const id = btn.dataset.optionId;
-      btn.classList.remove("active", "disabled");
-
-      if(limite === 0){
-        btn.classList.add("disabled");
-        return;
-      }
-
-      if(selecionados.includes(id)){
-        btn.classList.add("active");
-      }else if(selecionados.length >= limite){
-        btn.classList.add("disabled");
-      }
-    });
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartUI();
-  renderPageQuantities();
-  renderMontagem();
-});
