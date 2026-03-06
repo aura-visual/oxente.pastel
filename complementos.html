@@ -3,26 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pastéis | OXENTE PASTEL</title>
+  <title>Complementos | OXENTE PASTEL</title>
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <div class="topbar">
     <div class="topbar-inner">
-      <a href="index.html" class="icon-btn">← Voltar</a>
-
+      <a href="#" class="icon-btn" onclick="this.href=prevPageFor('complementos')">← Voltar</a>
       <div class="brand">
         <img src="logo.oxente.jpg" alt="Logo">
         <div class="brand-text">
-          <strong>Pastéis</strong>
-          <span>Escolha uma opção</span>
+          <strong>Complementos</strong>
+          <span>Acompanhamentos</span>
         </div>
       </div>
-
-      <a href="resumo.html" class="icon-btn">
-        Pedido <span class="badge" data-cart-count>0</span>
-      </a>
+      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
     </div>
   </div>
 
@@ -30,74 +26,34 @@
     <section class="content">
       <div class="progress">
         <div class="step">Início</div>
-        <div class="step active">Pedido</div>
-        <div class="step">Complementos</div>
-        <div class="step">Bebidas</div>
+        <div class="step">Pedido</div>
+        <div class="step">Montagem</div>
+        <div class="step active">Extras</div>
         <div class="step">Resumo</div>
       </div>
 
-      <h1 class="title">Escolha seu pastel</h1>
-      <p class="subtitle">Depois dessa etapa, vamos para complementos e bebidas.</p>
+      <h1 class="hero-title">Complementos</h1>
+      <p class="hero-subtitle">Escolha acompanhamentos com + e -.</p>
 
       <div class="list">
-        <div class="item" data-item-id="pastel-oxente">
-          <div class="item-top">
-            <div>
-              <div class="item-title">OXENTE</div>
-              <div class="item-desc">Escolha base para seguir às próximas etapas.</div>
-            </div>
-            <div class="price">R$ 13,99</div>
-          </div>
-
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="changeQty('pastel-oxente', -1)">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addItem('pastel-oxente','Pastel Oxente',13.99)">+</button>
-            </div>
-
-            <button class="btn" style="max-width:160px;" onclick="addItem('pastel-oxente','Pastel Oxente',13.99)">Adicionar</button>
-          </div>
+        <div class="item" data-item-id="comp-fritas-simples">
+          <div class="item-top"><div><div class="item-title">Fritas Simples</div><div class="item-desc">150g de batatinha crocante.</div></div><div class="price">R$ 10,99</div></div>
+          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('comp-fritas-simples')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('comp-fritas-simples','Fritas Simples',10.99); renderQuantityPages();">+</button></div></div>
         </div>
 
-        <div class="item" data-item-id="pastel-arrochado">
-          <div class="item-top">
-            <div>
-              <div class="item-title">ARROCHADO</div>
-              <div class="item-desc">Pastel intermediário para seguir no fluxo.</div>
-            </div>
-            <div class="price">R$ 17,99</div>
-          </div>
-
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="changeQty('pastel-arrochado', -1)">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addItem('pastel-arrochado','Pastel Arrochado',17.99)">+</button>
-            </div>
-
-            <button class="btn" style="max-width:160px;" onclick="addItem('pastel-arrochado','Pastel Arrochado',17.99)">Adicionar</button>
-          </div>
+        <div class="item" data-item-id="comp-fritas-cheddar">
+          <div class="item-top"><div><div class="item-title">Fritas Cheddar</div><div class="item-desc">250g de batata com cheddar e bacon.</div></div><div class="price">R$ 18,99</div></div>
+          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('comp-fritas-cheddar')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('comp-fritas-cheddar','Fritas Cheddar',18.99); renderQuantityPages();">+</button></div></div>
         </div>
 
-        <div class="item" data-item-id="pastel-cabra-macho">
-          <div class="item-top">
-            <div>
-              <div class="item-title">CABRA MACHO</div>
-              <div class="item-desc">Versão mais reforçada para seguir às próximas etapas.</div>
-            </div>
-            <div class="price">R$ 19,99</div>
-          </div>
+        <div class="item" data-item-id="comp-fritas-cream-cheese">
+          <div class="item-top"><div><div class="item-title">Fritas Cream Cheese</div><div class="item-desc">250g de batata com cream cheese e bacon.</div></div><div class="price">R$ 18,99</div></div>
+          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('comp-fritas-cream-cheese')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('comp-fritas-cream-cheese','Fritas Cream Cheese',18.99); renderQuantityPages();">+</button></div></div>
+        </div>
 
-          <div class="item-bottom">
-            <div class="qty">
-              <button class="qty-btn" onclick="changeQty('pastel-cabra-macho', -1)">−</button>
-              <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addItem('pastel-cabra-macho','Pastel Cabra Macho',19.99)">+</button>
-            </div>
-
-            <button class="btn" style="max-width:160px;" onclick="addItem('pastel-cabra-macho','Pastel Cabra Macho',19.99)">Adicionar</button>
-          </div>
+        <div class="item" data-item-id="comp-fritas-carne-sol">
+          <div class="item-top"><div><div class="item-title">Fritas Carne de Sol</div><div class="item-desc">250g de batata com carne de sol, bacon e cheddar ou cream cheese.</div></div><div class="price">R$ 18,99</div></div>
+          <div class="item-bottom"><div class="qty"><button class="qty-btn" onclick="decreaseItem('comp-fritas-carne-sol')">−</button><div class="qty-value">0</div><button class="qty-btn" onclick="addOrIncrease('comp-fritas-carne-sol','Fritas Carne de Sol',18.99); renderQuantityPages();">+</button></div></div>
         </div>
       </div>
     </section>
@@ -105,12 +61,10 @@
     <div class="footer-action">
       <div class="footer-inner">
         <div class="total-box">
-          <small>Total do pedido</small>
+          <small>Total atual</small>
           <strong data-total>R$ 0,00</strong>
         </div>
-        <a href="complementos.html" style="flex:1;">
-          <button class="btn">Continuar</button>
-        </a>
+        <a href="bebidas.html" class="btn">Continuar</a>
       </div>
     </div>
   </main>
