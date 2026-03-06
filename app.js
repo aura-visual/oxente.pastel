@@ -1,7 +1,8 @@
-const STORAGE_KEY = "oxente_fluxo_v4";
-const TEMP_MONTAGEM_KEY = "oxente_temp_montagem_v4";
-const CLIENT_KEY = "oxente_cliente_v1";
-const PAYMENT_KEY = "oxente_pagamento_v1";
+const STORAGE_KEY = "oxente_fluxo_v5";
+const TEMP_MONTAGEM_KEY = "oxente_temp_montagem_v5";
+const CLIENT_KEY = "oxente_cliente_v2";
+const PAYMENT_KEY = "oxente_pagamento_v2";
+const ACCOMP_KEY = "oxente_acomp_v1";
 
 const LIMITES = {
   oxente: { sabor: 1, recheio: 0, mix: 0 },
@@ -82,38 +83,8 @@ function clearAll(){
   localStorage.removeItem(TEMP_MONTAGEM_KEY);
   localStorage.removeItem(CLIENT_KEY);
   localStorage.removeItem(PAYMENT_KEY);
+  localStorage.removeItem(ACCOMP_KEY);
   updateUI();
-}
-
-function nextPageAfterCurrent(current){
-  const flow = getFlow();
-
-  if(flow === "combos"){
-    if(current === "combos") return "complementos.html";
-    if(current === "complementos") return "bebidas.html";
-    if(current === "bebidas") return "resumo.html";
-    if(current === "resumo") return "entrega.html";
-    if(current === "entrega") return "pagamento.html";
-  }
-
-  if(flow === "montagem"){
-    if(current === "pasteis") return "montagem-pastel.html";
-    if(current === "montagem-pastel") return "complementos.html";
-    if(current === "complementos") return "bebidas.html";
-    if(current === "bebidas") return "resumo.html";
-    if(current === "resumo") return "entrega.html";
-    if(current === "entrega") return "pagamento.html";
-  }
-
-  if(flow === "nordeste"){
-    if(current === "viva-nordeste") return "complementos.html";
-    if(current === "complementos") return "bebidas.html";
-    if(current === "bebidas") return "resumo.html";
-    if(current === "resumo") return "entrega.html";
-    if(current === "entrega") return "pagamento.html";
-  }
-
-  return "pagamento.html";
 }
 
 function prevPageFor(page){
@@ -123,25 +94,48 @@ function prevPageFor(page){
   if(page === "entrega") return "resumo.html";
 
   if(flow === "combos"){
-    if(page === "complementos") return "combos.html";
-    if(page === "bebidas") return "complementos.html";
+    if(page === "acompanhamentos") return "combos.html";
+    if(page === "bebidas") return "acompanhamentos.html";
     if(page === "resumo") return "bebidas.html";
   }
 
   if(flow === "montagem"){
     if(page === "montagem-pastel") return "pasteis.html";
-    if(page === "complementos") return "montagem-pastel.html";
-    if(page === "bebidas") return "complementos.html";
+    if(page === "acompanhamentos") return "montagem-pastel.html";
+    if(page === "bebidas") return "acompanhamentos.html";
     if(page === "resumo") return "bebidas.html";
   }
 
   if(flow === "nordeste"){
-    if(page === "complementos") return "viva-nordeste.html";
-    if(page === "bebidas") return "complementos.html";
+    if(page === "acompanhamentos") return "viva-nordeste.html";
+    if(page === "bebidas") return "acompanhamentos.html";
     if(page === "resumo") return "bebidas.html";
   }
 
   return "index.html";
+}
+
+function progressByPage(page){
+  const map = {
+    "index": 8,
+    "combos": 24,
+    "pasteis": 22,
+    "montagem-pastel": 38,
+    "viva-nordeste": 24,
+    "acompanhamentos": 58,
+    "bebidas": 76,
+    "resumo": 88,
+    "entrega": 94,
+    "pagamento": 100
+  };
+  return map[page] || 0;
+}
+
+function setProgress(page){
+  const value = progressByPage(page);
+  document.querySelectorAll("[data-progress-fill]").forEach(el => {
+    el.style.width = value + "%";
+  });
 }
 
 function addOrIncrease(id, nome, preco){
@@ -171,6 +165,7 @@ function decreaseItem(id){
   saveState(state);
   renderQuantityPages();
   renderResumo();
+  renderFritasSubOption();
 }
 
 function getItemQty(id){
@@ -278,45 +273,6 @@ function toggleMontagem(group, id){
   renderMontagemPage();
 }
 
-function montagemValida(){
-  const data = getTempMontagem();
-  if(!data.tipo) return false;
-
-  const lim = LIMITES[data.tipo];
-
-  return (
-    data.sabor.length === lim.sabor &&
-    data.recheio.length === lim.recheio &&
-    data.mix.length === lim.mix
-  );
-}
-
-function addMountedPastelAndContinue(){
-  const data = getTempMontagem();
-  const alert = document.getElementById("montagemAlert");
-
-  if(alert) alert.textContent = "";
-
-  if(!montagemValida()){
-    if(alert) alert.textContent = "Complete todas as escolhas obrigatórias.";
-    return;
-  }
-
-  const base = BASE_PASTEIS[data.tipo];
-  const extra = getMontagemExtra(data);
-  const price = base.preco + extra;
-
-  const detalhes = [];
-  if(data.sabor.length) detalhes.push("Sabor: " + data.sabor.map(id => getOptionName("sabor", id)).join(", "));
-  if(data.recheio.length) detalhes.push("Recheio: " + data.recheio.map(id => getOptionName("recheio", id)).join(", "));
-  if(data.mix.length) detalhes.push("Mix: " + data.mix.map(id => getOptionName("mix", id)).join(", "));
-
-  const nome = `${base.nome} (${detalhes.join(" | ")})`;
-
-  addOrIncrease("montado_" + Date.now(), nome, price);
-  window.location.href = "complementos.html";
-}
-
 function renderMontagemPage(){
   const data = getTempMontagem();
   const resumo = document.getElementById("montagemResumo");
@@ -357,7 +313,7 @@ function renderMontagemPage(){
     if(info){
       info.textContent = limite === 0
         ? "Não disponível para este tipo."
-        : `Escolha ${limite} opção(ões). Selecionados: ${selected.length}/${limite}`;
+        : `Você pode escolher até ${limite} opção(ões). Selecionados: ${selected.length}`;
     }
 
     wrap.querySelectorAll(".option-chip").forEach(btn => {
@@ -376,6 +332,71 @@ function renderMontagemPage(){
       }
     });
   });
+}
+
+function addMountedPastelAndContinue(){
+  const data = getTempMontagem();
+  const alert = document.getElementById("montagemAlert");
+  if(alert) alert.textContent = "";
+
+  if(!data.tipo){
+    if(alert) alert.textContent = "Selecione um tipo de pastel.";
+    return;
+  }
+
+  const missing = [];
+  if(data.sabor.length === 0) missing.push("sabor");
+  if(data.recheio.length === 0 && LIMITES[data.tipo].recheio > 0) missing.push("recheio");
+  if(data.mix.length === 0 && LIMITES[data.tipo].mix > 0) missing.push("mix");
+
+  if(missing.length > 0){
+    openConfirmModal(missing);
+    return;
+  }
+
+  finalizeMountedPastel();
+}
+
+function finalizeMountedPastel(){
+  const data = getTempMontagem();
+  const base = BASE_PASTEIS[data.tipo];
+  const extra = getMontagemExtra(data);
+  const price = base.preco + extra;
+
+  const detalhes = [];
+  if(data.sabor.length) detalhes.push("Sabor: " + data.sabor.map(id => getOptionName("sabor", id)).join(", "));
+  if(data.recheio.length) detalhes.push("Recheio: " + data.recheio.map(id => getOptionName("recheio", id)).join(", "));
+  if(data.mix.length) detalhes.push("Mix: " + data.mix.map(id => getOptionName("mix", id)).join(", "));
+
+  const sufixo = detalhes.length ? ` (${detalhes.join(" | ")})` : " (sem adicionais)";
+  const nome = `${base.nome}${sufixo}`;
+
+  addOrIncrease("montado_" + Date.now(), nome, price);
+  window.location.href = "acompanhamentos.html";
+}
+
+function openConfirmModal(missing){
+  const modal = document.getElementById("confirmModal");
+  const text = document.getElementById("confirmModalText");
+  if(!modal || !text) return;
+
+  const frases = [];
+  if(missing.includes("recheio")) frases.push("Tem certeza que não deseja incluir mais algum recheio?");
+  if(missing.includes("sabor")) frases.push("Tem certeza que não deseja incluir mais algum sabor?");
+  if(missing.includes("mix")) frases.push("Tem certeza que não deseja incluir mais algum mix?");
+
+  text.innerHTML = frases.join("<br><br>");
+  modal.classList.add("show");
+}
+
+function closeConfirmModal(){
+  const modal = document.getElementById("confirmModal");
+  if(modal) modal.classList.remove("show");
+}
+
+function continueWithoutMoreOptions(){
+  closeConfirmModal();
+  finalizeMountedPastel();
 }
 
 function renderResumo(){
@@ -506,6 +527,7 @@ function finishOrderWhatsApp(){
   const items = getState().items;
   const customer = JSON.parse(localStorage.getItem(CLIENT_KEY) || "{}");
   const pay = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "{}");
+  const acomp = JSON.parse(localStorage.getItem(ACCOMP_KEY) || "{}");
   const alert = document.getElementById("paymentAlert");
 
   if(alert) alert.textContent = "";
@@ -528,6 +550,10 @@ function finishOrderWhatsApp(){
     msg += `${item.qtd}x ${item.nome} - ${money(item.qtd * item.preco)}\n`;
   });
 
+  if(acomp.fritasCarneSolTipo){
+    msg += `Adicional fritas carne de sol: ${acomp.fritasCarneSolTipo}\n`;
+  }
+
   msg += "------------------------------\n";
   msg += `TOTAL: ${money(totalValue())}\n`;
   msg += "------------------------------\n";
@@ -543,7 +569,46 @@ function finishOrderWhatsApp(){
   window.location.href = url;
 }
 
+function setFritasCarneSolTipo(tipo){
+  const data = JSON.parse(localStorage.getItem(ACCOMP_KEY) || "{}");
+  data.fritasCarneSolTipo = tipo;
+  localStorage.setItem(ACCOMP_KEY, JSON.stringify(data));
+
+  document.querySelectorAll("[data-fritas-extra]").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  const selected = document.querySelector(`[data-fritas-extra="${tipo}"]`);
+  if(selected) selected.classList.add("active");
+}
+
+function renderFritasSubOption(){
+  const wrap = document.getElementById("fritasCarneSolSuboption");
+  if(!wrap) return;
+
+  const qty = getItemQty("comp-fritas-carne-sol");
+  const data = JSON.parse(localStorage.getItem(ACCOMP_KEY) || "{}");
+
+  if(qty >= 1){
+    wrap.style.display = "block";
+
+    document.querySelectorAll("[data-fritas-extra]").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    if(data.fritasCarneSolTipo){
+      const selected = document.querySelector(`[data-fritas-extra="${data.fritasCarneSolTipo}"]`);
+      if(selected) selected.classList.add("active");
+    }
+  } else {
+    wrap.style.display = "none";
+    localStorage.removeItem(ACCOMP_KEY);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  const currentPage = document.body.dataset.page || "";
+  setProgress(currentPage);
   updateUI();
   renderQuantityPages();
   renderMontagemPage();
@@ -551,4 +616,5 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCustomerData();
   loadPaymentMethod();
   renderPaymentSummary();
+  renderFritasSubOption();
 });
