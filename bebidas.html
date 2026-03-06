@@ -1,259 +1,207 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Bebidas | Oxente Pastel</title>
-
-<link rel="icon" href="logo.oxente.jpg">
-<link rel="stylesheet" href="style.css">
-<script src="app.js"></script>
-
-<style>
-
-.section-title{
-margin-top:25px;
-margin-bottom:10px;
-font-weight:800;
-font-size:18px;
-}
-
-.grid-drinks{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.drink-card{
-background:#161616;
-border-radius:12px;
-padding:14px;
-display:flex;
-flex-direction:column;
-gap:8px;
-}
-
-.drink-title{
-font-weight:700;
-font-size:14px;
-}
-
-.drink-price{
-color:#ffd400;
-font-weight:700;
-font-size:13px;
-}
-
-.qty{
-display:flex;
-justify-content:flex-end;
-align-items:center;
-gap:6px;
-}
-
-.qty button{
-width:28px;
-height:28px;
-border:none;
-border-radius:6px;
-background:#ffd400;
-font-weight:900;
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bebidas</title>
+  <link rel="icon" href="logo.oxente.jpg">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
+<body data-page="bebidas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo Oxente">
+        <div class="brand-text">
+          <strong>Bebidas</strong>
+          <span>Escolha por categoria</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" onclick="goPrev('bebidas')">← Voltar</button>
+        <button class="cart-btn" onclick="toggleCart(true)">Pedido 🍔 <span class="cart-count">0</span></button>
+      </div>
+    </div>
+    <div class="progress-shell"><div class="progress-fill" data-progress-fill></div></div>
+  </header>
 
-<body>
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Bebidas</h1>
+      <p class="hero-subtitle">Categorias separadas em quadrados, com controle - X + em todos os itens.</p>
 
-<div class="topbar">
+      <div class="section-title">Águas</div>
+      <div class="drink-grid">
+        <div class="drink-card" data-key="agua-500">
+          <div class="drink-title">Água mineral 500ml</div>
+          <div class="drink-price">R$ 2,50</div>
+          <div class="qty" data-key="agua-500">
+            <button class="qty-btn" onclick="decQty('agua-500')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('agua-500','Água mineral 500ml',2.5)">+</button>
+          </div>
+        </div>
 
-<div class="brand">
+        <div class="drink-card" data-key="agua-gas-500">
+          <div class="drink-title">Água mineral c/ gás 500ml</div>
+          <div class="drink-price">R$ 3,00</div>
+          <div class="qty" data-key="agua-gas-500">
+            <button class="qty-btn" onclick="decQty('agua-gas-500')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('agua-gas-500','Água mineral c/ gás 500ml',3)">+</button>
+          </div>
+        </div>
+      </div>
 
-<img src="logo.oxente.jpg">
+      <div class="section-title">Refrigerante Lata</div>
+      <div class="drink-grid">
+        <div class="drink-card" data-key="coca-lata">
+          <div class="drink-title">Coca-Cola lata</div>
+          <div class="drink-price">R$ 6,00</div>
+          <div class="qty" data-key="coca-lata">
+            <button class="qty-btn" onclick="decQty('coca-lata')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('coca-lata','Coca-Cola lata',6)">+</button>
+          </div>
+        </div>
 
-<div>
-<b>OXENTE PASTEL</b><br>
-<small>Bebidas</small>
-</div>
+        <div class="drink-card" data-key="fanta-laranja-lata">
+          <div class="drink-title">Fanta Laranja lata</div>
+          <div class="drink-price">R$ 6,00</div>
+          <div class="qty" data-key="fanta-laranja-lata">
+            <button class="qty-btn" onclick="decQty('fanta-laranja-lata')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('fanta-laranja-lata','Fanta Laranja lata',6)">+</button>
+          </div>
+        </div>
 
-</div>
+        <div class="drink-card" data-key="fanta-uva-lata">
+          <div class="drink-title">Fanta Uva lata</div>
+          <div class="drink-price">R$ 6,00</div>
+          <div class="qty" data-key="fanta-uva-lata">
+            <button class="qty-btn" onclick="decQty('fanta-uva-lata')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('fanta-uva-lata','Fanta Uva lata',6)">+</button>
+          </div>
+        </div>
 
-<div class="cart-btn" onclick="openCart()">
-Pedido 🍔
-</div>
+        <div class="drink-card" data-key="guarana-lata">
+          <div class="drink-title">Guaraná lata</div>
+          <div class="drink-price">R$ 6,00</div>
+          <div class="qty" data-key="guarana-lata">
+            <button class="qty-btn" onclick="decQty('guarana-lata')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('guarana-lata','Guaraná lata',6)">+</button>
+          </div>
+        </div>
+      </div>
 
-</div>
+      <div class="section-title">Refrigerante 1L</div>
+      <div class="drink-grid">
+        <div class="drink-card" data-key="guarana-1l">
+          <div class="drink-title">Guaraná 1L</div>
+          <div class="drink-price">R$ 9,00</div>
+          <div class="qty" data-key="guarana-1l">
+            <button class="qty-btn" onclick="decQty('guarana-1l')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('guarana-1l','Guaraná 1L',9)">+</button>
+          </div>
+        </div>
 
-<div class="progress">
-<div class="progress-fill" style="width:70%"></div>
-</div>
+        <div class="drink-card" data-key="coca-1l">
+          <div class="drink-title">Coca-Cola 1L</div>
+          <div class="drink-price">R$ 9,00</div>
+          <div class="qty" data-key="coca-1l">
+            <button class="qty-btn" onclick="decQty('coca-1l')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('coca-1l','Coca-Cola 1L',9)">+</button>
+          </div>
+        </div>
 
-<div class="container">
+        <div class="drink-card" data-key="cajuina-1l">
+          <div class="drink-title">Cajuína (São Geraldo) 1L</div>
+          <div class="drink-price">R$ 9,00</div>
+          <div class="qty" data-key="cajuina-1l">
+            <button class="qty-btn" onclick="decQty('cajuina-1l')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('cajuina-1l','Cajuína (São Geraldo) 1L',9)">+</button>
+          </div>
+        </div>
+      </div>
 
-<div class="section-title">Refrigerante Lata</div>
+      <div class="section-title">Sucos 500ml</div>
+      <div class="drink-grid">
+        <div class="drink-card" data-key="suco-acerola"><div class="drink-title">Acerola</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-acerola"><button class="qty-btn" onclick="decQty('suco-acerola')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-acerola','Suco Acerola 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-abacaxi"><div class="drink-title">Abacaxi</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-abacaxi"><button class="qty-btn" onclick="decQty('suco-abacaxi')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-abacaxi','Suco Abacaxi 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-caja"><div class="drink-title">Cajá</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-caja"><button class="qty-btn" onclick="decQty('suco-caja')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-caja','Suco Cajá 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-caju"><div class="drink-title">Caju</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-caju"><button class="qty-btn" onclick="decQty('suco-caju')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-caju','Suco Caju 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-goiaba"><div class="drink-title">Goiaba</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-goiaba"><button class="qty-btn" onclick="decQty('suco-goiaba')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-goiaba','Suco Goiaba 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-graviola"><div class="drink-title">Graviola</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-graviola"><button class="qty-btn" onclick="decQty('suco-graviola')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-graviola','Suco Graviola 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-maracuja"><div class="drink-title">Maracujá</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-maracuja"><button class="qty-btn" onclick="decQty('suco-maracuja')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-maracuja','Suco Maracujá 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-manga"><div class="drink-title">Manga</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-manga"><button class="qty-btn" onclick="decQty('suco-manga')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-manga','Suco Manga 500ml',8)">+</button></div></div>
+        <div class="drink-card" data-key="suco-morango"><div class="drink-title">Morango</div><div class="drink-price">R$ 8,00</div><div class="qty" data-key="suco-morango"><button class="qty-btn" onclick="decQty('suco-morango')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('suco-morango','Suco Morango 500ml',8)">+</button></div></div>
+      </div>
 
-<div class="grid-drinks">
+      <div class="section-title">Vitaminas 500ml</div>
+      <div class="drink-grid">
+        <div class="drink-card" data-key="vit-acerola"><div class="drink-title">Acerola</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-acerola"><button class="qty-btn" onclick="decQty('vit-acerola')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-acerola','Vitamina Acerola 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-abacaxi"><div class="drink-title">Abacaxi</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-abacaxi"><button class="qty-btn" onclick="decQty('vit-abacaxi')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-abacaxi','Vitamina Abacaxi 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-caja"><div class="drink-title">Cajá</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-caja"><button class="qty-btn" onclick="decQty('vit-caja')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-caja','Vitamina Cajá 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-caju"><div class="drink-title">Caju</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-caju"><button class="qty-btn" onclick="decQty('vit-caju')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-caju','Vitamina Caju 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-goiaba"><div class="drink-title">Goiaba</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-goiaba"><button class="qty-btn" onclick="decQty('vit-goiaba')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-goiaba','Vitamina Goiaba 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-graviola"><div class="drink-title">Graviola</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-graviola"><button class="qty-btn" onclick="decQty('vit-graviola')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-graviola','Vitamina Graviola 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-maracuja"><div class="drink-title">Maracujá</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-maracuja"><button class="qty-btn" onclick="decQty('vit-maracuja')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-maracuja','Vitamina Maracujá 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-manga"><div class="drink-title">Manga</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-manga"><button class="qty-btn" onclick="decQty('vit-manga')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-manga','Vitamina Manga 500ml',12)">+</button></div></div>
+        <div class="drink-card" data-key="vit-morango"><div class="drink-title">Morango</div><div class="drink-price">R$ 12,00</div><div class="qty" data-key="vit-morango"><button class="qty-btn" onclick="decQty('vit-morango')">-</button><span class="qty-value" data-qty-value>0</span><button class="qty-btn" onclick="addQty('vit-morango','Vitamina Morango 500ml',12)">+</button></div></div>
+      </div>
 
-<div class="drink-card">
-<div class="drink-title">Coca-Cola</div>
-<div class="drink-price">R$ 6,00</div>
-<div class="qty">
-<button onclick="remove('Coca Lata')">-</button>
-<button onclick="add('Coca Lata',6)">+</button>
-</div>
-</div>
+      <div class="section-title">Smoothies</div>
+      <div class="drink-grid">
+        <div class="drink-card" data-key="smoothie-morango">
+          <div class="drink-title">Morango</div>
+          <div class="drink-price">R$ 14,00</div>
+          <div class="qty" data-key="smoothie-morango">
+            <button class="qty-btn" onclick="decQty('smoothie-morango')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('smoothie-morango','Smoothie Morango 500ml',14)">+</button>
+          </div>
+        </div>
 
-<div class="drink-card">
-<div class="drink-title">Fanta Laranja</div>
-<div class="drink-price">R$ 6,00</div>
-<div class="qty">
-<button onclick="remove('Fanta Laranja Lata')">-</button>
-<button onclick="add('Fanta Laranja Lata',6)">+</button>
-</div>
-</div>
+        <div class="drink-card" data-key="smoothie-maracuja">
+          <div class="drink-title">Maracujá</div>
+          <div class="drink-price">R$ 14,00</div>
+          <div class="qty" data-key="smoothie-maracuja">
+            <button class="qty-btn" onclick="decQty('smoothie-maracuja')">-</button>
+            <span class="qty-value" data-qty-value>0</span>
+            <button class="qty-btn" onclick="addQty('smoothie-maracuja','Smoothie Maracujá 500ml',14)">+</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="drink-card">
-<div class="drink-title">Fanta Uva</div>
-<div class="drink-price">R$ 6,00</div>
-<div class="qty">
-<button onclick="remove('Fanta Uva Lata')">-</button>
-<button onclick="add('Fanta Uva Lata',6)">+</button>
-</div>
-</div>
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total atual</small>
+          <strong class="cart-total">R$ 0,00</strong>
+        </div>
+        <a href="resumo.html" class="primary-btn">Continuar</a>
+      </div>
+    </div>
+  </main>
 
-<div class="drink-card">
-<div class="drink-title">Guaraná</div>
-<div class="drink-price">R$ 6,00</div>
-<div class="qty">
-<button onclick="remove('Guarana Lata')">-</button>
-<button onclick="add('Guarana Lata',6)">+</button>
-</div>
-</div>
-
-</div>
-
-
-<div class="section-title">Refrigerante 1L</div>
-
-<div class="grid-drinks">
-
-<div class="drink-card">
-<div class="drink-title">Guaraná 1L</div>
-<div class="drink-price">R$ 9,00</div>
-<div class="qty">
-<button onclick="remove('Guarana 1L')">-</button>
-<button onclick="add('Guarana 1L',9)">+</button>
-</div>
-</div>
-
-<div class="drink-card">
-<div class="drink-title">Coca-Cola 1L</div>
-<div class="drink-price">R$ 9,00</div>
-<div class="qty">
-<button onclick="remove('Coca 1L')">-</button>
-<button onclick="add('Coca 1L',9)">+</button>
-</div>
-</div>
-
-<div class="drink-card">
-<div class="drink-title">Cajuína São Geraldo</div>
-<div class="drink-price">R$ 9,00</div>
-<div class="qty">
-<button onclick="remove('Cajuina')">-</button>
-<button onclick="add('Cajuina',9)">+</button>
-</div>
-</div>
-
-</div>
-
-
-<div class="section-title">Sucos 500ml</div>
-
-<div class="grid-drinks">
-
-<div class="drink-card">
-<div class="drink-title">Acerola</div>
-<div class="drink-price">R$ 8,00</div>
-<div class="qty">
-<button onclick="remove('Suco Acerola')">-</button>
-<button onclick="add('Suco Acerola',8)">+</button>
-</div>
-</div>
-
-<div class="drink-card">
-<div class="drink-title">Goiaba</div>
-<div class="drink-price">R$ 8,00</div>
-<div class="qty">
-<button onclick="remove('Suco Goiaba')">-</button>
-<button onclick="add('Suco Goiaba',8)">+</button>
-</div>
-</div>
-
-<div class="drink-card">
-<div class="drink-title">Maracujá</div>
-<div class="drink-price">R$ 8,00</div>
-<div class="qty">
-<button onclick="remove('Suco Maracuja')">-</button>
-<button onclick="add('Suco Maracuja',8)">+</button>
-</div>
-</div>
-
-</div>
-
-
-<div class="section-title">Vitaminas 500ml</div>
-
-<div class="grid-drinks">
-
-<div class="drink-card">
-<div class="drink-title">Banana</div>
-<div class="drink-price">R$ 12,00</div>
-<div class="qty">
-<button onclick="remove('Vitamina Banana')">-</button>
-<button onclick="add('Vitamina Banana',12)">+</button>
-</div>
-</div>
-
-<div class="drink-card">
-<div class="drink-title">Morango</div>
-<div class="drink-price">R$ 12,00</div>
-<div class="qty">
-<button onclick="remove('Vitamina Morango')">-</button>
-<button onclick="add('Vitamina Morango',12)">+</button>
-</div>
-</div>
-
-</div>
-
-
-<div class="section-title">Smoothies</div>
-
-<div class="grid-drinks">
-
-<div class="drink-card">
-<div class="drink-title">Morango</div>
-<div class="drink-price">R$ 14,00</div>
-<div class="qty">
-<button onclick="remove('Smoothie Morango')">-</button>
-<button onclick="add('Smoothie Morango',14)">+</button>
-</div>
-</div>
-
-<div class="drink-card">
-<div class="drink-title">Maracujá</div>
-<div class="drink-price">R$ 14,00</div>
-<div class="qty">
-<button onclick="remove('Smoothie Maracuja')">-</button>
-<button onclick="add('Smoothie Maracuja',14)">+</button>
-</div>
-</div>
-
-</div>
-
-</div>
-
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart(false)"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button class="icon-btn" onclick="toggleCart(false)">Fechar</button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="total-box"><small>Total atual</small><strong class="cart-total">R$ 0,00</strong></div>
+      <a href="resumo.html" class="primary-btn">Ir para resumo</a>
+    </div>
+  </aside>
 </body>
 </html>
