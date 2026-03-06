@@ -11,18 +11,14 @@
   <div class="topbar">
     <div class="topbar-inner">
       <a href="index.html" class="icon-btn">← Voltar</a>
-
       <div class="brand">
         <img src="logo.oxente.jpg" alt="Logo">
         <div class="brand-text">
           <strong>Pra Encher o Buxo</strong>
-          <span>Escolha seu combo</span>
+          <span>Combos</span>
         </div>
       </div>
-
-      <a href="#" class="icon-btn">
-        Pedido <span class="badge" data-cart-count>0</span>
-      </a>
+      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
     </div>
   </div>
 
@@ -32,12 +28,12 @@
         <div class="step">Início</div>
         <div class="step active">Pedido</div>
         <div class="step">Montagem</div>
-        <div class="step">Especiais</div>
-        <div class="step">Próx.</div>
+        <div class="step">Extras</div>
+        <div class="step">Resumo</div>
       </div>
 
       <h1 class="hero-title">Pra Encher o Buxo</h1>
-      <p class="hero-subtitle">Combos prontos conforme seu cardápio.</p>
+      <p class="hero-subtitle">Use apenas + e - para ajustar quantidades.</p>
 
       <div class="list">
         <div class="item" data-item-id="combo-arriegua">
@@ -50,11 +46,10 @@
           </div>
           <div class="item-bottom">
             <div class="qty">
-              <button class="qty-btn" onclick="changeQty('combo-arriegua', -1)">−</button>
+              <button class="qty-btn" onclick="decreaseItem('combo-arriegua')">−</button>
               <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addItem('combo-arriegua','Combo Arriégua',43.00); renderPageQuantities();">+</button>
+              <button class="qty-btn" onclick="addOrIncrease('combo-arriegua','Combo Arriégua',43.00); renderQuantityPages();">+</button>
             </div>
-            <button class="btn" style="max-width:170px;" onclick="addItem('combo-arriegua','Combo Arriégua',43.00); renderPageQuantities();">Adicionar</button>
           </div>
         </div>
 
@@ -68,15 +63,24 @@
           </div>
           <div class="item-bottom">
             <div class="qty">
-              <button class="qty-btn" onclick="changeQty('combo-super-arretado', -1)">−</button>
+              <button class="qty-btn" onclick="decreaseItem('combo-super-arretado')">−</button>
               <div class="qty-value">0</div>
-              <button class="qty-btn" onclick="addItem('combo-super-arretado','Combo Super Arretado',85.00); renderPageQuantities();">+</button>
+              <button class="qty-btn" onclick="addOrIncrease('combo-super-arretado','Combo Super Arretado',85.00); renderQuantityPages();">+</button>
             </div>
-            <button class="btn" style="max-width:170px;" onclick="addItem('combo-super-arretado','Combo Super Arretado',85.00); renderPageQuantities();">Adicionar</button>
           </div>
         </div>
       </div>
     </section>
+
+    <div class="footer-action">
+      <div class="footer-inner">
+        <div class="total-box">
+          <small>Total atual</small>
+          <strong data-total>R$ 0,00</strong>
+        </div>
+        <a href="complementos.html" class="btn">Continuar</a>
+      </div>
+    </div>
   </main>
 </body>
 </html>
