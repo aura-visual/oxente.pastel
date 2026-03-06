@@ -1,100 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrega | OXENTE PASTEL</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
-  <style>
-    .form-box{
-      background:linear-gradient(180deg, rgba(255,210,0,.05), rgba(255,255,255,.015));
-      border:1px solid rgba(255,210,0,.11);
-      border-radius:22px;
-      padding:16px;
-      box-shadow:var(--shadow);
-    }
-    .field{
-      margin-bottom:14px;
-    }
-    .field label{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:6px;
-      font-weight:700;
-    }
-    .field input{
-      width:100%;
-      min-height:50px;
-      border-radius:16px;
-      border:1px solid rgba(255,210,0,.16);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      padding:12px 14px;
-      font-family:'Montserrat',sans-serif;
-      font-size:14px;
-      outline:none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Entrega</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a href="resumo.html" class="icon-btn">← Voltar</a>
-      <div class="brand">
-        <img src="logo.oxente.jpg" alt="Logo">
-        <div class="brand-text">
-          <strong>Entrega</strong>
-          <span>Dados do cliente</span>
-        </div>
-      </div>
-      <div class="icon-btn">Pedido <span class="badge" data-cart-count>0</span></div>
-    </div>
-  </div>
 
-  <main class="app">
-    <section class="content">
-      <div class="progress">
-        <div class="step">Início</div>
-        <div class="step">Pedido</div>
-        <div class="step">Montagem</div>
-        <div class="step">Extras</div>
-        <div class="step active">Entrega</div>
-      </div>
+<body onload="progress(92)">
 
-      <h1 class="hero-title">Dados para entrega</h1>
-      <p class="hero-subtitle">Preencha os dados antes de seguir para pagamento.</p>
+<div class="container">
 
-      <div class="form-box">
-        <div class="field">
-          <label for="nome">Nome</label>
-          <input type="text" id="nome" placeholder="Seu nome">
-        </div>
+<div class="title">Dados de entrega</div>
 
-        <div class="field">
-          <label for="endereco">Endereço</label>
-          <input type="text" id="endereco" placeholder="Rua, número, bairro...">
-        </div>
+<input placeholder="Nome" style="width:100%;padding:12px;margin-bottom:10px">
 
-        <div class="field">
-          <label for="referencia">Ref. (se for o caso)</label>
-          <input type="text" id="referencia" placeholder="Ponto de referência">
-        </div>
+<input placeholder="Endereço" style="width:100%;padding:12px;margin-bottom:10px">
 
-        <div class="alert" id="entregaAlert"></div>
-      </div>
-    </section>
+<input placeholder="Referência" style="width:100%;padding:12px">
 
-    <div class="footer-action">
-      <div class="footer-inner">
-        <div class="total-box">
-          <small>Próxima etapa</small>
-          <strong>Pagamento</strong>
-        </div>
-        <button class="btn" onclick="continueToPayment()">Continuar</button>
-      </div>
-    </div>
-  </main>
+<a href="pagamento.html" class="btn">Continuar</a>
+
+</div>
+
 </body>
 </html>
