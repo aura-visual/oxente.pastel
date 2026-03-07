@@ -1,4 +1,3 @@
-@@ -1,270 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 :root{
@@ -156,7 +155,8 @@ input{
 .qty-btn:active,
 .option-chip:active,
 .select-card:active,
-.drawer-line .remove-btn:active{
+.drawer-line .remove-btn:active,
+.btn:active{
   transform:scale(.96);
 }
 
@@ -265,28 +265,47 @@ input{
 }
 
 .primary-btn,
-.secondary-btn{
+.secondary-btn,
+.btn,
+a.btn,
+button.btn,
 .home-card-actions .btn,
 .home-card-actions a.btn,
-.home-card-actions button.btn,
-.btn{
+.home-card-actions button.btn{
   width:100%;
   min-height:50px;
   border:none;
-@@ -275,579 +12,24 @@ input{
+  border-radius:16px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:900;
   padding:14px 16px;
   text-align:center;
   transition:transform .12s ease, background-color .18s ease, color .18s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.primary-btn{
+.primary-btn,
+.btn,
+a.btn,
+button.btn,
+.home-card-actions .btn,
+.home-card-actions a.btn,
+.home-card-actions button.btn{
   background:var(--yellow);
-  color:#000;
   color:#000 !important;
   box-shadow:0 12px 28px rgba(255,212,0,.16);
 }
 
-.primary-btn:hover{
+.primary-btn:hover,
+.btn:hover,
+a.btn:hover,
+button.btn:hover,
+.home-card-actions .btn:hover,
+.home-card-actions a.btn:hover,
+.home-card-actions button.btn:hover{
   background:#ffdf47;
 }
 
@@ -829,21 +848,24 @@ input{
   line-height:1.55;
   color:var(--muted);
   margin-bottom:16px;
-.home-card-actions .btn:hover,
-.home-card-actions a.btn:hover,
-.home-card-actions button.btn:hover,
-.btn:hover{
-  background:#ffdf47;
 }
 
 .modal-actions{
   display:flex;
   gap:10px;
-.home-card-actions .btn:active,
-.home-card-actions a.btn:active,
-.home-card-actions button.btn:active,
-.btn:active{
-  transform:scale(.96);
+}
+
+.qty-btn,
+.remove-btn,
+.cart-btn,
+.btn,
+.primary-btn,
+.secondary-btn,
+.pay-option,
+.option-chip,
+.select-card,
+.icon-btn{
+  touch-action:manipulation;
 }
 
 @media (max-width:420px){
@@ -863,46 +885,4 @@ input{
   .modal-actions{
     flex-direction:column;
   }
-}
-
-.btn,
-a.btn,
-button.btn,
-.home-card-actions .btn,
-.home-card-actions a.btn,
-.home-card-actions button.btn{
-  width:100%;
-  min-height:50px;
-  border:none;
-  border-radius:16px;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:900;
-  padding:14px 16px;
-  text-align:center;
-  transition:transform .12s ease, background-color .18s ease, color .18s ease;
-  background:var(--yellow) !important;
-  color:#000 !important;
-  box-shadow:0 12px 28px rgba(255,212,0,.16);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.btn:hover,
-a.btn:hover,
-button.btn:hover,
-.home-card-actions .btn:hover,
-.home-card-actions a.btn:hover,
-.home-card-actions button.btn:hover{
-  background:#ffdf47 !important;
-}
-
-.btn:active,
-a.btn:active,
-button.btn:active,
-.home-card-actions .btn:active,
-.home-card-actions a.btn:active,
-.home-card-actions button.btn:active{
-  transform:scale(.96);
 }
