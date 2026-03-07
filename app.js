@@ -40,6 +40,20 @@ const OPCOES = {
   ]
 };
 
+const CLICK_GUARD = {};
+const CLICK_DELAY = 220;
+
+function canRunClick(actionKey) {
+  const now = Date.now();
+
+  if (CLICK_GUARD[actionKey] && now - CLICK_GUARD[actionKey] < CLICK_DELAY) {
+    return false;
+  }
+
+  CLICK_GUARD[actionKey] = now;
+  return true;
+}
+
 function money(v) {
   return "R$ " + Number(v).toFixed(2).replace(".", ",");
 }
@@ -62,7 +76,8 @@ function initialStore() {
 
 function getStore() {
   try {
-    return JSON.parse(localStorage.getItem(STORE_KEY) || JSON.stringify(initialStore()));
+    const parsed = JSON.parse(localStorage.getItem(STORE_KEY) || JSON.stringify(initialStore()));
+    return parsed && typeof parsed === "object" ? parsed : initialStore();
   } catch (error) {
     return initialStore();
   }
@@ -97,6 +112,7 @@ function clearAllData() {
   localStorage.removeItem(STORE_KEY);
   localStorage.removeItem(TEMP_MONTAGEM_KEY);
   updateCartBadge();
+  renderQtyControls();
   renderCartDrawer();
   renderResumo();
   renderPaymentSummary();
@@ -127,7 +143,7 @@ function setProgress(page) {
 }
 
 function updateCartBadge() {
-  const totalItems = getStore().items.reduce((acc, item) => acc + Number(item.qty), 0);
+  const totalItems = getStore().items.reduce((acc, item) => acc + Number(item.qty || 0), 0);
 
   document.querySelectorAll(".cart-count").forEach(el => {
     el.textContent = totalItems;
@@ -139,10 +155,14 @@ function updateCartBadge() {
 }
 
 function getTotalValue() {
-  return getStore().items.reduce((acc, item) => acc + (Number(item.qty) * Number(item.price)), 0);
+  return getStore().items.reduce((acc, item) => {
+    return acc + (Number(item.qty || 0) * Number(item.price || 0));
+  }, 0);
 }
 
 function addQty(key, name, price) {
+  if (!canRunClick("add_" + key)) return;
+
   const store = getStore();
   const found = store.items.find(item => item.key === key);
 
@@ -161,6 +181,8 @@ function addQty(key, name, price) {
 }
 
 function decQty(key) {
+  if (!canRunClick("dec_" + key)) return;
+
   const store = getStore();
   const found = store.items.find(item => item.key === key);
 
@@ -180,6 +202,8 @@ function decQty(key) {
 }
 
 function removeLine(key) {
+  if (!canRunClick("remove_" + key)) return;
+
   const store = getStore();
   store.items = store.items.filter(item => item.key !== key);
 
@@ -365,7 +389,7 @@ function getMontagemExtra(montagem) {
   montagem.sabor.forEach(id => {
     const found = OPCOES.sabor.find(opt => opt.id === id);
     if (found && found.extra) {
-      extra += found.extra;
+      extra += Number(found.extra);
     }
   });
 
@@ -418,7 +442,7 @@ function renderMontagemPage() {
 
   const base = BASE_PASTEIS[montagem.tipo];
   const extra = getMontagemExtra(montagem);
-  const total = base.preco + extra;
+  const total = Number(base.preco) + Number(extra);
   const limites = LIMITES[montagem.tipo];
 
   title.textContent = `${base.nome} • ${money(total)}`;
@@ -448,7 +472,7 @@ function renderMontagemPage() {
     }
 
     wrap.querySelectorAll(".option-chip").forEach(btn => {
-      const id = btn.dataset.optionId;
+      const optionId = btn.dataset.optionId;
       btn.classList.remove("active", "disabled");
 
       if (max === 0) {
@@ -456,7 +480,7 @@ function renderMontagemPage() {
         return;
       }
 
-      if (selected.includes(id)) {
+      if (selected.includes(optionId)) {
         btn.classList.add("active");
       } else if (selected.length >= max) {
         btn.classList.add("disabled");
@@ -520,7 +544,7 @@ function finalizeMountedPastel() {
   const montagem = getTempMontagem();
   const base = BASE_PASTEIS[montagem.tipo];
   const extra = getMontagemExtra(montagem);
-  const price = base.preco + extra;
+  const price = Number(base.preco) + Number(extra);
 
   const details = [];
   if (montagem.sabor.length) details.push("Sabor: " + montagem.sabor.map(id => getOptionName("sabor", id)).join(", "));
@@ -568,7 +592,7 @@ function renderFritasExtra() {
 
     if (store.acompanhamentos.fritasCarneSolExtra) {
       store.acompanhamentos.fritasCarneSolExtra = "";
-      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+      saveStore(store);
     }
   }
 }
@@ -590,7 +614,7 @@ function renderResumo() {
     html += `
       <div class="summary-line">
         <span>${escapeHtml(item.qty + "x " + item.name)}</span>
-        <strong>${money(item.qty * item.price)}</strong>
+        <strong>${money(Number(item.qty) * Number(item.price))}</strong>
       </div>
     `;
   });
@@ -674,7 +698,7 @@ function renderPaymentSummary() {
     html += `
       <div class="summary-line">
         <span>${escapeHtml(item.qty + "x " + item.name)}</span>
-        <strong>${money(item.qty * item.price)}</strong>
+        <strong>${money(Number(item.qty) * Number(item.price))}</strong>
       </div>
     `;
   });
@@ -727,7 +751,7 @@ RELATÓRIO DO PEDIDO
 `;
 
   store.items.forEach(item => {
-    msg += `${item.qty}x ${item.name} - ${money(item.qty * item.price)}
+    msg += `${item.qty}x ${item.name} - ${money(Number(item.qty) * Number(item.price))}
 `;
   });
 
