@@ -8,67 +8,107 @@
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="logo.oxente.jpg" type="image/jpeg">
-
   <script src="app.js" defer></script>
 </head>
 <body data-page="index">
 
   <div class="topbar">
-    <div class="brand">
-      <img src="logo.oxente.jpg" alt="Logo OXENTE PASTEL">
-      <div>
-        <b>OXENTE PASTEL</b><br>
-        <small>O sabor arretado do Nordeste</small>
+    <div class="topbar-inner">
+      <div class="brand">
+        <img src="logo.oxente.jpg" alt="Logo OXENTE PASTEL">
+
+        <div class="brand-text">
+          <strong>OXENTE PASTEL</strong>
+          <span>O sabor arretado do Nordeste</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button type="button" class="cart-btn" onclick="openCart()">
+          Pedido 🍔 <span class="cart-count">0</span>
+        </button>
       </div>
     </div>
 
-    <button type="button" class="cart-btn" onclick="openCart()">
-      Pedido 🍔 <span class="cart-count">0</span>
-    </button>
+    <div class="progress-shell">
+      <div class="progress-fill" data-progress-fill></div>
+    </div>
   </div>
 
-  <div class="progress">
-    <div class="progress-fill" data-progress-fill style="width: 8%;"></div>
-  </div>
+  <main class="page">
+    <section class="content">
+      <h1 class="hero-title">Escolha sua fome de hoje</h1>
+      <p class="hero-subtitle">
+        Monte seu pedido de forma prática, rápida e com aquele sabor arretado que só a OXENTE PASTEL tem.
+      </p>
 
-  <div class="container">
+      <div class="grid">
 
-    <div class="card">
-      <img src="combo.png" alt="Combos">
-      <div class="card-body">
-        <h3>Pra encher o buxo</h3>
-        <a href="combos.html" class="btn" onclick="setFlow('combos')">Ver combos</a>
+        <div class="home-card">
+          <img src="combo.png" alt="Combos da OXENTE PASTEL">
+
+          <div class="home-card-body">
+            <div class="home-card-title">Pra encher o buxo</div>
+            <div class="home-card-desc">
+              Combos pensados pra quem quer comer bem, gastar melhor e pedir de forma rápida.
+            </div>
+
+            <div class="home-card-actions">
+              <a href="combos.html" class="btn" onclick="setFlow('combos')">Ver combos</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-card">
+          <img src="pastel.png" alt="Monte seu pastel">
+
+          <div class="home-card-body">
+            <div class="home-card-title">Monte seu pastel</div>
+            <div class="home-card-desc">
+              Escolha o tipo do pastel, personalize os recheios e monte do jeitinho que você quiser.
+            </div>
+
+            <div class="home-card-actions">
+              <a href="pasteis.html" class="btn" onclick="setFlow('montagem')">Montar</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-card">
+          <img src="nordeste.png" alt="Viva o Nordeste">
+
+          <div class="home-card-body">
+            <div class="home-card-title">Viva o Nordeste</div>
+            <div class="home-card-desc">
+              Itens especiais com aquele toque regional forte, marcante e cheio de personalidade.
+            </div>
+
+            <div class="home-card-actions">
+              <a href="viva-nordeste.html" class="btn" onclick="setFlow('nordeste')">Ver especiais</a>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
-
-    <div class="card">
-      <img src="pastel.png" alt="Monte seu pastel">
-      <div class="card-body">
-        <h3>Monte seu pastel</h3>
-        <a href="pasteis.html" class="btn" onclick="setFlow('montagem')">Montar</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="nordeste.png" alt="Viva o Nordeste">
-      <div class="card-body">
-        <h3>Viva o Nordeste</h3>
-        <a href="viva-nordeste.html" class="btn" onclick="setFlow('nordeste')">Ver especiais</a>
-      </div>
-    </div>
-
-  </div>
+    </section>
+  </main>
 
   <div id="cartOverlay" class="cart-overlay" onclick="closeCart()"></div>
 
-  <div id="cartDrawer" class="cart-drawer">
-    <h3>Seu pedido</h3>
-    <div id="cartItems"></div>
+  <aside id="cartDrawer" class="cart-drawer">
+    <div class="cart-header">
+      <strong>Seu pedido</strong>
+      <button type="button" class="icon-btn" onclick="closeCart()">Fechar</button>
+    </div>
 
-    <button type="button" class="btn" onclick="closeCart()">
-      Fechar
-    </button>
-  </div>
+    <div class="cart-body">
+      <div id="cartItems"></div>
+    </div>
+
+    <div class="cart-footer">
+      <button type="button" class="primary-btn" onclick="closeCart()">Continuar vendo</button>
+    </div>
+  </aside>
 
 </body>
 </html>
