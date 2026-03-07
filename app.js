@@ -40,11 +40,11 @@ const OPCOES = {
   ]
 };
 
-function money(v){
+function money(v) {
   return "R$ " + Number(v).toFixed(2).replace(".", ",");
 }
 
-function initialStore(){
+function initialStore() {
   return {
     flow: "",
     items: [],
@@ -60,11 +60,15 @@ function initialStore(){
   };
 }
 
-function getStore(){
-  return JSON.parse(localStorage.getItem(STORE_KEY) || JSON.stringify(initialStore()));
+function getStore() {
+  try {
+    return JSON.parse(localStorage.getItem(STORE_KEY) || JSON.stringify(initialStore()));
+  } catch (error) {
+    return initialStore();
+  }
 }
 
-function saveStore(store){
+function saveStore(store) {
   localStorage.setItem(STORE_KEY, JSON.stringify(store));
   updateCartBadge();
   renderQtyControls();
@@ -74,27 +78,32 @@ function saveStore(store){
   renderFritasExtra();
 }
 
-function setFlow(flow){
+function setFlow(flow) {
   const store = getStore();
   store.flow = flow;
   saveStore(store);
 }
 
-function getFlow(){
+function getFlow() {
   return getStore().flow || "";
 }
 
-function goToFlow(flow, page){
+function goToFlow(flow, page) {
   setFlow(flow);
   window.location.href = page;
 }
 
-function clearAllData(){
+function clearAllData() {
   localStorage.removeItem(STORE_KEY);
   localStorage.removeItem(TEMP_MONTAGEM_KEY);
+  updateCartBadge();
+  renderCartDrawer();
+  renderResumo();
+  renderPaymentSummary();
+  renderFritasExtra();
 }
 
-function progressMap(page){
+function progressMap(page) {
   const map = {
     index: 8,
     combos: 22,
@@ -110,34 +119,36 @@ function progressMap(page){
   return map[page] || 0;
 }
 
-function setProgress(page){
+function setProgress(page) {
   const value = progressMap(page);
   document.querySelectorAll("[data-progress-fill]").forEach(el => {
     el.style.width = value + "%";
   });
 }
 
-function updateCartBadge(){
+function updateCartBadge() {
   const totalItems = getStore().items.reduce((acc, item) => acc + item.qty, 0);
+
   document.querySelectorAll(".cart-count").forEach(el => {
     el.textContent = totalItems;
   });
+
   document.querySelectorAll(".cart-total").forEach(el => {
     el.textContent = money(getTotalValue());
   });
 }
 
-function getTotalValue(){
+function getTotalValue() {
   return getStore().items.reduce((acc, item) => acc + (item.qty * item.price), 0);
 }
 
-function addQty(key, name, price){
+function addQty(key, name, price) {
   const store = getStore();
   const found = store.items.find(item => item.key === key);
 
-  if(found){
+  if (found) {
     found.qty += 1;
-  }else{
+  } else {
     store.items.push({
       key,
       name,
@@ -149,76 +160,95 @@ function addQty(key, name, price){
   saveStore(store);
 }
 
-function decQty(key){
+function decQty(key) {
   const store = getStore();
   const found = store.items.find(item => item.key === key);
-  if(!found) return;
+
+  if (!found) return;
 
   found.qty -= 1;
 
-  if(found.qty <= 0){
+  if (found.qty <= 0) {
     store.items = store.items.filter(item => item.key !== key);
   }
 
-  if(key === "comp-fritas-carne-sol" && !store.items.find(item => item.key === "comp-fritas-carne-sol")){
+  if (key === "comp-fritas-carne-sol" && !store.items.find(item => item.key === "comp-fritas-carne-sol")) {
     store.acompanhamentos.fritasCarneSolExtra = "";
   }
 
   saveStore(store);
 }
 
-function removeLine(key){
+function removeLine(key) {
   const store = getStore();
   store.items = store.items.filter(item => item.key !== key);
 
-  if(key === "comp-fritas-carne-sol"){
+  if (key === "comp-fritas-carne-sol") {
     store.acompanhamentos.fritasCarneSolExtra = "";
   }
 
   saveStore(store);
 }
 
-function getQty(key){
+function getQty(key) {
   const item = getStore().items.find(i => i.key === key);
   return item ? item.qty : 0;
 }
 
-function renderQtyControls(){
+function renderQtyControls() {
   document.querySelectorAll("[data-key]").forEach(box => {
     const key = box.dataset.key;
     const value = box.querySelector("[data-qty-value]");
-    if(value){
+    if (value) {
       value.textContent = getQty(key);
     }
   });
 }
 
-function toggleCart(force){
+function toggleCart(force) {
   const drawer = document.getElementById("cartDrawer");
   const overlay = document.getElementById("cartOverlay");
-  if(!drawer || !overlay) return;
+
+  if (!drawer || !overlay) return;
 
   const open = typeof force === "boolean" ? force : !drawer.classList.contains("show");
   drawer.classList.toggle("show", open);
   overlay.classList.toggle("show", open);
 }
 
-function escapeHtml(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#39;");
+function openCart() {
+  toggleCart(true);
 }
 
-function renderCartDrawer(){
+function closeCart() {
+  toggleCart(false);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function escapeJsString(str) {
+  return String(str)
+    .replaceAll("\\", "\\\\")
+    .replaceAll("'", "\\'")
+    .replaceAll('"', '\\"')
+    .replaceAll("\n", " ")
+    .replaceAll("\r", " ");
+}
+
+function renderCartDrawer() {
   const wrap = document.getElementById("cartItems");
-  if(!wrap) return;
+  if (!wrap) return;
 
   const items = getStore().items;
 
-  if(!items.length){
+  if (!items.length) {
     wrap.innerHTML = `
       <div class="summary-box">
         <div class="empty-text">Seu pedido está vazio. Adicione itens para continuar.</div>
@@ -230,6 +260,10 @@ function renderCartDrawer(){
   let html = "";
 
   items.forEach(item => {
+    const safeKeyHtml = escapeHtml(item.key);
+    const safeKeyJs = escapeJsString(item.key);
+    const safeNameJs = escapeJsString(item.name);
+
     html += `
       <div class="drawer-line">
         <div class="drawer-line-top">
@@ -237,14 +271,14 @@ function renderCartDrawer(){
             <div class="drawer-line-title">${escapeHtml(item.name)}</div>
             <div class="drawer-line-price">${money(item.price)}</div>
           </div>
-          <div class="qty" data-key="${escapeHtml(item.key)}">
-            <button class="qty-btn" onclick="decQty('${escapeHtml(item.key)}')">-</button>
+          <div class="qty" data-key="${safeKeyHtml}">
+            <button type="button" class="qty-btn" onclick="decQty('${safeKeyJs}')">-</button>
             <span class="qty-value" data-qty-value>${item.qty}</span>
-            <button class="qty-btn" onclick="addQty('${escapeHtml(item.key)}','${escapeHtml(item.name)}',${item.price})">+</button>
+            <button type="button" class="qty-btn" onclick="addQty('${safeKeyJs}','${safeNameJs}',${item.price})">+</button>
           </div>
         </div>
         <div class="drawer-line-bottom">
-          <button class="remove-btn" onclick="removeLine('${escapeHtml(item.key)}')">remover item</button>
+          <button type="button" class="remove-btn" onclick="removeLine('${safeKeyJs}')">remover item</button>
           <strong>${money(item.qty * item.price)}</strong>
         </div>
       </div>
@@ -263,38 +297,42 @@ function renderCartDrawer(){
   wrap.innerHTML = html;
 }
 
-function prevPageFor(page){
+function prevPageFor(page) {
   const flow = getFlow();
 
-  if(page === "pagamento") return "entrega.html";
-  if(page === "entrega") return "resumo.html";
-  if(page === "resumo") return "bebidas.html";
-  if(page === "bebidas") return "acompanhamentos.html";
+  if (page === "pagamento") return "entrega.html";
+  if (page === "entrega") return "resumo.html";
+  if (page === "resumo") return "bebidas.html";
+  if (page === "bebidas") return "acompanhamentos.html";
 
-  if(page === "acompanhamentos"){
-    if(flow === "combos") return "combos.html";
-    if(flow === "montagem") return "montagem-pastel.html";
-    if(flow === "nordeste") return "viva-nordeste.html";
+  if (page === "acompanhamentos") {
+    if (flow === "combos") return "combos.html";
+    if (flow === "montagem") return "montagem-pastel.html";
+    if (flow === "nordeste") return "viva-nordeste.html";
   }
 
-  if(page === "montagem-pastel") return "pasteis.html";
+  if (page === "montagem-pastel") return "pasteis.html";
 
   return "index.html";
 }
 
-function goPrev(page){
+function goPrev(page) {
   window.location.href = prevPageFor(page);
 }
 
-function getTempMontagem(){
-  return JSON.parse(localStorage.getItem(TEMP_MONTAGEM_KEY) || '{"tipo":"","sabor":[],"recheio":[],"mix":[]}');
+function getTempMontagem() {
+  try {
+    return JSON.parse(localStorage.getItem(TEMP_MONTAGEM_KEY) || '{"tipo":"","sabor":[],"recheio":[],"mix":[]}');
+  } catch (error) {
+    return { tipo: "", sabor: [], recheio: [], mix: [] };
+  }
 }
 
-function saveTempMontagem(data){
+function saveTempMontagem(data) {
   localStorage.setItem(TEMP_MONTAGEM_KEY, JSON.stringify(data));
 }
 
-function setPastelType(tipo){
+function setPastelType(tipo) {
   saveTempMontagem({
     tipo,
     sabor: [],
@@ -303,49 +341,60 @@ function setPastelType(tipo){
   });
 
   document.querySelectorAll(".select-card").forEach(card => card.classList.remove("active"));
+
   const selected = document.querySelector(`[data-pastel-type="${tipo}"]`);
-  if(selected) selected.classList.add("active");
+  if (selected) selected.classList.add("active");
 
   const btn = document.getElementById("btnContinuarPastel");
-  if(btn){
+  if (btn) {
     btn.classList.remove("btn-disabled");
     btn.removeAttribute("disabled");
   }
+
+  renderMontagemPage();
 }
 
-function getOptionName(group, id){
+function getOptionName(group, id) {
   const found = OPCOES[group].find(opt => opt.id === id);
   return found ? found.nome : id;
 }
 
-function getMontagemExtra(montagem){
+function getMontagemExtra(montagem) {
   let extra = 0;
+
   montagem.sabor.forEach(id => {
     const found = OPCOES.sabor.find(opt => opt.id === id);
-    if(found && found.extra){
+    if (found && found.extra) {
       extra += found.extra;
     }
   });
+
   return extra;
 }
 
-function toggleMontagem(group, id){
+function toggleMontagem(group, id) {
   const montagem = getTempMontagem();
-  if(!montagem.tipo) return;
+  if (!montagem.tipo) return;
+
+  const alertBox = document.getElementById("montagemAlert");
+  if (alertBox) alertBox.textContent = "";
 
   const max = LIMITES[montagem.tipo][group];
-  if(max === 0) return;
+  if (max === 0) return;
 
   const arr = montagem[group] || [];
 
-  if(arr.includes(id)){
+  if (arr.includes(id)) {
     montagem[group] = arr.filter(item => item !== id);
     saveTempMontagem(montagem);
     renderMontagemPage();
     return;
   }
 
-  if(arr.length >= max){
+  if (arr.length >= max) {
+    if (alertBox) {
+      alertBox.textContent = `Você só pode escolher até ${max} opção(ões) em ${group}.`;
+    }
     return;
   }
 
@@ -354,13 +403,14 @@ function toggleMontagem(group, id){
   renderMontagemPage();
 }
 
-function renderMontagemPage(){
+function renderMontagemPage() {
   const montagem = getTempMontagem();
   const title = document.getElementById("tipoPastelNome");
   const resumo = document.getElementById("montagemResumo");
-  if(!title || !resumo) return;
 
-  if(!montagem.tipo){
+  if (!title || !resumo) return;
+
+  if (!montagem.tipo) {
     title.textContent = "Selecione o tipo";
     resumo.innerHTML = `<div class="empty-text">Escolha primeiro o tipo do pastel.</div>`;
     return;
@@ -383,15 +433,15 @@ function renderMontagemPage(){
     </div>
   `;
 
-  ["sabor","recheio","mix"].forEach(group => {
+  ["sabor", "recheio", "mix"].forEach(group => {
     const wrap = document.getElementById(group + "Options");
     const info = document.getElementById(group + "Info");
-    if(!wrap) return;
+    if (!wrap) return;
 
     const max = limites[group];
     const selected = montagem[group];
 
-    if(info){
+    if (info) {
       info.textContent = max === 0
         ? "Não disponível para este tipo."
         : `Você pode escolher de 0 até ${max} opção(ões). Selecionados: ${selected.length}`;
@@ -399,59 +449,61 @@ function renderMontagemPage(){
 
     wrap.querySelectorAll(".option-chip").forEach(btn => {
       const id = btn.dataset.optionId;
-      btn.classList.remove("active","disabled");
+      btn.classList.remove("active", "disabled");
 
-      if(max === 0){
+      if (max === 0) {
         btn.classList.add("disabled");
         return;
       }
 
-      if(selected.includes(id)){
+      if (selected.includes(id)) {
         btn.classList.add("active");
-      }else if(selected.length >= max){
+      } else if (selected.length >= max) {
         btn.classList.add("disabled");
       }
     });
   });
 }
 
-function openMissingModal(messages){
+function openMissingModal(messages) {
   const modal = document.getElementById("confirmModal");
   const text = document.getElementById("confirmModalText");
-  if(!modal || !text) return;
-  text.innerHTML = messages.join("<br><br>");
+
+  if (!modal || !text) return;
+
+  text.innerHTML = messages.map(msg => escapeHtml(msg)).join("<br><br>");
   modal.classList.add("show");
 }
 
-function closeMissingModal(){
+function closeMissingModal() {
   const modal = document.getElementById("confirmModal");
-  if(modal) modal.classList.remove("show");
+  if (modal) modal.classList.remove("show");
 }
 
-function addMountedPastelAndContinue(){
+function addMountedPastelAndContinue() {
   const montagem = getTempMontagem();
-  const alert = document.getElementById("montagemAlert");
-  if(alert) alert.textContent = "";
+  const alertBox = document.getElementById("montagemAlert");
+  if (alertBox) alertBox.textContent = "";
 
-  if(!montagem.tipo){
-    if(alert) alert.textContent = "Selecione o tipo do pastel.";
+  if (!montagem.tipo) {
+    if (alertBox) alertBox.textContent = "Selecione o tipo do pastel.";
     return;
   }
 
   const lim = LIMITES[montagem.tipo];
   const missing = [];
 
-  if(lim.sabor > 0 && montagem.sabor.length === 0){
+  if (lim.sabor > 0 && montagem.sabor.length === 0) {
     missing.push("Tem certeza que não deseja incluir mais algum sabor?");
   }
-  if(lim.recheio > 0 && montagem.recheio.length === 0){
+  if (lim.recheio > 0 && montagem.recheio.length === 0) {
     missing.push("Tem certeza que não deseja incluir mais algum recheio?");
   }
-  if(lim.mix > 0 && montagem.mix.length === 0){
+  if (lim.mix > 0 && montagem.mix.length === 0) {
     missing.push("Tem certeza que não deseja incluir mais algum mix?");
   }
 
-  if(missing.length){
+  if (missing.length) {
     openMissingModal(missing);
     return;
   }
@@ -459,21 +511,21 @@ function addMountedPastelAndContinue(){
   finalizeMountedPastel();
 }
 
-function continueWithoutMoreOptions(){
+function continueWithoutMoreOptions() {
   closeMissingModal();
   finalizeMountedPastel();
 }
 
-function finalizeMountedPastel(){
+function finalizeMountedPastel() {
   const montagem = getTempMontagem();
   const base = BASE_PASTEIS[montagem.tipo];
   const extra = getMontagemExtra(montagem);
   const price = base.preco + extra;
 
   const details = [];
-  if(montagem.sabor.length) details.push("Sabor: " + montagem.sabor.map(id => getOptionName("sabor", id)).join(", "));
-  if(montagem.recheio.length) details.push("Recheio: " + montagem.recheio.map(id => getOptionName("recheio", id)).join(", "));
-  if(montagem.mix.length) details.push("Mix: " + montagem.mix.map(id => getOptionName("mix", id)).join(", "));
+  if (montagem.sabor.length) details.push("Sabor: " + montagem.sabor.map(id => getOptionName("sabor", id)).join(", "));
+  if (montagem.recheio.length) details.push("Recheio: " + montagem.recheio.map(id => getOptionName("recheio", id)).join(", "));
+  if (montagem.mix.length) details.push("Mix: " + montagem.mix.map(id => getOptionName("mix", id)).join(", "));
 
   const name = details.length
     ? `${base.nome} (${details.join(" | ")})`
@@ -481,43 +533,53 @@ function finalizeMountedPastel(){
 
   const key = "montado_" + Date.now();
   addQty(key, name, price);
+
+  localStorage.removeItem(TEMP_MONTAGEM_KEY);
   window.location.href = "acompanhamentos.html";
 }
 
-function setFritasExtra(extra){
+function setFritasExtra(extra) {
   const store = getStore();
   store.acompanhamentos.fritasCarneSolExtra = extra;
   saveStore(store);
 }
 
-function renderFritasExtra(){
+function renderFritasExtra() {
   const wrap = document.getElementById("fritasExtraWrap");
-  if(!wrap) return;
+  if (!wrap) return;
 
   const qty = getQty("comp-fritas-carne-sol");
-  const extra = getStore().acompanhamentos.fritasCarneSolExtra;
+  const store = getStore();
+  const extra = store.acompanhamentos.fritasCarneSolExtra;
 
-  if(qty >= 1){
+  if (qty >= 1) {
     wrap.style.display = "block";
-    document.querySelectorAll("[data-fritas-extra]").forEach(btn => btn.classList.remove("active"));
-    if(extra){
+
+    document.querySelectorAll("[data-fritas-extra]").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    if (extra) {
       const selected = document.querySelector(`[data-fritas-extra="${extra}"]`);
-      if(selected) selected.classList.add("active");
+      if (selected) selected.classList.add("active");
     }
-  }else{
+  } else {
     wrap.style.display = "none";
-    const store = getStore();
-    store.acompanhamentos.fritasCarneSolExtra = "";
-    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+
+    if (store.acompanhamentos.fritasCarneSolExtra) {
+      store.acompanhamentos.fritasCarneSolExtra = "";
+      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    }
   }
 }
 
-function renderResumo(){
+function renderResumo() {
   const wrap = document.getElementById("summaryItems");
-  if(!wrap) return;
+  if (!wrap) return;
 
   const store = getStore();
-  if(!store.items.length){
+
+  if (!store.items.length) {
     wrap.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido ainda está vazio.</div></div>`;
     return;
   }
@@ -533,7 +595,7 @@ function renderResumo(){
     `;
   });
 
-  if(store.acompanhamentos.fritasCarneSolExtra){
+  if (store.acompanhamentos.fritasCarneSolExtra) {
     html += `
       <div class="summary-line">
         <span>Adicional fritas carne de sol</span>
@@ -553,16 +615,16 @@ function renderResumo(){
   wrap.innerHTML = html;
 }
 
-function saveDeliveryAndContinue(){
+function saveDeliveryAndContinue() {
   const nome = document.getElementById("nome")?.value.trim() || "";
   const endereco = document.getElementById("endereco")?.value.trim() || "";
   const referencia = document.getElementById("referencia")?.value.trim() || "";
-  const alert = document.getElementById("deliveryAlert");
+  const alertBox = document.getElementById("deliveryAlert");
 
-  if(alert) alert.textContent = "";
+  if (alertBox) alertBox.textContent = "";
 
-  if(!nome || !endereco){
-    if(alert) alert.textContent = "Preencha nome e endereço.";
+  if (!nome || !endereco) {
+    if (alertBox) alertBox.textContent = "Preencha nome e endereço.";
     return;
   }
 
@@ -572,33 +634,36 @@ function saveDeliveryAndContinue(){
   window.location.href = "pagamento.html";
 }
 
-function loadDeliveryFields(){
+function loadDeliveryFields() {
   const store = getStore();
+
   const nome = document.getElementById("nome");
   const endereco = document.getElementById("endereco");
   const referencia = document.getElementById("referencia");
 
-  if(nome) nome.value = store.delivery.nome || "";
-  if(endereco) endereco.value = store.delivery.endereco || "";
-  if(referencia) referencia.value = store.delivery.referencia || "";
+  if (nome) nome.value = store.delivery.nome || "";
+  if (endereco) endereco.value = store.delivery.endereco || "";
+  if (referencia) referencia.value = store.delivery.referencia || "";
 }
 
-function setPayment(method){
+function setPayment(method) {
   const store = getStore();
   store.payment = method;
   saveStore(store);
 
   document.querySelectorAll(".pay-option").forEach(btn => btn.classList.remove("active"));
+
   const selected = document.querySelector(`[data-pay="${method}"]`);
-  if(selected) selected.classList.add("active");
+  if (selected) selected.classList.add("active");
 }
 
-function renderPaymentSummary(){
+function renderPaymentSummary() {
   const wrap = document.getElementById("paymentSummary");
-  if(!wrap) return;
+  if (!wrap) return;
 
   const store = getStore();
-  if(!store.items.length){
+
+  if (!store.items.length) {
     wrap.innerHTML = `<div class="summary-box"><div class="empty-text">Seu pedido está vazio.</div></div>`;
     return;
   }
@@ -614,7 +679,7 @@ function renderPaymentSummary(){
     `;
   });
 
-  if(store.acompanhamentos.fritasCarneSolExtra){
+  if (store.acompanhamentos.fritasCarneSolExtra) {
     html += `
       <div class="summary-line">
         <span>Adicional fritas carne de sol</span>
@@ -633,54 +698,60 @@ function renderPaymentSummary(){
 
   wrap.innerHTML = html;
 
-  if(store.payment){
+  if (store.payment) {
+    document.querySelectorAll(".pay-option").forEach(btn => btn.classList.remove("active"));
     const selected = document.querySelector(`[data-pay="${store.payment}"]`);
-    if(selected) selected.classList.add("active");
+    if (selected) selected.classList.add("active");
   }
 }
 
-function finishOrder(){
+function finishOrder() {
   const store = getStore();
-  const alert = document.getElementById("paymentAlert");
-  if(alert) alert.textContent = "";
+  const alertBox = document.getElementById("paymentAlert");
 
-  if(!store.delivery.nome || !store.delivery.endereco){
-    if(alert) alert.textContent = "Dados de entrega não encontrados.";
+  if (alertBox) alertBox.textContent = "";
+
+  if (!store.delivery.nome || !store.delivery.endereco) {
+    if (alertBox) alertBox.textContent = "Dados de entrega não encontrados.";
     return;
   }
 
-  if(!store.payment){
-    if(alert) alert.textContent = "Selecione a forma de pagamento.";
+  if (!store.payment) {
+    if (alertBox) alertBox.textContent = "Selecione a forma de pagamento.";
     return;
   }
 
-  let msg = "OXENTE PASTEL%0A";
-  msg += "------------------------------%0A";
-  msg += "RELATÓRIO DO PEDIDO%0A";
+  let msg = `OXENTE PASTEL
+------------------------------
+RELATÓRIO DO PEDIDO
+`;
 
   store.items.forEach(item => {
-    msg += encodeURIComponent(`${item.qty}x ${item.name} - ${money(item.qty * item.price)}`) + "%0A";
+    msg += `${item.qty}x ${item.name} - ${money(item.qty * item.price)}
+`;
   });
 
-  if(store.acompanhamentos.fritasCarneSolExtra){
-    msg += encodeURIComponent(`Adicional fritas carne de sol: ${store.acompanhamentos.fritasCarneSolExtra}`) + "%0A";
+  if (store.acompanhamentos.fritasCarneSolExtra) {
+    msg += `Adicional fritas carne de sol: ${store.acompanhamentos.fritasCarneSolExtra}
+`;
   }
 
-  msg += "------------------------------%0A";
-  msg += encodeURIComponent(`TOTAL: ${money(getTotalValue())}`) + "%0A";
-  msg += "------------------------------%0A";
-  msg += encodeURIComponent(`Nome: ${store.delivery.nome}`) + "%0A";
-  msg += encodeURIComponent(`Endereço: ${store.delivery.endereco}`) + "%0A";
-  msg += encodeURIComponent(`Ref: ${store.delivery.referencia || "-"}`) + "%0A";
-  msg += encodeURIComponent(`Pagamento: ${store.payment}`) + "%0A";
-  msg += "------------------------------%0A";
-  msg += encodeURIComponent("Agradecemos pela preferência!");
+  msg += `------------------------------
+TOTAL: ${money(getTotalValue())}
+------------------------------
+Nome: ${store.delivery.nome}
+Endereço: ${store.delivery.endereco}
+Ref: ${store.delivery.referencia || "-"}
+Pagamento: ${store.payment}
+------------------------------
+Agradecemos pela preferência!`;
 
-  window.location.href = `https://wa.me/5588998650795?text=${msg}`;
+  window.location.href = `https://wa.me/5588998650795?text=${encodeURIComponent(msg)}`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page || "";
+  const page = document.body?.dataset?.page || "";
+
   setProgress(page);
   updateCartBadge();
   renderQtyControls();
