@@ -127,7 +127,7 @@ function setProgress(page) {
 }
 
 function updateCartBadge() {
-  const totalItems = getStore().items.reduce((acc, item) => acc + item.qty, 0);
+  const totalItems = getStore().items.reduce((acc, item) => acc + Number(item.qty), 0);
 
   document.querySelectorAll(".cart-count").forEach(el => {
     el.textContent = totalItems;
@@ -139,7 +139,7 @@ function updateCartBadge() {
 }
 
 function getTotalValue() {
-  return getStore().items.reduce((acc, item) => acc + (item.qty * item.price), 0);
+  return getStore().items.reduce((acc, item) => acc + (Number(item.qty) * Number(item.price)), 0);
 }
 
 function addQty(key, name, price) {
@@ -147,11 +147,11 @@ function addQty(key, name, price) {
   const found = store.items.find(item => item.key === key);
 
   if (found) {
-    found.qty += 1;
+    found.qty = Number(found.qty) + 1;
   } else {
     store.items.push({
-      key,
-      name,
+      key: key,
+      name: name,
       price: Number(price),
       qty: 1
     });
@@ -166,7 +166,7 @@ function decQty(key) {
 
   if (!found) return;
 
-  found.qty -= 1;
+  found.qty = Number(found.qty) - 1;
 
   if (found.qty <= 0) {
     store.items = store.items.filter(item => item.key !== key);
@@ -192,7 +192,7 @@ function removeLine(key) {
 
 function getQty(key) {
   const item = getStore().items.find(i => i.key === key);
-  return item ? item.qty : 0;
+  return item ? Number(item.qty) : 0;
 }
 
 function renderQtyControls() {
@@ -200,7 +200,7 @@ function renderQtyControls() {
     const key = box.dataset.key;
     const value = box.querySelector("[data-qty-value]");
     if (value) {
-      value.textContent = getQty(key);
+      value.textContent = String(getQty(key));
     }
   });
 }
@@ -273,13 +273,13 @@ function renderCartDrawer() {
           </div>
           <div class="qty" data-key="${safeKeyHtml}">
             <button type="button" class="qty-btn" onclick="decQty('${safeKeyJs}')">-</button>
-            <span class="qty-value" data-qty-value>${item.qty}</span>
-            <button type="button" class="qty-btn" onclick="addQty('${safeKeyJs}','${safeNameJs}',${item.price})">+</button>
+            <span class="qty-value" data-qty-value>${Number(item.qty)}</span>
+            <button type="button" class="qty-btn" onclick="addQty('${safeKeyJs}','${safeNameJs}',${Number(item.price)})">+</button>
           </div>
         </div>
         <div class="drawer-line-bottom">
           <button type="button" class="remove-btn" onclick="removeLine('${safeKeyJs}')">remover item</button>
-          <strong>${money(item.qty * item.price)}</strong>
+          <strong>${money(Number(item.qty) * Number(item.price))}</strong>
         </div>
       </div>
     `;
