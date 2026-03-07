@@ -1,7 +1,9 @@
+.btn,
+a.btn,
+button.btn,
 .home-card-actions .btn,
 .home-card-actions a.btn,
-.home-card-actions button.btn,
-.btn{
+.home-card-actions button.btn{
   width:100%;
   min-height:50px;
   border:none;
@@ -12,7 +14,7 @@
   padding:14px 16px;
   text-align:center;
   transition:transform .12s ease, background-color .18s ease, color .18s ease;
-  background:var(--yellow);
+  background:var(--yellow) !important;
   color:#000 !important;
   box-shadow:0 12px 28px rgba(255,212,0,.16);
   display:flex;
@@ -20,16 +22,20 @@
   justify-content:center;
 }
 
+.btn:hover,
+a.btn:hover,
+button.btn:hover,
 .home-card-actions .btn:hover,
 .home-card-actions a.btn:hover,
-.home-card-actions button.btn:hover,
-.btn:hover{
-  background:#ffdf47;
+.home-card-actions button.btn:hover{
+  background:#ffdf47 !important;
 }
 
+.btn:active,
+a.btn:active,
+button.btn:active,
 .home-card-actions .btn:active,
 .home-card-actions a.btn:active,
-.home-card-actions button.btn:active,
-.btn:active{
+.home-card-actions button.btn:active{
   transform:scale(.96);
 }
